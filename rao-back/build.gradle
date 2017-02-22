@@ -19,7 +19,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 jar {
-	baseName = 'rao'
+	baseName = 'rao-back'
 	version = '0.0.1-SNAPSHOT'
 }
 
@@ -32,8 +32,7 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-aop')
-	compile('org.springframework.boot:spring-boot-starter-cache')
-	compile('org.springframework.boot:spring-boot-starter-hateoas')
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}")
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")

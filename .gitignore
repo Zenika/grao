@@ -1,14 +1,12 @@
-*.class
+.idea
+*.iws
+*.iml
+*.ipr
 
-# Package Files #
-*.jar
-*.war
-*.ear
+/lib/
 
-/.gradle/
-/build/
-
-/.idea/
-/rao.iml
-
-gradlew*
+/rao-back/.gradle/
+/rao-back/build/
+/rao-back/gradle/
+/rao-back/gradlew.bat
+/rao-back/gradlew

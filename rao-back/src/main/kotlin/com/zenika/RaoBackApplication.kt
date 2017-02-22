@@ -1,6 +1,5 @@
 package com.zenika
 
-
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringApplication
@@ -17,8 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 
 @SpringBootApplication
 @EnableSwagger2
-open class RaoApplication {
-    private val log = LoggerFactory.getLogger(RaoApplication::class.java)
+open class RaoBackApplication {
+    private val log = LoggerFactory.getLogger(RaoBackApplication::class.java)
 
     @Bean
     open fun objectMapperBuilder()
@@ -44,11 +43,18 @@ open class RaoApplication {
                 .build()
     }
 
-
-
-
+    /**
+     * TODO :
+     * - P1: Lire le chemin racine des documents dans le fichier de config (ou variable d'env)
+     * - P1: Au lancement : parcourir tous les documents et les indexer dans Algolia
+     * - P1: Stocker en BDD les meta des fichiers déjà indexés (id, chemin relatif, nom)
+     * - P1: Tous les soirs, parcourir les nouveaux documents et les indexer dans Algolia + maj la BDD
+     *
+     * - P2: services pour rechercher dans Algolia
+     * - P2: offrir une IHM pour rechercher les documents via mots clés
+     */
 }
 
 fun main(args: Array<String>) {
-    SpringApplication.run(RaoApplication::class.java, *args)
+    SpringApplication.run(RaoBackApplication::class.java, *args)
 }
