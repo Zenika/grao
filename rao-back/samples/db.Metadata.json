@@ -1,0 +1,189 @@
+{
+    "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+    "contents": [{
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Tue, 12 Jul 2016 22:40:03 +0000",
+        "path": "/Zenika - Clients/1 DOCUMENTS ADMIN",
+        "rev": "2362c150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Wed, 22 Apr 2015 08:46:35 +0000",
+        "path": "/Zenika - Clients/1 PARTENAIRES",
+        "rev": "f78e150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Thu, 09 Jun 2016 12:48:56 +0000",
+        "path": "/Zenika - Clients/__CLIENTS_NATIONAL",
+        "rev": "2283d150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Tue, 02 Feb 2016 11:12:15 +0000",
+        "path": "/Zenika - Clients/_CLIENTS BORDEAUX",
+        "rev": "1baaf150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Wed, 22 Apr 2015 08:41:29 +0000",
+        "path": "/Zenika - Clients/_CLIENTS LILLE",
+        "rev": "ea67150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Wed, 22 Apr 2015 08:41:29 +0000",
+        "path": "/Zenika - Clients/_CLIENTS LYON",
+        "rev": "ea68150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Mon, 12 Dec 2016 15:14:59 +0000",
+        "path": "/Zenika - Clients/_CLIENTS PARIS \u0026 NATIONAL",
+        "rev": "2794e150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Thu, 07 Jan 2016 13:59:51 +0000",
+        "path": "/Zenika - Clients/_CLIENTS_NANTES",
+        "rev": "17017150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Thu, 07 Jan 2016 13:59:51 +0000",
+        "path": "/Zenika - Clients/_CLIENTS_RENNES",
+        "rev": "17018150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Wed, 10 Sep 2014 16:41:07 +0000",
+        "icon": "page_white",
+        "mime_type": "application/octet-stream",
+        "modified": "Wed, 22 Apr 2015 08:43:00 +0000",
+        "path": "/Zenika - Clients/D7701B20",
+        "rev": "eb3b150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": {
+            "uid": 394493198,
+            "display_name": "Ludovic THOMAS"
+        },
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "bytes": 34894,
+        "client_mtime": "Tue, 12 May 2015 11:12:16 +0000",
+        "icon": "page_white_word",
+        "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "modified": "Sat, 13 Feb 2016 13:10:37 +0000",
+        "path": "/Zenika - Clients/Fiche client ZENIKA BETA.docx",
+        "rev": "1ece7150b185b",
+        "root": "dropbox",
+        "size": "34.1 KB",
+        "modifier": {
+            "uid": 39336240,
+            "display_name": "pascal scodellaro"
+        },
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Fri, 29 Jan 2016 13:58:23 +0000",
+        "path": "/Zenika - Clients/Lead Training",
+        "rev": "1b982150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Wed, 22 Apr 2015 08:50:08 +0000",
+        "path": "/Zenika - Clients/process_commercial",
+        "rev": "106a5150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "bytes": 18103,
+        "client_mtime": "Tue, 13 May 2014 16:41:38 +0000",
+        "icon": "page_white_excel",
+        "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "modified": "Thu, 19 May 2016 19:28:24 +0000",
+        "path": "/Zenika - Clients/SUIVI BDC 2014.xlsx",
+        "rev": "222d5150b185b",
+        "root": "dropbox",
+        "size": "17.7 KB",
+        "modifier": {
+            "uid": 214516593,
+            "display_name": "Farès BEGHRICHI"
+        },
+        "parent_shared_folder_id": "353048667"
+    }, {
+        "client_mtime": "Mon, 01 Jan 0001 00:00:00 +0000",
+        "icon": "folder",
+        "is_dir": true,
+        "modified": "Mon, 21 Sep 2015 18:09:25 +0000",
+        "path": "/Zenika - Clients/SUIVI CONGES FARES : FAIZA",
+        "rev": "14226150b185b",
+        "root": "dropbox",
+        "size": "0 bytes",
+        "modifier": null,
+        "parent_shared_folder_id": "353048667"
+    }],
+    "hash": "a7c3fd6061f0af06bb91a11b0d76a84c",
+    "icon": "folder_user",
+    "is_dir": true,
+    "modified": "Thu, 23 Apr 2015 09:25:57 +0000",
+    "path": "/Zenika - Clients",
+    "rev": "434cd646c",
+    "root": "dropbox",
+    "size": "0 bytes",
+    "modifier": null
+}

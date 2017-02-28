@@ -4,9 +4,5 @@
 *.ipr
 
 /lib/
-
-/rao-back/.gradle/
-/rao-back/build/
-/rao-back/gradle/
-/rao-back/gradlew.bat
-/rao-back/gradlew
+rao-back/env.sh
+rao-back/*.log
