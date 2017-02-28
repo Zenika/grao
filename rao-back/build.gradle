@@ -32,12 +32,15 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-aop')
-    compile("org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}")
+    //compile("org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}")
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-
 	compile("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    //compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '0-SNAPSHOT', changing: true
+    compile("com.dropbox.core:dropbox-core-sdk:2.1.2")
+    //compile("com.dropbox.core:dropbox-core-sdk:0-SNAPSHOT:true")
 
 	compile("io.springfox:springfox-swagger-ui:2.6.1")
 	compile("io.springfox:springfox-swagger2:2.6.1")

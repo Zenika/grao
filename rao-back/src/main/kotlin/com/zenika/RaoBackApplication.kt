@@ -1,7 +1,10 @@
 package com.zenika
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.zenika.filestorage.DropboxConnector
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
@@ -13,6 +16,7 @@ import springfox.documentation.service.ApiInfo
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
+import javax.annotation.PostConstruct
 
 @SpringBootApplication
 @EnableSwagger2
@@ -53,6 +57,14 @@ open class RaoBackApplication {
      * - P2: services pour rechercher dans Algolia
      * - P2: offrir une IHM pour rechercher les documents via mots clés
      */
+
+    @Bean
+    open fun init(dropboxConnector:DropboxConnector): CommandLineRunner {
+        return CommandLineRunner {
+            dropboxConnector.connect()
+            dropboxConnector.getNewFilesInformation()
+        }
+    }
 }
 
 fun main(args: Array<String>) {
