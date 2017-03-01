@@ -36,7 +36,7 @@ export RAO_DBX_TOKEN="dropbox_token"
 ## install docd server
 pushd $GOPATH/src/github.com/sajari/docconv/docd && go install && popd
 ## launch docd server
-nohup $GOPATH/bin/docd &$
+nohup $GOPATH/bin/docd &
 ## run app
 ./bin/rao
 ```
