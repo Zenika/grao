@@ -4,23 +4,12 @@ import (
 	"github.com/Zenika/RAO/dropbox"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
-	"net/http"
 	"log"
+	"net/http"
 	"os"
 )
 
-var logFile string = os.Getenv("RAO_LOG_FILE");
-
-/**
- * TODO :
- * - P1: Lire le chemin racine des documents dans le fichier de config (ou variable d'env)
- * - P1: Au lancement : parcourir tous les documents et les indexer dans Algolia
- * - P1: Stocker en BDD les meta des fichiers déjà indexés (id, chemin relatif, nom)
- * - P1: Tous les soirs, parcourir les nouveaux documents et les indexer dans Algolia + maj la BDD
- *
- * - P2: services pour rechercher dans Algolia
- * - P2: offrir une IHM pour rechercher les documents via mots clés
- */
+var logFile string = os.Getenv("RAO_LOG_FILE")
 
 func main() {
 
@@ -36,7 +25,7 @@ func main() {
 	log.Println("Application started")
 
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
+		AllowedOrigins: []string{"*"},
 		//AllowedOrigins:   []string{"http://localhost:*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
 		AllowCredentials: true,
