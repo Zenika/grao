@@ -1,36 +1,15 @@
 package main
 
 import (
-	"github.com/Zenika/RAO/algolia"
-	"github.com/Zenika/RAO/dropbox"
-	"github.com/Zenika/RAO/docd"
+	"github.com/Zenika/RAO/rao"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"net/http"
-	"io/ioutil"
 	"log"
-	"io"
 	"os"
 )
 
 var logFile string = os.Getenv("RAO_LOG_FILE")
-var documents []dropbox.DbxDocument
-
-func etl(w http.ResponseWriter, r *http.Request) {
-	log.Println("handling request")
-	root := os.Getenv("RAO_DBX_ROOT")
-	dropbox.Walk(root, func(res io.ReadCloser, doc dropbox.DbxDocument){
-		buffer, err := ioutil.ReadAll(res)
-		defer res.Close()
-		check(err)
-		content, _, err := docd.Convert(buffer, doc.Mime)
-		check(err)
-		doc.Content = string(content[:])
-		if len(doc.Content) >0 {
-				algolia.Push([]dropbox.DbxDocument{doc})
-		}
-	});
-}
 
 func main() {
 
@@ -52,16 +31,10 @@ func main() {
 	})
 
 	r := mux.NewRouter()
-	r.HandleFunc("/api/v1", etl)
+	r.HandleFunc("/api/v1/index", rao.IndexAllDropBoxDocuments)
 
 	handler := c.Handler(r)
 
 	http.ListenAndServe(":8090", handler)
 
-}
-
-func check(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
 }
