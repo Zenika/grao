@@ -14,6 +14,7 @@ go get golang.org/x/oauth2
 go get github.com/stacktic/dropbox
 go get -u github.com/sajari/docconv
 go get github.com/JalfResi/justext
+go get github.com/algolia/algoliasearch-client-go/algoliasearch
 ```
 
 ## Build
@@ -28,6 +29,10 @@ go build -o bin/rao
 export RAO_DBX_KEY="dropbox_key"
 export RAO_DBX_SECRET="dropbox_secret"
 export RAO_DBX_TOKEN="dropbox_token"
+export RAO_DBX_ROOT="dropbox_root_path"
+export RAO_DOCD_PORT="docd_listening_port"
+export RAO_ALGOLIA_ID="algolia_api_client_id"
+export RAO_ALG_KEY="algolia_api_key"
 ```
 
 ## Run

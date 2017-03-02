@@ -3,7 +3,7 @@ package log
 import "log"
 
 /*
- * WIP logger utils
+ * WIP logging utilities
  */
 type ErrorLevel uint8
 
