@@ -2,12 +2,12 @@ package docd
 
 import (
     "github.com/Zenika/RAO/log"
-    "encoding/json"
-    "io/ioutil"
-    "bytes"
-    "net/http"
     "mime/multipart"
     "net/textproto"
+    "encoding/json"
+    "io/ioutil"
+    "net/http"
+    "bytes"
     "fmt"
     "os"
 )

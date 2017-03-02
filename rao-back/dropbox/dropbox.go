@@ -19,12 +19,13 @@ type DbxDocument struct {
 	Region  string
 	Mtime		dropbox.DBTime
 	Bytes   int64
+  Sum     string
 }
 
 type DbxCb func(res io.ReadCloser, doc DbxDocument)
 
 var db *dropbox.Dropbox = auth.RequireDropboxClient()
-var filter = regexp.MustCompile(`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Region>\w+)(/(?P<Client>\w+)(/.*))*`)
+var filter = regexp.MustCompile(`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Region>\w+)(/(?P<Client>[\w\s]+)(/.*))*`)
 
 func Walk(root string, fn DbxCb) {
 	log.Debug(fmt.Sprintf("walking tree %v", root))
@@ -58,6 +59,7 @@ func process(e dropbox.Entry, fn DbxCb){
 			Region: region,
 			Mtime: modified,
 			Bytes: bytes,
+      Sum: "",
 		}
     fn(res, doc)
     return
