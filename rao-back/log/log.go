@@ -1,6 +1,9 @@
 package log
 
-import "log"
+import(
+  "log"
+  "fmt"
+)
 
 /*
  * WIP logging utilities
@@ -10,21 +13,26 @@ type ErrorLevel uint8
 const (
     FATAL = iota + 1
     ERROR
+    WARNING
 )
 
-func log(err error, level ErrorLevel) {
+func Error(err error, level ErrorLevel) {
   if err != nil {
-      handle(err, level)
+      handleError(err, level)
   }
 }
 
-func handle(err error, level ErrorLevel){
+func Debug(message string) {
+  log.Println(fmt.Sprintf("DEBUG %v", message))
+}
+
+func handleError(err error, level ErrorLevel){
   switch level {
   case FATAL:
-    log.Fatal("FATAL " + err)
+    log.Fatal(fmt.Sprintf("FATAL %v", err))
   case ERROR:
-    log.Println("ERROR " + err)
-  case DEBUG:
-    log.Println("DEBUG " + err)
+    log.Println(fmt.Sprintf("ERROR %v", err))
+  case WARNING:
+    log.Println(fmt.Sprintf("WARNING %v", err))
   }
 }

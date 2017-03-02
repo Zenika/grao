@@ -1,6 +1,7 @@
 package docd
 
 import (
+    "github.com/Zenika/RAO/log"
     "encoding/json"
     "io/ioutil"
     "bytes"
@@ -17,8 +18,12 @@ type ConversionResponse struct {
     MSecs uint32            `json:"msecs"`
 }
 
-func Convert(input []byte, mimeType string) ([]byte, map[string]string, error) {
+var MIMES = []string { "application/pdf" }
 
+func Convert(input []byte, mimeType string) ([]byte, map[string]string, error) {
+    if "application/pdf" != mimeType {
+      return make([]byte, 0), nil, nil
+    }
     port := os.Getenv("RAO_DOCD_PORT")
     if(len(port) == 0){
       port = "8888"
@@ -34,35 +39,42 @@ func Convert(input []byte, mimeType string) ([]byte, map[string]string, error) {
     h.Set("Content-Type", mimeType)
     part, err := writer.CreatePart(h)
     if err != nil {
+        log.Error(err, log.ERROR)
         return nil, nil, err
     }
     _, err = part.Write(input)
     if err != nil {
+        log.Error(err, log.ERROR)
         return nil, nil, err
     }
     err = writer.Close()
     if err != nil {
+      log.Error(err, log.ERROR)
       return nil, nil, err
     }
     client := &http.Client{}
 
     request, err := http.NewRequest("POST", convertUrl, body)
     if err != nil {
+        log.Error(err, log.ERROR)
         return nil, nil, err
     }
     request.Header["Content-Type"] = []string{"multipart/form-data; boundary="+writer.Boundary()}
     resp, err := client.Do(request)
     if err != nil {
+        log.Error(err, log.ERROR)
         return nil, nil, err
     }
     defer resp.Body.Close()
     jsonBlob, err := ioutil.ReadAll(resp.Body)
     if err != nil {
+        log.Error(err, log.ERROR)
         return nil, nil, err
     }
     converted := new(ConversionResponse)
     err = json.Unmarshal(jsonBlob, &converted)
     if err != nil {
+        log.Error(err, log.ERROR)
         return nil, nil, err
     }
     return []byte(converted.Body), converted.Meta, nil

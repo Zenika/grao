@@ -1,15 +1,13 @@
 package dropbox
 
 import (
-	"github.com/Zenika/RAO/auth"
-	"github.com/Zenika/RAO/docd"
 	"github.com/stacktic/dropbox"
+	"github.com/Zenika/RAO/auth"
+	"github.com/Zenika/RAO/log"
+	"path/filepath"
+	"regexp"
+	"fmt"
 	"io"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"os"
-  "path/filepath"
 )
 
 type DbxDocument struct {
@@ -17,24 +15,21 @@ type DbxDocument struct {
 	Path    string
 	Mime    string
 	Content string
+	Client  string
+	Region  string
+	Mtime		dropbox.DBTime
+	Bytes   int64
 }
 
 type DbxCb func(res io.ReadCloser, doc DbxDocument)
 
 var db *dropbox.Dropbox = auth.RequireDropboxClient()
-
-func GetRootFolder(w http.ResponseWriter, r *http.Request) {
-	root := os.Getenv("RAO_DBX_ROOT")
-	Walk(root, func(res io.ReadCloser, doc DbxDocument){
-    content := convert(res, doc.Mime)
-    doc.Content = content
-    log.Println(doc.Content)
-  });
-}
+var filter = regexp.MustCompile(`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Region>\w+)(/(?P<Client>\w+)(/.*))*`)
 
 func Walk(root string, fn DbxCb) {
+	log.Debug(fmt.Sprintf("walking tree %v", root))
 	entry, err := db.Metadata(root, true, false, "", "", 0)
-	check(err)
+	log.Error(err, log.FATAL)
 	contents := entry.Contents
 	for _, e := range contents {
     process(e, fn)
@@ -42,32 +37,37 @@ func Walk(root string, fn DbxCb) {
 }
 
 func process(e dropbox.Entry, fn DbxCb){
+	matches := filter.FindStringSubmatch(e.Path)
+	if nil == matches {
+		log.Debug(fmt.Sprintf("no match %v", e.Path));
+		return
+	}
   if !e.IsDir {
+		log.Debug(fmt.Sprintf("%v",matches));
+		region := matches[2]
+		client := matches[4]
+		bytes := e.Bytes
+		modified := e.Modified
     res, _ := download(e.Path)
-    fn(res, DbxDocument { filepath.Base(e.Path), e.Path, e.MimeType, ""})
+		doc := DbxDocument {
+			Title: filepath.Base(e.Path),
+			Path: e.Path,
+			Mime: e.MimeType,
+			Content: "",
+			Client: client,
+			Region: region,
+			Mtime: modified,
+			Bytes: bytes,
+		}
+    fn(res, doc)
     return
   }
   Walk(e.Path, fn)
 }
 
-func convert(rc io.ReadCloser, mime string) string {
-	buffer, err := ioutil.ReadAll(rc)
-	defer rc.Close()
-	check(err)
-	body, _, err := docd.Convert(buffer, mime)
-	check(err)
-	return string(body[:])
-}
 
 func download(src string) (io.ReadCloser, int64) {
 	reader, size, err := db.Download(src, "", 0)
-	check(err)
+	log.Error(err, log.ERROR)
 	return reader, size
-}
-
-
-func check(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
 }

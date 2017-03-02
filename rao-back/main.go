@@ -17,6 +17,7 @@ var logFile string = os.Getenv("RAO_LOG_FILE")
 var documents []dropbox.DbxDocument
 
 func etl(w http.ResponseWriter, r *http.Request) {
+	log.Println("handling request")
 	root := os.Getenv("RAO_DBX_ROOT")
 	dropbox.Walk(root, func(res io.ReadCloser, doc dropbox.DbxDocument){
 		buffer, err := ioutil.ReadAll(res)
@@ -25,10 +26,10 @@ func etl(w http.ResponseWriter, r *http.Request) {
 		content, _, err := docd.Convert(buffer, doc.Mime)
 		check(err)
 		doc.Content = string(content[:])
-		log.Println(doc.Content)
-		documents = append(documents, doc)
+		if len(doc.Content) >0 {
+				algolia.Push([]dropbox.DbxDocument{doc})
+		}
 	});
-	algolia.Push(documents)
 }
 
 func main() {
@@ -46,7 +47,6 @@ func main() {
 
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
-		//AllowedOrigins:   []string{"http://localhost:*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
 		AllowCredentials: true,
 	})
