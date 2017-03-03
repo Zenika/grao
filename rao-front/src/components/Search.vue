@@ -41,8 +41,9 @@ form{
   background: $red_znk;
   padding: 10px;
   width: 100%;
+  margin-bottom: 20px;
 
-  @media screen and (min-width: $break-large) {
+  @media screen and (max-width: $break-large) {
     width: 110%!important;
   }
 

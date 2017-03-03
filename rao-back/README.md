@@ -35,6 +35,12 @@ export RAO_ALGOLIA_ID="algolia_api_client_id"
 export RAO_ALG_KEY="algolia_api_key"
 ```
 
+## LN
+
+```shell
+ln -s /.../rao/rao-back/ $GOPATH/src/github.com/Zenika/rao
+```
+
 ## Run
 
 ```shell
