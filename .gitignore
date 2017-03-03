@@ -2,11 +2,12 @@
 *.iws
 *.iml
 *.ipr
+*.swp
 
 /lib/
+rao-back/env.sh
+rao-back/*.log
+rao-back/bin
+rao-back/samples
 
-/rao-back/.gradle/
-/rao-back/build/
-/rao-back/gradle/
-/rao-back/gradlew.bat
-/rao-back/gradlew
+
