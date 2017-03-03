@@ -20,9 +20,11 @@ type ConversionResponse struct {
 
 var MIMES = []string { "application/pdf" }
 
-func Convert(input []byte, mimeType string) ([]byte, map[string]string, error) {
+type Docd struct {}
+
+func (docd Docd) Convert(input []byte, mimeType string) ([]byte, error) {
     if "application/pdf" != mimeType {
-      return make([]byte, 0), nil, nil
+      return make([]byte, 0), nil
     }
     port := os.Getenv("RAO_DOCD_PORT")
     if(len(port) == 0){
@@ -40,42 +42,46 @@ func Convert(input []byte, mimeType string) ([]byte, map[string]string, error) {
     part, err := writer.CreatePart(h)
     if err != nil {
         log.Error(err, log.ERROR)
-        return nil, nil, err
+        return nil, err
     }
     _, err = part.Write(input)
     if err != nil {
         log.Error(err, log.ERROR)
-        return nil, nil, err
+        return nil, err
     }
     err = writer.Close()
     if err != nil {
       log.Error(err, log.ERROR)
-      return nil, nil, err
+      return nil, err
     }
     client := &http.Client{}
 
     request, err := http.NewRequest("POST", convertUrl, body)
     if err != nil {
         log.Error(err, log.ERROR)
-        return nil, nil, err
+        return nil, err
     }
     request.Header["Content-Type"] = []string{"multipart/form-data; boundary="+writer.Boundary()}
     resp, err := client.Do(request)
     if err != nil {
         log.Error(err, log.ERROR)
-        return nil, nil, err
+        return nil, err
     }
     defer resp.Body.Close()
     jsonBlob, err := ioutil.ReadAll(resp.Body)
     if err != nil {
         log.Error(err, log.ERROR)
-        return nil, nil, err
+        return nil, err
     }
     converted := new(ConversionResponse)
     err = json.Unmarshal(jsonBlob, &converted)
     if err != nil {
         log.Error(err, log.ERROR)
-        return nil, nil, err
+        return nil, err
     }
-    return []byte(converted.Body), converted.Meta, nil
+    return []byte(converted.Body), nil
+}
+
+func New() *Docd {
+    return &Docd {}
 }
