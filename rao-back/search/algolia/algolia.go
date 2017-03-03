@@ -22,12 +22,18 @@ func (alg Algolia) Store(documents []dropbox.DbxDocument){
   log.Error(err, log.ERROR)
 }
 
-func (alg Algolia) Search(pattern string){
+func (alg Algolia) Search(pattern string)([]byte, error){
   index := alg.client.InitIndex("rao")
-  _, err := index.Search(pattern, nil)
-  log.Error(err, log.ERROR)
-  return
+  res, err := index.Search(pattern, nil)
+  recs, err := json.Marshal(res)
+  if err == nil {
+      return recs, nil
+  } else {
+      log.Error(err, log.ERROR)
+      return nil, err
+  }
 }
+
 
 
 func New() *Algolia {

@@ -3,9 +3,9 @@
     <h4>Result</h4>
 
     <ul>
-      <li><strong>12</strong> documents</li>
-      <li><strong>3</strong> clients</li>
-      <li><strong>4</strong> région</li>
+      <li><strong>{{ calcData.length }}</strong> documents</li>
+      <li><strong>{{ clients.length }}</strong> clients</li>
+      <li><strong>{{ regions.length }}</strong> région</li>
     </ul>
 
   </div>
@@ -16,6 +16,22 @@ export default {
   name: 'filter',
   data () {
     return {
+      clients: [],
+      regions: []
+    }
+  },
+  props: [
+    'documents'
+  ],
+  computed: {
+    calcData: function () {
+      this.clients = []
+      this.regions = []
+      this.documents.map((doc) => {
+        if (this.clients.indexOf(doc.Client) === -1) this.clients.push(doc.Client)
+        if (this.regions.indexOf(doc.Region) === -1) this.regions.push(doc.Region)
+      })
+      return this.documents
     }
   }
 }
@@ -31,7 +47,7 @@ export default {
   color: white;
   padding: 20px;
   margin-bottom: 20px;
-  
+
   h4{
     text-align: left;
   }

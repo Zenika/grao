@@ -25,10 +25,10 @@ type DbxDocument struct {
 type DbxCb func(res io.ReadCloser, doc DbxDocument)
 
 var db *dropbox.Dropbox = auth.RequireDropboxClient()
-var filter = regexp.MustCompile(`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Region>\w+)(/(?P<Client>[\w\s]+)(/.*))*`)
+var filterPattern string = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Region>\w+)(/(?P<Client>[\w\s]+)(/.*))*`
+var filter = regexp.MustCompile(filterPattern)
 
 func Walk(root string, fn DbxCb) {
-	log.Debug(fmt.Sprintf("walking tree %v", root))
 	entry, err := db.Metadata(root, true, false, "", "", 0)
 	log.Error(err, log.FATAL)
 	contents := entry.Contents
@@ -40,7 +40,6 @@ func Walk(root string, fn DbxCb) {
 func process(e dropbox.Entry, fn DbxCb){
 	matches := filter.FindStringSubmatch(e.Path)
 	if nil == matches {
-		log.Debug(fmt.Sprintf("no match %v", e.Path));
 		return
 	}
   if !e.IsDir {

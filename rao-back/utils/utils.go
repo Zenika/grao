@@ -14,6 +14,20 @@ func ArrayContainsString(list []string, a string) bool {
     return false
 }
 
+func SplitString(input string, size int64)([]string){
+  slices := []string{}
+  count := 0
+  lastIndex := 0
+  for i, _ := range input {
+    count++
+    if count%10001 == 0 {
+      slices = append(slices, input[lastIndex:i])
+      lastIndex = i
+    }
+  }
+  return slices
+}
+
 func Md5Sum(input string) string {
     hasher := md5.New()
     hasher.Write([]byte(input))

@@ -4,8 +4,8 @@ import (
 	"github.com/Zenika/RAO/rao"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
-	"net/http"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -25,13 +25,14 @@ func main() {
 	log.Println("Application started")
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
+		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
 		AllowCredentials: true,
 	})
 
 	r := mux.NewRouter()
 	r.HandleFunc("/api/v1/index", rao.IndexAllDropBoxDocuments)
+	r.HandleFunc("/api/v1/search", rao.Search)
 
 	handler := c.Handler(r)
 
