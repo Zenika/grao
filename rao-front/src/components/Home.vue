@@ -16,11 +16,15 @@
         <v-filter></v-filter>
       </div>
       <div class="col-md-10">
+        <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
+
         <ul class="list_documents">
           <li v-for="doc in documents" >
             <v-document :item="doc" :search="searching"></v-document>
           </li>
         </ul>
+
+        <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
       </div>
     </div>
 
@@ -40,6 +44,7 @@ import Search from './Search'
 import Filter from './Filter'
 import Result from './Result'
 import Doc from './Document'
+import Paging from './Paging'
 
 export default {
   name: 'hello',
@@ -47,26 +52,39 @@ export default {
     return {
       documents: [],
       msg: 'Welcome to RAO a Vue.js App',
-      searching: ''
+      searching: '',
+      page: 0,
+      hits: 0,
+      pages: 0
     }
   },
   components: {
     'v-search': Search,
     'v-filter': Filter,
     'v-result': Result,
-    'v-document': Doc
+    'v-document': Doc,
+    'v-page': Paging
   },
   created () {
   },
   methods: {
-    search (value) {
-      let url = '/static/data/documents.json'
+    goto (page) {
+      this.search(this.value, page)
+    },
+    search (value, page) {
+      if (!page) page = this.page
+
+      // let url = '/static/data/algolia.json' + '?page=' + page
+      url = 'http://localhost:8090/api/v1/search' + '?query=' + value
 
       this.$http.get(url).then(response => {
-        this.documents = response.body
+        this.documents = response.body.hits
+        this.page = response.body.page
+        this.hits = response.body.nbHits
+        this.pages = response.body.nbPages
       })
 
-      if (value.length < 400) { // hack disable agolia :)
+      if (value.length < 50) { // hack disable agolia :)
         console.log('limit size')
         return
       }
@@ -97,6 +115,7 @@ h1{
 .explain{
   background: #dfe0dc;
   padding: 20px;
+  font-size: 1.2em;
 }
 
 .list_documents{
