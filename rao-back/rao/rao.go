@@ -3,14 +3,14 @@ package rao
 import (
 	"github.com/Zenika/RAO/conv"
 	"github.com/Zenika/RAO/conv/docd"
+	"github.com/Zenika/RAO/dropbox"
+	"github.com/Zenika/RAO/log"
 	"github.com/Zenika/RAO/search"
 	"github.com/Zenika/RAO/search/algolia"
-	"github.com/Zenika/RAO/dropbox"
 	"github.com/Zenika/RAO/utils"
-	"github.com/Zenika/RAO/log"
+	"io"
 	"io/ioutil"
 	"net/http"
-	"io"
 	"os"
 )
 
@@ -31,8 +31,8 @@ func IndexAllDropBoxDocuments(w http.ResponseWriter, r *http.Request) {
 		chunks := utils.SplitString(content, 10000)
 		doc.Sum = utils.Md5Sum(content)
 		for _, chunk := range chunks {
-				doc.Content = chunk
-				searchService.Store([]dropbox.DbxDocument{doc})
+			doc.Content = chunk
+			searchService.Store([]dropbox.DbxDocument{doc})
 		}
 	})
 }
