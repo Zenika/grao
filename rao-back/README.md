@@ -7,6 +7,15 @@
 - P2: services pour rechercher dans Algolia
 - P2: offrir une IHM pour rechercher les documents via mots clés
  ```
+
+## Set up
+
+Install [go](https://golang.org/cmd/go/)<br>
+Set up  [GOPATH](https://golang.org/doc/code.html#GOPATH) environment variable
+
+```shell
+ln -s $PWD $GOPATH/src/github.com/Zenika/rao
+```
 ## Deps
 
 ```shell
@@ -35,12 +44,6 @@ export RAO_ALGOLIA_ID="algolia_api_client_id"
 export RAO_ALG_KEY="algolia_api_key"
 ```
 
-## LN
-
-```shell
-ln -s /.../rao/rao-back/ $GOPATH/src/github.com/Zenika/rao
-```
-
 ## Run
 
 ```shell
@@ -49,5 +52,5 @@ pushd $GOPATH/src/github.com/sajari/docconv/docd && go install && popd
 ## launch docd server
 nohup $GOPATH/bin/docd &
 ## run app
-./bin/rao
+$GOPATH/src/github.com/Zenika/rao/bin/rao
 ```
