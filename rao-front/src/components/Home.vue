@@ -37,7 +37,6 @@
 </template>
 
 <script>
-/* global algoliasearch */
 /* eslint no-undef: "error" */
 
 import Search from './Search'
@@ -75,27 +74,13 @@ export default {
       if (!page) page = this.page
 
       // let url = '/static/data/algolia.json' + '?page=' + page
-      url = 'http://localhost:8090/api/v1/search' + '?query=' + value
+      let url = 'http://localhost:8090/api/v1/search' + '?query=' + value
 
       this.$http.get(url).then(response => {
         this.documents = response.body.hits
         this.page = response.body.page
         this.hits = response.body.nbHits
         this.pages = response.body.nbPages
-      })
-
-      if (value.length < 50) { // hack disable agolia :)
-        console.log('limit size')
-        return
-      }
-      if (typeof algoliasearch === 'undefined') return
-
-      let client = algoliasearch('0J8NY0SIDS', 'eadffccfb3dd0d42e558717fb423c5a3')
-      let index = client.initIndex('rao')
-
-      index.search(value, (err, content) => {
-        if (content.hits) this.documents = content.hits
-        if (err) console.log(err)
       })
     }
   }
