@@ -1,11 +1,11 @@
 <template>
   <div class="result">
     <h4>Result</h4>
-
     <ul>
-      <li><strong>{{ calcData.length }}</strong> documents</li>
-      <li><strong>{{ clients.length }}</strong> clients</li>
-      <li><strong>{{ regions.length }}</strong> région</li>
+      <li><strong>{{ pages }}</strong> pages</li>
+      <li><strong>{{ hits }}</strong> documents</li>
+      <li v-if="facets.Client"><strong>{{ Object.keys(facets.Client).length }}</strong> Clients</li>
+      <li v-if="facets.Region"><strong>{{ Object.keys(facets.Region).length }}</strong> Régions</li>
     </ul>
 
   </div>
@@ -21,12 +21,15 @@ export default {
     }
   },
   props: [
-    'documents'
+    'facets',
+    'hits',
+    'pages'
   ],
   computed: {
     calcData: function () {
       this.clients = []
       this.regions = []
+      if (!this.documents) return []
       this.documents.map((doc) => {
         if (this.clients.indexOf(doc.Client) === -1) this.clients.push(doc.Client)
         if (this.regions.indexOf(doc.Region) === -1) this.regions.push(doc.Region)

@@ -4,14 +4,16 @@
       <strong>{{item.Title}}</strong>
     </div>
     <div class="flex">
+      <div class="icon">
+        <i class="fa" :class="getDocType(item.Mime)" aria-hidden="true"></i>
+      </div>
       <div class="informations">
         Client : <strong>{{item.Client}}</strong><br>
         Région : <strong>{{item.Region}}</strong><br>
-        Type : <strong>{{item.Mime}}</strong><br>
       </div>
-      <div class="content">
-        <v-contents :content="item.Content" :search="search"></v-contents>
-      </div>
+
+      <v-contents :content="item._snippetResult.Content.value" :search="search"></v-contents>
+
     </div>
     <div class="path">
       <span><i class="fa fa-folder-open-o" aria-hidden="true"></i> <strong>{{item.Path}}</strong></span>
@@ -36,7 +38,18 @@ export default {
     'search'
   ],
   created () {
-
+  },
+  methods: {
+    getDocType (type) {
+      if (type === 'application/pdf') {
+        return 'fa-file-pdf-o'
+      } else if (type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+        return 'fa-file-word-o'
+      } else {
+        console.log(type)
+        return 'fa-file-o'
+      }
+    }
   }
 }
 </script>
@@ -51,13 +64,18 @@ export default {
   overflow: hidden;
 
   .title{
-    font-size: 20px;
+    font-size: 1.1em;
     padding: 10px;
   }
 
   .flex{
     display: flex;
     align-items: center;
+
+    .icon{
+      font-size: 5em;
+      margin-left: 20px;
+    }
 
     .informations{
       min-width: 220px;
