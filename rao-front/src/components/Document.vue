@@ -11,9 +11,7 @@
         Client : <strong>{{item.Client}}</strong><br>
         Région : <strong>{{item.Region}}</strong><br>
       </div>
-
       <v-contents :content="item._snippetResult.Content.value" :search="search"></v-contents>
-
     </div>
     <div class="path">
       <span><i class="fa fa-folder-open-o" aria-hidden="true"></i> <strong>{{item.Path}}</strong></span>
@@ -38,6 +36,7 @@ export default {
     'search'
   ],
   created () {
+    // console.log(this.item)
   },
   methods: {
     getDocType (type) {

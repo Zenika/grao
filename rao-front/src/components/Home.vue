@@ -12,8 +12,8 @@
     <v-search @search="searchAction"></v-search>
     <div class="row">
       <div class="col-md-2" v-if="!loading">
-        <v-result v-if="documents" :hits="hits" :pages="pages" :facets="facets"></v-result>
-        <v-filter v-if="documents" :facets="facets" :allfilters="allfilters"></v-filter>
+        <v-result v-if="documents.length" :hits="hits" :pages="pages" :facets="facets"></v-result>
+        <v-filter v-show="documents.length" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
       <div class="col-md-10" v-if="!loading">
         <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
@@ -24,13 +24,14 @@
           </li>
         </ul>
 
-        <div class="no_result" v-if="documents.length == 0">
-          <p>Aucun résultat pour votre recherche</p>
-          <img src="../assets/noresult.jpg" alt="">
-        </div>
-
         <v-page v-if="documents.length && pages > 1" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
       </div>
+
+      <div class="col-md-12 no_result" v-if="documents.length == 0">
+        <p>Aucun résultat pour votre recherche</p>
+        <img src="../assets/noresult.jpg" alt="">
+      </div>
+
     </div>
 
     <div class="loading" v-if="loading">
@@ -57,15 +58,15 @@ export default {
       loading: false,
       documents: false,
       msg: 'Welcome to RAO a Vue.js App',
-      searching: '',
+      searching: null,
       page: 0,
       hits: 0,
       pages: 0,
       facets: null,
-      activeFilters: [],
+      activeFilters: {},
+      stringFilters: '',
       allfilters: [],
-      url: 'http://10.0.10.252:8090/api/v1/search'
-      // url: '/static/data/algolia.json'
+      url: process.env.API_URL
     }
   },
   components: {
@@ -82,21 +83,40 @@ export default {
     searchAction (search) {
       this.page = 0
       this.searching = search
-      this.activeFilters = []
+      this.activeFilters = {}
       this.search(search)
     },
     getAllFilters () {
       let params = {'facets': '*'}
       this.$http.post(this.url, params).then(response => {
         this.allfilters = response.body.facets
-        console.log(this.allfilters)
       })
+    },
+    setFilters (filters) {
+      let testname = 0
+      let testkey = 0
+      this.stringFilters = ''
+      Object.keys(filters).map(key => {
+        if (Object.keys(filters[key]).length) {
+          if (testkey) this.stringFilters += ' AND '
+          this.stringFilters += '('
+          Object.keys(filters[key]).map(name => {
+            if (testname) this.stringFilters += 'OR'
+            this.stringFilters += ' ' + key + ':"' + name + '" '
+            testname = testname + 1
+          })
+          this.stringFilters += ')'
+          testkey = testkey + 1
+        }
+        testname = 0
+      })
+      console.log(this.stringFilters)
+      this.search(this.searching)
     },
     goto (page) {
       this.search(this.searching, page)
     },
-    search (value, page, filters) {
-      console.log(filters)
+    search (value, page) {
       this.loading = true
       if (typeof page === 'undefined') page = this.page
 
@@ -107,8 +127,9 @@ export default {
         // 'filters': '(Region:Lille OR Region:Lyon)'
       }
 
+      if (this.stringFilters) params.filters = this.stringFilters
+
       this.$http.post(this.url, params).then(response => {
-        console.log(response)
         this.documents = response.body.hits
         this.page = response.body.page
         this.hits = response.body.nbHits
@@ -171,13 +192,13 @@ h1{
 }
 
 @keyframes bounce {
-	0%, 20%, 50%, 80%, 100% {
+  0%, 20%, 50%, 80%, 100% {
     transform:translateY(0);
   }
-	40% {
+  40% {
     transform:translateY(-30px);
   }
-	60% {
+  60% {
     transform:translateY(-15px);
   }
 }

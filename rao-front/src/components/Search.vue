@@ -5,6 +5,10 @@
     <button type="submit" class="btn btn-default">
       <i class="fa fa-search" aria-hidden="true"></i>
     </button>
+    <span>by</span>
+    <a target="_blank" href="https://algolia.com">
+      <img src="../assets/algolia.png" alt="">
+    </a>
   </form>
 
 </template>
@@ -73,6 +77,18 @@ form{
     border-radius: 0px;
     border: none;
     height: 40px;
+  }
+
+  span{
+    color: white;
+    margin: auto 10px;
+    font-weight: 700;
+  }
+
+  a{
+    img{
+      height: 30px;
+    }
   }
 
 }

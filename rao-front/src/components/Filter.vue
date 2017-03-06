@@ -5,13 +5,11 @@
 
       <h3>Filters</h3>
 
-      {{activeFilters}}
-
       <ul class="tags">
-        <li v-for="actives in activeFilters">
+        <li v-for="(actives, key) in activefilters">
           <div v-for="(count, name) in actives">
-            <span>{{name}}</span>
-            <i @click="deleteFilter(actives, name)"class="fa fa-times" aria-hidden="true"></i>
+            <span>{{name}} ({{facets[key][name]}})</span>
+            <i @click="deleteFilter(key, name)"class="fa fa-times" aria-hidden="true"></i>
           </div>
         </li>
       </ul>
@@ -20,7 +18,7 @@
         <h4>{{key}}</h4>
         <ul>
           <li v-for="(count, name) in values" @click="setFilter(key, name)" v-if="isNotActive(key, name)">
-            <label>{{name}} {{facets[key][name] || 0}}</label>
+            <label>{{name}} <span v-if="facets">({{facets[key][name] || 0}})</span></label>
           </li>
         </ul>
       </div>
@@ -35,26 +33,25 @@ export default {
   name: 'filter',
   props: [
     'facets',
-    'allfilters'
+    'allfilters',
+    'activefilters'
   ],
-  data () {
-    return {
-      'activeFilters': {}
-    }
-  },
   methods: {
     deleteFilter (key, name) {
-      delete this.activeFilters[key][name]
+      delete this.activefilters[key][name]
+      this.$forceUpdate()
+      this.$emit('filter', this.activefilters)
     },
     setFilter (key, name) {
-      console.log(this.allfilters)
-      if (!this.activeFilters[key]) {
-        this.activeFilters[key] = {}
+      if (!this.activefilters[key]) {
+        this.activefilters[key] = {}
       }
-      this.activeFilters[key][name] = 'active'
-      console.log(this.activeFilters)
+      this.activefilters[key][name] = 'active'
+      this.$forceUpdate()
+      this.$emit('filter', this.activefilters)
     },
     isNotActive (key, name) {
+      if (this.activefilters && this.activefilters[key] && this.activefilters[key][name]) return false
       return true
     }
   }
@@ -87,6 +84,8 @@ export default {
   }
 
   .tags{
+    margin-bottom: 20px;
+
     li{
       display: block;
 
@@ -119,6 +118,9 @@ export default {
           cursor: pointer;
           background: #DFE0DC;
           padding: 6px 6px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
       }
 
