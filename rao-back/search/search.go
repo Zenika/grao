@@ -14,11 +14,11 @@ type SearchService struct {
 }
 
 type SearchQuery struct {
-	Query string
-	Facets string
+	Query        string
+	Facets       string
 	FacetFilters string
-	Filters string
-	Page int
+	Filters      string
+	Page         int
 }
 
 func New(eng SearchEngine) *SearchService {
@@ -26,7 +26,6 @@ func New(eng SearchEngine) *SearchService {
 		engine: eng,
 	}
 }
-
 
 func (search SearchService) Store(documents []document.IDocument) {
 	search.engine.Store(documents)

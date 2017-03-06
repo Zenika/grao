@@ -20,7 +20,7 @@ func SplitString(input string, size int) []string {
 	lastIndex := 0
 	for i, _ := range input {
 		count++
-		if count%(size + 1) == 0 {
+		if count%(size+1) == 0 {
 			slices = append(slices, input[lastIndex:i])
 			lastIndex = i
 		}

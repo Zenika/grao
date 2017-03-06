@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"github.com/Zenika/RAO/controller"
+	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"log"
 	"net/http"

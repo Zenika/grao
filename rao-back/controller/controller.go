@@ -1,21 +1,20 @@
 package controller
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/Zenika/RAO/conv"
 	"github.com/Zenika/RAO/conv/docd"
-	"github.com/Zenika/RAO/tree"
-	"github.com/Zenika/RAO/tree/dropbox"
 	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/log"
 	"github.com/Zenika/RAO/search"
 	"github.com/Zenika/RAO/search/algolia"
+	"github.com/Zenika/RAO/tree"
+	"github.com/Zenika/RAO/tree/dropbox"
 	"github.com/Zenika/RAO/utils"
-	"encoding/json"
 	"net/http"
 	"os"
-	"fmt"
 )
-
 
 var searchService = search.New(algolia.New())
 var convService = conv.New(docd.New())
@@ -40,7 +39,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	var query search.SearchQuery
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&query)
-	if(nil != err){
+	if nil != err {
 		log.Error(err, log.ERROR)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(fmt.Sprintf("There was an error: %v", err)))
@@ -56,9 +55,9 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Poll(w http.ResponseWriter, r *http.Request){
-  root := fmt.Sprintf("/%v", os.Getenv("RAO_DBX_ROOT"))
-  go treeService.Poll(root, func(bytes []byte, doc document.IDocument){
+func Poll(w http.ResponseWriter, r *http.Request) {
+	root := fmt.Sprintf("/%v", os.Getenv("RAO_DBX_ROOT"))
+	go treeService.Poll(root, func(bytes []byte, doc document.IDocument) {
 
-  })
+	})
 }
