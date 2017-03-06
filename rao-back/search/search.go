@@ -1,11 +1,11 @@
 package search
 
 import (
-	"github.com/Zenika/RAO/dropbox"
+	"github.com/Zenika/RAO/document"
 )
 
 type SearchEngine interface {
-	Store(documents []dropbox.DbxDocument)
+	Store(documents []document.IDocument)
 	Search(query SearchQuery) ([]byte, error)
 }
 
@@ -21,16 +21,17 @@ type SearchQuery struct {
 	Page int
 }
 
-func (search SearchService) Store(documents []dropbox.DbxDocument) {
+func New(eng SearchEngine) *SearchService {
+	return &SearchService{
+		engine: eng,
+	}
+}
+
+
+func (search SearchService) Store(documents []document.IDocument) {
 	search.engine.Store(documents)
 }
 
 func (search SearchService) Search(query SearchQuery) ([]byte, error) {
 	return search.engine.Search(query)
-}
-
-func New(eng SearchEngine) *SearchService {
-	return &SearchService{
-		engine: eng,
-	}
 }

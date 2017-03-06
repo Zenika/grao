@@ -3,8 +3,8 @@ package algolia
 import (
 	"encoding/json"
 	"github.com/Zenika/RAO/auth"
-	"github.com/Zenika/RAO/dropbox"
 	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/search"
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 )
@@ -13,14 +13,23 @@ type Algolia struct {
 	client algoliasearch.Client
 }
 
-func (alg Algolia) Store(documents []dropbox.DbxDocument) {
-	var objects []algoliasearch.Object = nil
+func (alg Algolia) Store(documents []document.IDocument) {
 	index := alg.client.InitIndex("rao")
-	// todo: replace
-	pld, err := json.Marshal(documents)
-	err = json.Unmarshal(pld, &objects)
-	_, err = index.AddObjects(objects)
-	log.Error(err, log.ERROR)
+	for _, doc := range documents {
+			_, err := index.AddObject(
+				algoliasearch.Object{
+					"Content": doc.GetContent(),
+					"Path": doc.GetPath(),
+					"Mime": doc.GetMime(),
+					"Mtime": doc.GetMtime(),
+					"Bytes": doc.GetBytes(),
+					"Client": doc.GetClient(),
+					"Region": doc.GetRegion(),
+					"Sum": doc.GetSum(),
+				})
+			log.Error(err, log.ERROR)
+	}
+
 }
 
 func (alg Algolia) Search(query search.SearchQuery) ([]byte, error) {

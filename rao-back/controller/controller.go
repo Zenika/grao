@@ -1,9 +1,11 @@
-package rao
+package controller
 
 import (
 	"github.com/Zenika/RAO/conv"
 	"github.com/Zenika/RAO/conv/docd"
-	"github.com/Zenika/RAO/dropbox"
+	"github.com/Zenika/RAO/tree"
+	"github.com/Zenika/RAO/tree/dropbox"
+	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/log"
 	"github.com/Zenika/RAO/search"
 	"github.com/Zenika/RAO/search/algolia"
@@ -14,22 +16,22 @@ import (
 	"fmt"
 )
 
-var documents []dropbox.DbxDocument
 
 var searchService = search.New(algolia.New())
 var convService = conv.New(docd.New())
+var treeService = tree.New(dropbox.New())
 
-func IndexAllDropBoxDocuments(w http.ResponseWriter, r *http.Request) {
+func Walk(w http.ResponseWriter, r *http.Request) {
 	root := os.Getenv("RAO_DBX_ROOT")
-	dropbox.Walk(root, func(bytes []byte, doc dropbox.DbxDocument) {
-		b, err := convService.Convert(bytes, doc.Mime)
+	treeService.Walk(root, func(bytes []byte, doc document.IDocument) {
+		b, err := convService.Convert(bytes, doc.GetMime())
 		content := string(b[:])
 		log.Error(err, log.ERROR)
 		chunks := utils.SplitString(content, 10000)
-		doc.Sum = utils.Md5Sum(content)
+		doc.SetSum(utils.Md5Sum(content))
 		for _, chunk := range chunks {
-			doc.Content = chunk
-			searchService.Store([]dropbox.DbxDocument{doc})
+			doc.SetContent(chunk)
+			searchService.Store([]document.IDocument{doc})
 		}
 	})
 }
@@ -52,4 +54,11 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(fmt.Sprintf("There was an error: %v", err)))
 	}
+}
+
+func Poll(w http.ResponseWriter, r *http.Request){
+  root := fmt.Sprintf("/%v", os.Getenv("RAO_DBX_ROOT"))
+  go treeService.Poll(root, func(bytes []byte, doc document.IDocument){
+
+  })
 }
