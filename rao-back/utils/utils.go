@@ -14,13 +14,13 @@ func ArrayContainsString(list []string, a string) bool {
 	return false
 }
 
-func SplitString(input string, size int64) []string {
+func SplitString(input string, size int) []string {
 	slices := []string{}
 	count := 0
 	lastIndex := 0
 	for i, _ := range input {
 		count++
-		if count%10001 == 0 {
+		if count%(size + 1) == 0 {
 			slices = append(slices, input[lastIndex:i])
 			lastIndex = i
 		}

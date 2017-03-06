@@ -4,7 +4,7 @@ import (
 	"github.com/Zenika/RAO/auth"
 	"github.com/Zenika/RAO/log"
 	"github.com/stacktic/dropbox"
-	"io"
+	"io/ioutil"
 	"path/filepath"
 	"regexp"
 )
@@ -21,7 +21,7 @@ type DbxDocument struct {
 	Sum     string
 }
 
-type DbxCb func(res io.ReadCloser, doc DbxDocument)
+type DbxCb func(bytes []byte, doc DbxDocument)
 
 var db *dropbox.Dropbox = auth.RequireDropboxClient()
 var filterPattern string = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Region>\w+)(/(?P<Client>[\w\s]+)(/.*))*`
@@ -46,9 +46,9 @@ func process(e dropbox.Entry, fn DbxCb) {
 	if !e.IsDir {
 		region := matches[2]
 		client := matches[4]
-		bytes := e.Bytes
+		size := e.Bytes
 		modified := e.Modified
-		res, _ := download(e.Path)
+		bytes, _ := download(e.Path)
 		doc := DbxDocument{
 			Title:   filepath.Base(e.Path),
 			Path:    filepath.Dir(e.Path),
@@ -57,17 +57,19 @@ func process(e dropbox.Entry, fn DbxCb) {
 			Client:  client,
 			Region:  region,
 			Mtime:   modified,
-			Bytes:   bytes,
+			Bytes:   size,
 			Sum:     "",
 		}
-		fn(res, doc)
+		fn(bytes, doc)
 		return
 	}
 	Walk(e.Path, fn)
 }
 
-func download(src string) (io.ReadCloser, int64) {
-	reader, size, err := db.Download(src, "", 0)
+func download(src string) ([]byte, int64) {
+	resp, size, err := db.Download(src, "", 0)
+	defer resp.Close()
+	bytes, err := ioutil.ReadAll(resp)
 	log.Error(err, log.ERROR)
-	return reader, size
+	return bytes, size
 }

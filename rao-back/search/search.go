@@ -18,6 +18,7 @@ type SearchQuery struct {
 	Facets string
 	FacetFilters string
 	Filters string
+	Page int
 }
 
 func (search SearchService) Store(documents []dropbox.DbxDocument) {

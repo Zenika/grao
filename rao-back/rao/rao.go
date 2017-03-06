@@ -8,9 +8,7 @@ import (
 	"github.com/Zenika/RAO/search"
 	"github.com/Zenika/RAO/search/algolia"
 	"github.com/Zenika/RAO/utils"
-	"io"
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"fmt"
@@ -23,11 +21,8 @@ var convService = conv.New(docd.New())
 
 func IndexAllDropBoxDocuments(w http.ResponseWriter, r *http.Request) {
 	root := os.Getenv("RAO_DBX_ROOT")
-	dropbox.Walk(root, func(res io.ReadCloser, doc dropbox.DbxDocument) {
-		buffer, err := ioutil.ReadAll(res)
-		defer res.Close()
-		log.Error(err, log.FATAL)
-		b, err := convService.Convert(buffer, doc.Mime)
+	dropbox.Walk(root, func(bytes []byte, doc dropbox.DbxDocument) {
+		b, err := convService.Convert(bytes, doc.Mime)
 		content := string(b[:])
 		log.Error(err, log.ERROR)
 		chunks := utils.SplitString(content, 10000)
