@@ -3,8 +3,9 @@
     <div class="prev">
       <i class="fa fa-chevron-left" aria-hidden="true"></i>
     </div>
-    <div class="text">
-      {{matchedContent[0]}}
+    <div class="text" v-if="matchedContent[0]" v-html="matchedContent[0]"></div>
+    <div class="notext" v-if="!matchedContent[0]">
+      No search No content !
     </div>
     <div class="next">
       <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -28,19 +29,28 @@ export default {
   },
   computed: {
     matchedContent: function () {
-      console.log(this.search)
       return [this.content]
     }
   }
 }
 </script>
 
+<style media="screen">
+  em.snippet{
+    color: #B8193A;
+    display: inline-block;
+    font-weight: bold;
+    padding: 2px 10px
+  }
+</style>
+
 <style scoped lang="scss">
 
 @import "../_variables.scss";
 
 .contents{
-  display: table;
+  //display: table;
+  width: 100%;
 
   .prev{
     display: table-cell;
@@ -63,6 +73,7 @@ export default {
   }
   .prev,.next{
     transition: all 0.2s;
+    display: none;
     &:hover{
       .fa{
         transform: scale(1.4);
@@ -73,6 +84,11 @@ export default {
   .text{
     display: table-cell;
     padding: 10px;
+  }
+  .notext{
+    display: block;
+    text-align: center;
+    width: 100%;
   }
 }
 

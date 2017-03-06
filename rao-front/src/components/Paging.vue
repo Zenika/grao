@@ -2,20 +2,22 @@
   <div class="paging">
     <nav aria-label="Page navigation">
       <ul class="pagination">
-        <li :class="{disabled : page <= 0}">
-          <a aria-label="Previous" @click="goto(page-1)">
+        <li :class="{disabled : page == 0}">
+          <a aria-label="Previous" @click="goto(0)" v-if="page != 0">
             <span aria-hidden="true">&laquo;</span>
           </a>
+          <span v-if="page == 0" aria-hidden="true">&laquo;</span>
         </li>
-        <li v-if="page > 0" @click="goto(page-2)"><a href="#">{{page-1}}</a></li>
-        <li v-if="page > 0" @click="goto(page-1)"><a href="#">{{page}}</a></li>
-        <li class="active"><a href="#">{{page+1}}</a></li>
-        <li @click="goto(page+1)"><a href="#">{{page+2}}</a></li>
-        <li @click="goto(page+2)"><a href="#">{{page+3}}</a></li>
-        <li>
-          <a aria-label="Next" @click="goto(page+1)">
+        <li v-if="page-1 > 0" @click="goto(page-2)"><a>{{page-1}}</a></li>
+        <li v-if="page > 0" @click="goto(page-1)"><a>{{page}}</a></li>
+        <li class="active"><a>{{page+1}}</a></li>
+        <li v-if="page+1 < pages"@click="goto(page+1)"><a>{{page+2}}</a></li>
+        <li v-if="page+2 < pages" @click="goto(page+2)"><a>{{page+3}}</a></li>
+        <li :class="{disabled : page+1 == pages}">
+          <a aria-label="Next" @click="goto(pages-1)" v-if="page+1 < pages">
             <span aria-hidden="true">&raquo;</span>
           </a>
+          <span v-if="page+1 == pages" aria-hidden="true">&raquo;</span>
         </li>
       </ul>
     </nav>
@@ -35,7 +37,6 @@ export default {
     'pages'
   ],
   created () {
-    this.matchedContent.push(this.content)
   },
   computed: {
   },
@@ -53,18 +54,45 @@ export default {
 
 .paging{
 
-  margin-top: -20px;
+  //margin-top: -20px;
+
+  .pagination>.active>a,
+  .pagination>.active>a:focus,
+  .pagination>.active>a:hover,
+  .pagination>.active>span,
+  .pagination>.active>span:focus,
+  .pagination>.active>span:hover{
+    background-color: $red_znk;
+    border-color: $red_znk;
+    cursor: pointer;
+  }
+
+  .pagination>li>a,
+  .pagination>li>span{
+    color: $red_znk;
+    cursor: pointer;
+  }
+
+  .disabled span{
+    cursor: not-allowed!important;
+  }
+
+  .pagination>li.active>a{
+    color: white;
+  }
 
   .pagination{
     border-radius: 0px;
     width: auto;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 0px;
     margin-bottom: 20px;
+    background: white;
 
     li{
-      margin: 0
+      margin: 0px;
+      font-weight: 700;
     }
   }
 }

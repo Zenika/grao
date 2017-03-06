@@ -1,22 +1,26 @@
 <template>
   <div class="filters">
-    <h4>Filters</h4>
-    <form class="" action="index.html" method="post">
 
-      <div class="form-bloc">
-        <span>Revision</span>
-        <label class="switch">
-          <input type="checkbox">
-          <div class="slider round"></div>
-        </label>
-      </div>
+    <form class="">
 
-      <div class="form-bloc">
-        <span>Revision</span>
-        <label class="switch">
-          <input type="checkbox">
-          <div class="slider round"></div>
-        </label>
+      <h3>Filters</h3>
+
+      <ul class="tags">
+        <li v-for="(actives, key) in activefilters">
+          <div v-for="(count, name) in actives">
+            <span>{{name}} ({{facets[key][name]}})</span>
+            <i @click="deleteFilter(key, name)"class="fa fa-times" aria-hidden="true"></i>
+          </div>
+        </li>
+      </ul>
+
+      <div class="facets" v-for="(values, key) in allfilters">
+        <h4>{{key}}</h4>
+        <ul>
+          <li v-for="(count, name) in values" @click="setFilter(key, name)" v-if="isNotActive(key, name)">
+            <label>{{name}} <span v-if="facets">({{facets[key][name] || 0}})</span></label>
+          </li>
+        </ul>
       </div>
 
     </form>
@@ -27,8 +31,28 @@
 <script>
 export default {
   name: 'filter',
-  data () {
-    return {
+  props: [
+    'facets',
+    'allfilters',
+    'activefilters'
+  ],
+  methods: {
+    deleteFilter (key, name) {
+      delete this.activefilters[key][name]
+      this.$forceUpdate()
+      this.$emit('filter', this.activefilters)
+    },
+    setFilter (key, name) {
+      if (!this.activefilters[key]) {
+        this.activefilters[key] = {}
+      }
+      this.activefilters[key][name] = 'active'
+      this.$forceUpdate()
+      this.$emit('filter', this.activefilters)
+    },
+    isNotActive (key, name) {
+      if (this.activefilters && this.activefilters[key] && this.activefilters[key][name]) return false
+      return true
     }
   }
 }
@@ -59,64 +83,67 @@ export default {
     }
   }
 
-  /* The switch - the box around the slider */
-  .switch {
-    position: relative;
+  .tags{
+    margin-bottom: 20px;
+
+    li{
+      display: block;
+
+      & > div{
+        background: white;
+        display: flex;
+        justify-content: space-between;
+        color: #293E50;
+        font-size: 1em;
+        margin: 10px auto;
+        border-radius: 3px;
+        font-size: 1em;
+        font-weight: 600;
+        overflow: hidden;
+
+        span{
+          display: block;
+          padding: 4px 20px;
+        }
+        .fa{
+
+          &:hover{
+            padding: 6px 20px;
+            color: white;
+            background: #293E50;
+          }
+
+          color: #293E50;
+          transition: all 0.2s;
+          cursor: pointer;
+          background: #DFE0DC;
+          padding: 6px 6px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+    }
+  }
+
+  .facets{
+    li{
+      display: block;
+      cursor: pointer;
+      transition: all 0.2s;
+      &:hover{
+        transform: scale(1.1);
+      }
+      label{
+        cursor: pointer;
+      }
+    }
+  }
+
+  button{
+    width: 45%;
     display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
-
-  /* Hide default HTML checkbox */
-  .switch input {display:none;}
-
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-
-  input:checked + .slider {
-    background-color: white;
-  }
-
-  input:focus + .slider {
-    box-shadow: 0 0 1px white;
-  }
-
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-    background: $red_znk;
-  }
-
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-
-  .slider.round:before {
-    border-radius: 50%;
   }
 }
 </style>
