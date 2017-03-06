@@ -9,9 +9,11 @@ import (
 	"github.com/Zenika/RAO/search/algolia"
 	"github.com/Zenika/RAO/utils"
 	"io"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"fmt"
 )
 
 var documents []dropbox.DbxDocument
@@ -38,11 +40,21 @@ func IndexAllDropBoxDocuments(w http.ResponseWriter, r *http.Request) {
 }
 
 func Search(w http.ResponseWriter, r *http.Request) {
-	pattern := r.URL.Query().Get("query")
-	res, err := searchService.Search(pattern)
+	var query search.SearchQuery
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&query)
+	if(nil != err){
+		log.Error(err, log.ERROR)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(fmt.Sprintf("There was an error: %v", err)))
+		return
+	}
+	res, err := searchService.Search(query)
 	if err == nil {
 		w.Write([]byte(res))
 	} else {
 		log.Error(err, log.ERROR)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(fmt.Sprintf("There was an error: %v", err)))
 	}
 }

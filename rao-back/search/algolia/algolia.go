@@ -5,6 +5,7 @@ import (
 	"github.com/Zenika/RAO/auth"
 	"github.com/Zenika/RAO/dropbox"
 	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/RAO/search"
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 )
 
@@ -22,9 +23,15 @@ func (alg Algolia) Store(documents []dropbox.DbxDocument) {
 	log.Error(err, log.ERROR)
 }
 
-func (alg Algolia) Search(pattern string) ([]byte, error) {
+func (alg Algolia) Search(query search.SearchQuery) ([]byte, error) {
 	index := alg.client.InitIndex("rao")
-	res, err := index.Search(pattern, nil)
+	settings := algoliasearch.Map{
+  "facets": query.Facets,
+	"facetFilters": query.FacetFilters,
+	"filters": query.Filters,
+	"page": query.Page,
+	}
+	res, err := index.Search(query.Query, settings)
 	recs, err := json.Marshal(res)
 	if err == nil {
 		return recs, nil

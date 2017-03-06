@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/RAO/utils"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
@@ -18,12 +19,12 @@ type ConversionResponse struct {
 	MSecs uint32            `json:"msecs"`
 }
 
-var MIMES = []string{"application/pdf"}
+var mimes = []string{"application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
 
 type Docd struct{}
 
 func (docd Docd) Convert(input []byte, mimeType string) ([]byte, error) {
-	if "application/pdf" != mimeType {
+	if !utils.ArrayContainsString(mimes, mimeType) {
 		return make([]byte, 0), nil
 	}
 	port := os.Getenv("RAO_DOCD_PORT")
