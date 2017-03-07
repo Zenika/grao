@@ -8,10 +8,10 @@
       <ul class="tags">
         <li v-for="(actives, key) in activefilters">
           <div v-for="(count, name) in actives">
-            <span>
-              <span class="name">{{name}}</span> 
+            <p>
+              <span class="name">{{name}}</span>
               <span class="number" v-if="facets && facets[key] && facets[key][name]">({{facets[key][name]}})</span>
-            </span>
+            </p>
             <i @click="deleteFilter(key, name)"class="fa fa-minus" aria-hidden="true"></i>
           </div>
         </li>
@@ -108,9 +108,11 @@ export default {
         font-weight: 600;
         overflow: hidden;
 
-        span{
+        p{
           display: flex;
-          padding: 4px 20px;
+          padding: 4px 2px 4px 10px;
+          margin: 0;
+          max-width: 80%;
 
           .name{
             overflow: hidden;
@@ -125,7 +127,7 @@ export default {
             display: inline-block;
             margin: 0;
             padding: 0;
-            padding-left: 10px;
+            padding-left: 5px;
           }
         }
         .fa{
