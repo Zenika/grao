@@ -5,8 +5,8 @@ import (
 )
 
 type TreeEngine interface {
-  Walk(root string, handler document.DocumentHandler)
-  Poll(root string, handler document.DocumentHandler)
+	Walk(root string, handler document.DocumentHandler)
+	Poll(root string, handler document.DocumentHandler)
 }
 
 type TreeService struct {
