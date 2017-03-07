@@ -1,6 +1,6 @@
 # GRAO
 
-**Générateur de réponses aux appels d'offres**
+*Générateur de réponses aux appels d'offres*
 
 ## Nginx configuration
 

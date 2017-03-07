@@ -14,6 +14,7 @@ import (
 	"github.com/Zenika/RAO/utils"
 	"net/http"
 	"os"
+	"regexp"
 )
 
 var searchService = search.New(algolia.New())
@@ -24,7 +25,8 @@ func Walk(w http.ResponseWriter, r *http.Request) {
 	root := os.Getenv("RAO_DBX_ROOT")
 	treeService.Walk(root, func(bytes []byte, doc document.IDocument) {
 		b, err := convService.Convert(bytes, doc.GetMime())
-		content := string(b[:])
+		re := regexp.MustCompile(`\.{2,}`)
+		content := re.ReplaceAllString(string(b[:]), "")
 		log.Error(err, log.ERROR)
 		chunks := utils.SplitString(content, 10000)
 		doc.SetSum(utils.Md5Sum(content))
@@ -58,6 +60,14 @@ func Search(w http.ResponseWriter, r *http.Request) {
 func Poll(w http.ResponseWriter, r *http.Request) {
 	root := fmt.Sprintf("/%v", os.Getenv("RAO_DBX_ROOT"))
 	go treeService.Poll(root, func(bytes []byte, doc document.IDocument) {
-
+		b, err := convService.Convert(bytes, doc.GetMime())
+		content := string(b[:])
+		log.Error(err, log.ERROR)
+		chunks := utils.SplitString(content, 10000)
+		doc.SetSum(utils.Md5Sum(content))
+		for _, chunk := range chunks {
+			doc.SetContent(chunk)
+			searchService.Store([]document.IDocument{doc})
+		}
 	})
 }
