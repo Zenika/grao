@@ -8,17 +8,17 @@
       <ul class="tags">
         <li v-for="(actives, key) in activefilters">
           <div v-for="(count, name) in actives">
-            <span>{{name}} ({{facets[key][name]}})</span>
-            <i @click="deleteFilter(key, name)"class="fa fa-times" aria-hidden="true"></i>
+            <span>{{name}} ({{facets[key][name] || 0}})</span>
+            <i @click="deleteFilter(key, name)"class="fa fa-minus" aria-hidden="true"></i>
           </div>
         </li>
       </ul>
 
       <div class="facets" v-for="(values, key) in allfilters">
-        <h4>{{key}}</h4>
+        <h4>{{key}}s</h4>
         <ul>
-          <li v-for="(count, name) in values" @click="setFilter(key, name)" v-if="isNotActive(key, name)">
-            <label>{{name}} <span v-if="facets">({{facets[key][name] || 0}})</span></label>
+          <li :title="name" v-for="(count, name) in values" @click="setFilter(key, name)" v-if="isNotActive(key, name)">
+            <i class="fa fa-plus-square" aria-hidden="true"></i><label>{{name}}</label>
           </li>
         </ul>
       </div>
@@ -72,6 +72,10 @@ export default {
     text-align: left;
   }
 
+  li{
+    margin: 0;
+  }
+
   .form-bloc{
     display: flex;
     align-items: center;
@@ -108,7 +112,7 @@ export default {
         .fa{
 
           &:hover{
-            padding: 6px 20px;
+            padding: 6px 15px;
             color: white;
             background: #293E50;
           }
@@ -128,15 +132,43 @@ export default {
   }
 
   .facets{
-    li{
-      display: block;
-      cursor: pointer;
-      transition: all 0.2s;
-      &:hover{
-        transform: scale(1.1);
-      }
-      label{
+    ul{
+
+      max-height: 200px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      border: 4px solid #2c3e50;
+
+      li{
+        display: flex;
+        align-items: center;
         cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+        overflow-x: hidden;
+        white-space: nowrap;
+        padding: 2px 0px;
+        .fa{
+          transition: all 0.2s;
+          transform: translateX(-20px);
+        }
+        &:hover{
+          .fa{
+            transform: translateX(5px);
+          }
+          label{
+            transform: translateX(10px);
+          }
+        }
+        label{
+          white-space: nowrap;
+          transition: all 0.2s;
+          cursor: pointer;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 90%;
+          margin: 0;
+        }
       }
     }
   }

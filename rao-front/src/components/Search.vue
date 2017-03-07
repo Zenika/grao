@@ -5,8 +5,8 @@
     <button type="submit" class="btn btn-default">
       <i class="fa fa-search" aria-hidden="true"></i>
     </button>
-    <span>by</span>
-    <a target="_blank" href="https://algolia.com">
+    <span class="hidden-xs">by</span>
+    <a class="hidden-xs" target="_blank" href="https://algolia.com">
       <img src="../assets/algolia.png" alt="">
     </a>
   </form>

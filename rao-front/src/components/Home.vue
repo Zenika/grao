@@ -8,12 +8,11 @@
       O<span>ffre</span>
     </h1>
 
-
     <v-search @search="searchAction"></v-search>
     <div class="row">
-      <div class="col-md-2" v-if="!loading">
-        <v-result v-if="documents.length" :hits="hits" :pages="pages" :facets="facets"></v-result>
-        <v-filter v-show="documents.length" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
+      <div class="col-md-2">
+        <v-result v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-result>
+        <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
       <div class="col-md-10" v-if="!loading">
         <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
@@ -27,16 +26,16 @@
         <v-page v-if="documents.length && pages > 1" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
       </div>
 
-      <div class="col-md-12 no_result" v-if="documents.length == 0">
+      <div class="loading col-md-10" v-if="loading">
+        <img class="bounce" src="../assets/znk_red.png" alt="">
+        <span>Search in progress...</span>
+      </div>
+
+      <div class="col-md-10 no_result" v-if="documents.length == 0 && !loading">
         <p>Aucun résultat pour votre recherche</p>
         <img src="../assets/noresult.jpg" alt="">
       </div>
 
-    </div>
-
-    <div class="loading" v-if="loading">
-      <img class="bounce" src="../assets/znk_red.png" alt="">
-      <span>Search in progress...</span>
     </div>
 
   </div>
@@ -66,7 +65,9 @@ export default {
       activeFilters: {},
       stringFilters: '',
       allfilters: [],
-      url: process.env.API_URL
+      url: process.env.API_URL,
+      start: false,
+      ready: false
     }
   },
   components: {
@@ -85,11 +86,13 @@ export default {
       this.searching = search
       this.activeFilters = {}
       this.search(search)
+      this.start = true
     },
     getAllFilters () {
       let params = {'facets': '*'}
       this.$http.post(this.url, params).then(response => {
         this.allfilters = response.body.facets
+        this.ready = true
       })
     },
     setFilters (filters) {
@@ -147,6 +150,7 @@ export default {
 
 h1{
   margin: 20px auto;
+  font-size: 3em;
   span{
     font-size: 12px;
   }
