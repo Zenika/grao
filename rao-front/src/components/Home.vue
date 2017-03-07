@@ -8,8 +8,13 @@
       O<span>ffre</span>
     </h1>
 
-    <v-search @search="searchAction"></v-search>
-    <div class="row">
+    <div v-if="!ready" class="not_ready">
+      <img src="../assets/no_files.png" alt="">
+      <span>No document indexing...</span>
+    </div>
+
+    <v-search v-if="ready" @search="searchAction"></v-search>
+    <div class="row" v-if="ready">
       <div class="col-md-2">
         <v-result v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-result>
         <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
@@ -67,7 +72,7 @@ export default {
       allfilters: [],
       url: process.env.API_URL,
       start: false,
-      ready: false
+      ready: true
     }
   },
   components: {
@@ -92,7 +97,14 @@ export default {
       let params = {'facets': '*'}
       this.$http.post(this.url, params).then(response => {
         this.allfilters = response.body.facets
-        this.ready = true
+        if (response.body.nbHits) {
+          this.ready = true
+        } else {
+          this.ready = false
+        }
+      }, error => {
+        console.log(error)
+        this.ready = false
       })
     },
     setFilters (filters) {
@@ -139,6 +151,9 @@ export default {
         this.pages = response.body.nbPages
         this.loading = false
         this.facets = response.body.facets
+      }, error => {
+        console.log(error)
+        this.ready = false
       })
     }
   }
@@ -166,6 +181,19 @@ h1{
   margin-top: 80px;
   img{
     height: 100px;
+  }
+  span{
+    display: block;
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 1em;
+  }
+}
+
+.not_ready{
+  margin-top: 80px;
+  img{
+    height: 150px;
   }
   span{
     display: block;
