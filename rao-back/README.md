@@ -52,5 +52,5 @@ pushd $GOPATH/src/github.com/sajari/docconv/docd && go install && popd
 ## launch docd server
 nohup $GOPATH/bin/docd &
 ## run app
-$GOPATH/src/github.com/Zenika/rao/bin/rao
+$GOPATH/src/github.com/Zenika/RAO/bin/rao
 ```
