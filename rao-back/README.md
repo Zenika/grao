@@ -14,7 +14,7 @@ Install [go](https://golang.org/cmd/go/)<br>
 Set up  [GOPATH](https://golang.org/doc/code.html#GOPATH) environment variable
 
 ```shell
-ln -s $PWD $GOPATH/src/github.com/Zenika/rao
+ln -s $PWD $GOPATH/src/github.com/Zenika/RAO
 ```
 ## Deps
 
