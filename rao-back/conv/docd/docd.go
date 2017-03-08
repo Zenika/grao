@@ -29,7 +29,7 @@ func (docd Docd) Convert(input []byte, mimeType string) ([]byte, error) {
 	// if len(port) == 0 {
 	// 	port = "8888"
 	// }
-	convertUrl := fmt.Sprintf("http://localhost:%v/convert", 8888)
+	convertUrl := fmt.Sprintf("http://localhost:%v/convert", "8888")
 	convertParam := "input"
 
 	body := &bytes.Buffer{}

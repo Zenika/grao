@@ -11,7 +11,10 @@ import (
 
 type Algolia struct {
 	client algoliasearch.Client
+	index algoliasearch.Index
 }
+
+var index algoliasearch.Index = nil
 
 func (alg Algolia) initIndex(indexId string) algoliasearch.Index {
 	index := alg.client.InitIndex(indexId)
@@ -47,9 +50,9 @@ func (alg Algolia) initIndex(indexId string) algoliasearch.Index {
 }
 
 func (alg Algolia) Store(documents []document.IDocument) {
-	index := alg.initIndex("rao")
+	// index := alg.initIndex("rao")
 	for _, doc := range documents {
-		_, err := index.AddObject(
+		_, err := alg.index.AddObject(
 			algoliasearch.Object{
 				"Content": doc.GetContent(),
 				"Path":    doc.GetPath(),
@@ -66,7 +69,9 @@ func (alg Algolia) Store(documents []document.IDocument) {
 }
 
 func (alg Algolia) Search(query search.SearchQuery) ([]byte, error) {
-	index := alg.client.InitIndex("rao")
+	if nil == index {
+		index = alg.client.InitIndex("rao")
+	}
 	settings := algoliasearch.Map{
 		"facets":       query.Facets,
 		"facetFilters": query.FacetFilters,
