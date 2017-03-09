@@ -14,7 +14,7 @@ Install [go](https://golang.org/cmd/go/)<br>
 Set up  [GOPATH](https://golang.org/doc/code.html#GOPATH) environment variable
 
 ```shell
-ln -s $PWD $GOPATH/src/github.com/Zenika/rao
+ln -s $PWD $GOPATH/src/github.com/Zenika/RAO
 ```
 ## Deps
 
@@ -59,7 +59,7 @@ pushd $GOPATH/src/github.com/sajari/docconv/docd && go install && popd
 ## launch docd server
 nohup $GOPATH/bin/docd &
 ## run app
-$GOPATH/src/github.com/Zenika/rao/bin/rao
+$GOPATH/src/github.com/Zenika/RAO/bin/rao
 ```
 
 ## Sources & Credits
