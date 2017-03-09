@@ -11,10 +11,13 @@ import (
 
 type Algolia struct {
 	client algoliasearch.Client
+	index algoliasearch.Index
 }
 
-func (alg Algolia) initIndex(indexId string) algoliasearch.Index {
-	index := alg.client.InitIndex(indexId)
+var index algoliasearch.Index = nil
+
+func initIndex(client algoliasearch.Client, indexId string) algoliasearch.Index {
+	index := client.InitIndex(indexId)
 	settings := algoliasearch.Map{
 		"attributesToRetrieve": []string{
 			"Client",
@@ -47,7 +50,9 @@ func (alg Algolia) initIndex(indexId string) algoliasearch.Index {
 }
 
 func (alg Algolia) Store(documents []document.IDocument) {
-	index := alg.initIndex("rao")
+	if nil == index {
+		index = alg.client.InitIndex("rao")
+	}
 	for _, doc := range documents {
 		_, err := index.AddObject(
 			algoliasearch.Object{
@@ -66,7 +71,9 @@ func (alg Algolia) Store(documents []document.IDocument) {
 }
 
 func (alg Algolia) Search(query search.SearchQuery) ([]byte, error) {
-	index := alg.client.InitIndex("rao")
+	if nil == index {
+		index = alg.client.InitIndex("rao")
+	}
 	settings := algoliasearch.Map{
 		"facets":       query.Facets,
 		"facetFilters": query.FacetFilters,
@@ -85,7 +92,10 @@ func (alg Algolia) Search(query search.SearchQuery) ([]byte, error) {
 }
 
 func New() *Algolia {
+	client := auth.RequireAlgoliaClient()
+	index := initIndex(client, "rao")
 	return &Algolia{
-		client: auth.RequireAlgoliaClient(),
+		client: client,
+		index: index,
 	}
 }

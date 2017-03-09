@@ -24,19 +24,20 @@ func main() {
 	log.SetOutput(f)
 	log.Println("Application started")
 
+	controller.Poll(nil, nil)
+
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
 		AllowCredentials: true,
 	})
 
-	r := mux.NewRouter()
-	// r.HandleFunc("/api/v1/walk", controller.Walk)
+	r := mux.NewRouter	()
+	r.HandleFunc("/api/v1/walk", controller.Walk)
 	r.HandleFunc("/api/v1/search", controller.Search)
 	// r.HandleFunc("/api/v1/poll", controller.Poll)
 
 	handler := c.Handler(r)
-	controller.Poll(nil, nil)
 	http.ListenAndServe(":8090", handler)
 
 }

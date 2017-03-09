@@ -16,7 +16,9 @@ import (
 
 var filterPattern string = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)(/(?P<Client>[\w\s]+)(/.*))*`
 var filter = regexp.MustCompile(filterPattern)
-var mimes = []string{"application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+// Adding support for docx documents:
+// "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+var mimes = []string{"application/pdf"}
 
 type Dropbox struct {
 	client *dropbox.Dropbox
@@ -33,12 +35,11 @@ func (db Dropbox) Walk(root string, handler document.DocumentHandler) {
 	log.Error(err, log.FATAL)
 	contents := entry.Contents
 	for _, e := range contents {
-		matches := filter.FindStringSubmatch(e.Path)
-		if nil == matches {
-			continue
-		}
 		if !e.IsDir {
 			doc := db.createDocument(e)
+			if nil == doc {
+				continue
+			}
 			bytes, _ := db.downloadFile(e)
 			handler(bytes, doc)
 			return
@@ -53,7 +54,10 @@ func (db Dropbox) Poll(root string, handler document.DocumentHandler) {
 		cursor = db.delta(cursor, root, handler)
 		changes := false
 		for !changes {
-			poll, _ := db.client.LongPollDelta(cursor, 30)
+			poll, err := db.client.LongPollDelta(cursor, 30)
+			if err != nil {
+				log.Error(err, log.ERROR)
+			}
 			changes = poll.Changes
 			duration, _ := time.ParseDuration(strconv.Itoa(poll.Backoff) + "s")
 			time.Sleep(duration)
@@ -62,10 +66,11 @@ func (db Dropbox) Poll(root string, handler document.DocumentHandler) {
 }
 
 func (db Dropbox) delta(cursor string, root string, handler document.DocumentHandler) string {
+	log.Debug("cursor " + cursor)
 	dp, err := db.client.Delta(cursor, root)
-	db.writeCursor(cursor)
 	log.Error(err, log.ERROR)
 	cursor = dp.Cursor.Cursor
+	db.writeCursor(cursor)
 	for _, e := range dp.Entries {
 		db.handleDeltaEntry(e, handler)
 	}
@@ -76,8 +81,13 @@ func (db Dropbox) delta(cursor string, root string, handler document.DocumentHan
 }
 
 func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, handler document.DocumentHandler) {
+	if nil == e.Entry {
+		log.Debug("nil entry")
+		return
+	}
 	doc := db.createDocument(*e.Entry)
 	if nil == doc {
+		log.Debug("nil doc")
 		return
 	}
 	bytes, _ := db.downloadFile(*e.Entry)
@@ -86,6 +96,7 @@ func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, handler document.Docume
 
 func (db Dropbox) downloadFile(e dropbox.Entry) ([]byte, int64) {
 	resp, size, err := db.client.Download(e.Path, "", 0)
+	log.Error(err, log.ERROR)
 	defer resp.Close()
 	bytes, err := ioutil.ReadAll(resp)
 	log.Error(err, log.ERROR)
@@ -93,6 +104,7 @@ func (db Dropbox) downloadFile(e dropbox.Entry) ([]byte, int64) {
 }
 
 func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
+	log.Debug(e.Path)
 	if e.IsDir {
 		return nil
 	}
@@ -101,6 +113,7 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	}
 	matches := filter.FindStringSubmatch(e.Path)
 	if nil == matches {
+		log.Debug("no match")
 		return nil
 	}
 	agence := matches[2]
@@ -108,16 +121,16 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	size := e.Bytes
 	modified := e.Modified
 	doc := &document.Document{
-		Title:   filepath.Base(e.Path),
-		Path:    filepath.Dir(e.Path),
-		Ext:     filepath.Ext(e.Path),
-		Mime:    e.MimeType,
-		Content: "",
-		Client:  client,
-		Agence:  agence,
-		Mtime:   time.Time(modified),
-		Bytes:   size,
-		Sum:     "",
+		Title:   				filepath.Base(e.Path),
+		Path:    				filepath.Dir(e.Path),
+		Ext:     				filepath.Ext(e.Path),
+		Mime:    				e.MimeType,
+		Content: 				"",
+		Client:  				client,
+		Agence:  				agence,
+		Mtime:   				time.Time(modified),
+		Bytes:   				size,
+		Sum:     				"",
 	}
 	return doc
 }
@@ -137,7 +150,7 @@ func (db Dropbox) writeCursor(cursor string) {
 }
 
 func (db Dropbox) cursorFileName() string {
-	cursorFileName := os.Getenv("DBX_CURSOR_FILE")
+	cursorFileName := os.Getenv("RAO_DBX_CURSOR")
 	if 0 == len(cursorFileName) {
 		cursorFileName = "cursor"
 	}

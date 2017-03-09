@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	"log"
+	"os"
 )
 
 /*
@@ -11,10 +12,25 @@ import (
 type ErrorLevel uint8
 
 const (
-	FATAL = iota + 1
-	ERROR
+	DEBUG = iota + 1
 	WARNING
+	ERROR
+	FATAL
 )
+
+var level = os.Getenv("RAO_LOG_LEVEL")
+
+func _level()(int){
+	switch level {
+	case "FATAL":
+		return FATAL
+	case "ERROR":
+		return ERROR
+	case "WARNING":
+		return WARNING
+	}
+	return DEBUG
+}
 
 func Error(err error, level ErrorLevel) {
 	if err != nil {
@@ -23,6 +39,9 @@ func Error(err error, level ErrorLevel) {
 }
 
 func Debug(message string) {
+	if _level() > DEBUG {
+		return
+	}
 	log.Println(fmt.Sprintf("DEBUG %v", message))
 }
 

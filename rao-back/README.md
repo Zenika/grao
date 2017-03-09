@@ -19,6 +19,10 @@ ln -s $PWD $GOPATH/src/github.com/Zenika/RAO
 ## Deps
 
 ```shell
+apt-get install tidy,
+apt-get install wv
+apt-get install popplerutils
+apt-get install unrtf
 go get golang.org/x/oauth2
 go get github.com/stacktic/dropbox
 go get -u github.com/sajari/docconv
@@ -39,9 +43,12 @@ export RAO_DBX_KEY="dropbox_key"
 export RAO_DBX_SECRET="dropbox_secret"
 export RAO_DBX_TOKEN="dropbox_token"
 export RAO_DBX_ROOT="dropbox_root_path"
+export RAO_DBX_CURSOR="cursor_file"
 export RAO_DOCD_PORT="docd_listening_port"
 export RAO_ALGOLIA_ID="algolia_api_client_id"
 export RAO_ALG_KEY="algolia_api_key"
+export RAO_LOG_FILE="/tmp/rao.log"
+export RAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
 ```
 
 ## Run
@@ -54,3 +61,11 @@ nohup $GOPATH/bin/docd &
 ## run app
 $GOPATH/src/github.com/Zenika/RAO/bin/rao
 ```
+
+## Sources & Credits
+
+[docconv](https://github.com/sajari/docconv) by Sajari
+
+[dropbox/dropbox.go](https://github.com/stacktic/dropbox/blob/master/dropbox.go) by Arnaud Ysmal
+
+[algoliasearch-client-go](https://github.com/algolia/algoliasearch-client-go) by Algolia
