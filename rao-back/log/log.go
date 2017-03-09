@@ -20,7 +20,7 @@ const (
 
 var level = os.Getenv("RAO_LOG_LEVEL")
 
-func _level()(int){
+func _level() int {
 	switch level {
 	case "FATAL":
 		return FATAL

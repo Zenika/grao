@@ -11,7 +11,7 @@ import (
 
 type Algolia struct {
 	client algoliasearch.Client
-	index algoliasearch.Index
+	index  algoliasearch.Index
 }
 
 var index algoliasearch.Index = nil
@@ -96,6 +96,6 @@ func New() *Algolia {
 	index := initIndex(client, "rao")
 	return &Algolia{
 		client: client,
-		index: index,
+		index:  index,
 	}
 }

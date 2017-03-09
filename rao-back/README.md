@@ -19,7 +19,7 @@ ln -s $PWD $GOPATH/src/github.com/Zenika/RAO
 ## Deps
 
 ```shell
-apt-get install tidy,
+apt-get install tidy
 apt-get install wv
 apt-get install popplerutils
 apt-get install unrtf

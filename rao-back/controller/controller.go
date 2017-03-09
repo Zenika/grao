@@ -22,11 +22,11 @@ var treeService = tree.New(dropbox.New())
 
 func Walk(w http.ResponseWriter, r *http.Request) {
 	root := os.Getenv("RAO_DBX_ROOT")
-	log.Debug("root " + root);
+	log.Debug("root " + root)
 	treeService.Walk(root, func(bytes []byte, doc document.IDocument) {
-		log.Debug("conv " + root);
+		log.Debug("conv " + root)
 		b, err := convService.Convert(bytes, doc.GetMime())
-		log.Debug("content " + root);
+		log.Debug("content " + root)
 		content := string(b[:])
 		log.Error(err, log.ERROR)
 		chunks := utils.SplitString(content, 10000)

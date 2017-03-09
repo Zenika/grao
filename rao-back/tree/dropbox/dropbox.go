@@ -16,6 +16,7 @@ import (
 
 var filterPattern string = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)(/(?P<Client>[\w\s]+)(/.*))*`
 var filter = regexp.MustCompile(filterPattern)
+
 // Adding support for docx documents:
 // "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 var mimes = []string{"application/pdf"}
@@ -121,16 +122,16 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	size := e.Bytes
 	modified := e.Modified
 	doc := &document.Document{
-		Title:   				filepath.Base(e.Path),
-		Path:    				filepath.Dir(e.Path),
-		Ext:     				filepath.Ext(e.Path),
-		Mime:    				e.MimeType,
-		Content: 				"",
-		Client:  				client,
-		Agence:  				agence,
-		Mtime:   				time.Time(modified),
-		Bytes:   				size,
-		Sum:     				"",
+		Title:   filepath.Base(e.Path),
+		Path:    filepath.Dir(e.Path),
+		Ext:     filepath.Ext(e.Path),
+		Mime:    e.MimeType,
+		Content: "",
+		Client:  client,
+		Agence:  agence,
+		Mtime:   time.Time(modified),
+		Bytes:   size,
+		Sum:     "",
 	}
 	return doc
 }

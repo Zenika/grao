@@ -32,7 +32,7 @@ func main() {
 		AllowCredentials: true,
 	})
 
-	r := mux.NewRouter	()
+	r := mux.NewRouter()
 	r.HandleFunc("/api/v1/walk", controller.Walk)
 	r.HandleFunc("/api/v1/search", controller.Search)
 	// r.HandleFunc("/api/v1/poll", controller.Poll)
