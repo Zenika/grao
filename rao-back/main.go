@@ -24,7 +24,7 @@ func main() {
 	log.SetOutput(f)
 	log.Println("Application started")
 
-//	controller.Poll(nil, nil)
+	controller.Poll(nil, nil)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},

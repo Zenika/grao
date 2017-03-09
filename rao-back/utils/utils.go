@@ -3,7 +3,6 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/Zenika/RAO/log"
 )
 
 func ArrayContainsString(list []string, a string) bool {
@@ -25,7 +24,6 @@ func SplitString(input string, size int) []string {
 	for i, _ := range input {
 		count++
 		if count%(size+1) == 0 {
-			log.Debug(input)
 			slices = append(slices, input[lastIndex:i])
 			lastIndex = i
 		}

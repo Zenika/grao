@@ -67,10 +67,8 @@ func Poll(w http.ResponseWriter, r *http.Request) {
 		log.Error(err, log.ERROR)
 		chunks := utils.SplitString(content, 10000)
 		doc.SetSum(utils.Md5Sum(content))
-		log.Debug("chunks " + fmt.Sprintf("%v", chunks))
 		for _, chunk := range chunks {
 			doc.SetContent(chunk)
-			log.Debug(doc.GetContent())
 			searchService.Store([]document.IDocument{doc})
 		}
 	})

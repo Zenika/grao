@@ -16,8 +16,8 @@ type Algolia struct {
 
 var index algoliasearch.Index = nil
 
-func (alg Algolia) initIndex(indexId string) algoliasearch.Index {
-	index := alg.client.InitIndex(indexId)
+func initIndex(client algoliasearch.Client, indexId string) algoliasearch.Index {
+	index := client.InitIndex(indexId)
 	settings := algoliasearch.Map{
 		"attributesToRetrieve": []string{
 			"Client",
@@ -50,9 +50,11 @@ func (alg Algolia) initIndex(indexId string) algoliasearch.Index {
 }
 
 func (alg Algolia) Store(documents []document.IDocument) {
-	// index := alg.initIndex("rao")
+	if nil == index {
+		index = alg.client.InitIndex("rao")
+	}
 	for _, doc := range documents {
-		_, err := alg.index.AddObject(
+		_, err := index.AddObject(
 			algoliasearch.Object{
 				"Content": doc.GetContent(),
 				"Path":    doc.GetPath(),
@@ -90,7 +92,10 @@ func (alg Algolia) Search(query search.SearchQuery) ([]byte, error) {
 }
 
 func New() *Algolia {
+	client := auth.RequireAlgoliaClient()
+	index := initIndex(client, "rao")
 	return &Algolia{
-		client: auth.RequireAlgoliaClient(),
+		client: client,
+		index: index,
 	}
 }

@@ -16,6 +16,7 @@ import (
 
 var filterPattern string = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)(/(?P<Client>[\w\s]+)(/.*))*`
 var filter = regexp.MustCompile(filterPattern)
+// Adding support for docx documents:
 // "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 var mimes = []string{"application/pdf"}
 
@@ -149,7 +150,7 @@ func (db Dropbox) writeCursor(cursor string) {
 }
 
 func (db Dropbox) cursorFileName() string {
-	cursorFileName := os.Getenv("DBX_CURSOR_FILE")
+	cursorFileName := os.Getenv("RAO_DBX_CURSOR")
 	if 0 == len(cursorFileName) {
 		cursorFileName = "cursor"
 	}
