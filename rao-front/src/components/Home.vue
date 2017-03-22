@@ -90,6 +90,7 @@ export default {
       this.page = 0
       this.searching = search
       this.activeFilters = {}
+      this.stringFilters = ''
       this.search(search)
       this.start = true
     },
