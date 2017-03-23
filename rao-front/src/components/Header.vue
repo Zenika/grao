@@ -36,6 +36,7 @@ export default {
 @import "../_variables.scss";
 
 nav{
+  text-align: left;
   border-radius: 0!important;
   background-color: $red_znk;
   .navbar-brand{

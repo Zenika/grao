@@ -60,7 +60,6 @@ export default {
     return {
       loading: false,
       documents: false,
-      msg: 'Welcome to RAO a Vue.js App',
       searching: null,
       page: 0,
       hits: 0,
@@ -103,6 +102,7 @@ export default {
       this.page = 0
       this.searching = search
       this.activeFilters = {}
+      this.stringFilters = ''
       this.search(search)
       this.start = true
     },
@@ -138,18 +138,21 @@ export default {
         }
         testname = 0
       })
-      console.log(this.stringFilters)
       this.search(this.searching)
     },
     goto (page) {
       this.search(this.searching, page)
     },
-    search (value, page) {
+    search (values, page) {
+      console.log('fuzz')
       this.loading = true
       if (typeof page === 'undefined') page = this.page
 
+      // TODO build proper query
+      const query = values[0].value || values[1].value || values[2].value
+      console.log(query)
       let params = {
-        'query': value,
+        'query': query,
         'facets': '*',
         'page': page
         // 'filters': '(Region:Lille OR Region:Lyon)'
@@ -158,6 +161,7 @@ export default {
       if (this.stringFilters) params.filters = this.stringFilters
 
       this.$http.post(this.url, params).then(response => {
+        console.log(response, 'fuzzz')
         this.documents = response.body.hits
         this.page = response.body.page
         this.hits = response.body.nbHits

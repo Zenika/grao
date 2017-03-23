@@ -37,7 +37,7 @@ export default {
         }
         // emit parent data
         this.start = false
-        this.$emit('search', this.search)
+        this.$emit('search', this.fieldValues)
       })
     }
   },
@@ -52,7 +52,6 @@ export default {
           })
         }
       }
-      console.log(values)
       return values
     }
   }
@@ -78,6 +77,24 @@ form{
   @media screen and (max-width: $break-large) {
     width: 112% !important;
     margin-left: -6%;
+  }
+
+  @media screen and (max-width: $break-medium-large) {
+    float: none !important;
+  }
+
+  @media screen and (max-width: $break-medium-small) {
+      flex-wrap: wrap;
+      flex-direction: column;
+      height: auto !important;
+      input {
+            margin-bottom: 10px;
+            margin-right: 0 !important;
+      }
+      button {
+        width: 400px !important;
+        max-width: 80% !important;
+      }
   }
 
   &.big{
