@@ -5,6 +5,17 @@
         <a class="navbar-brand" href="#">
           <img alt="Brand" src="../assets/znk.png">
         </a>
+          <a class="navbar-link" href="#">
+            <div>
+              GRAO
+            </div>
+          </a>
+          <a class="navbar-link" href="#/adv">
+            <div>
+              ADV
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </nav>
@@ -20,7 +31,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
 @import "../_variables.scss";
 
@@ -34,4 +45,18 @@ nav{
     }
   }
 }
+.navbar-link {
+  display: inline-block;
+  &:hover {
+    background-color: black;
+  }
+  div {
+    display: inline-block;
+    font-weight: 700;
+    margin: 15px 10px;
+    text-decoration: none;
+    color: white;
+  }
+}
+
 </style>

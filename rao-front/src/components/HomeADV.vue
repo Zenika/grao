@@ -2,10 +2,9 @@
   <div class="home largeur">
 
     <h1>
-      G<span>énérateur</span>
-      R<span>éponse</span>
-      A<span>ppel</span>
-      O<span>ffre</span>
+      A<span>dministration</span>
+      D<span>es</span>
+      V<span>entes</span>
     </h1>
 
     <div v-if="!ready" class="not_ready">
@@ -13,7 +12,7 @@
       <span>No document indexing...</span>
     </div>
 
-    <v-search v-if="ready" @search="searchAction"></v-search>
+    <v-advanced-search v-if="ready" :fields="fields" @search="searchAction"></v-advanced-search>
     <div class="row" v-if="ready">
       <div class="col-md-2">
         <v-result v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-result>
@@ -49,7 +48,7 @@
 <script>
 /* eslint no-undef: "error" */
 
-import Search from './Search'
+import AdvancedSearch from './AdvancedSearch'
 import Filter from './Filter'
 import Result from './Result'
 import Doc from './Document'
@@ -72,11 +71,25 @@ export default {
       allfilters: [],
       url: process.env.API_URL,
       start: false,
-      ready: true
+      ready: true,
+      fields: [
+        {
+          type: 'client',
+          placeholder: 'Client'
+        },
+        {
+          type: 'project',
+          placeholder: 'Projet'
+        },
+        {
+          type: 'consultant',
+          placeholder: 'Consultant'
+        }
+      ]
     }
   },
   components: {
-    'v-search': Search,
+    'v-advanced-search': AdvancedSearch,
     'v-filter': Filter,
     'v-result': Result,
     'v-document': Doc,

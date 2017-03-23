@@ -1,0 +1,118 @@
+<template>
+
+  <form class="navbar-form navbar-left" role="search" @submit.prevent="validateBeforeSubmit" :class="{'big': start}">
+    <input v-for="(field, index) in fields" v-model="fieldValues[index].value" type="text" class="form-control" :placeholder="field.placeholder">
+    <button type="submit" class="btn btn-default">
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </button>
+    <span class="hidden-xs">by</span>
+    <a class="hidden-xs" target="_blank" href="https://algolia.com">
+      <img src="../assets/algolia.png" alt="">
+    </a>
+  </form>
+
+</template>
+
+<script>
+export default {
+  // Purpose of this component is to replace simple search in the long run
+  name: 'advanced-search',
+  data () {
+    return {
+      'start': true
+    }
+  },
+  props: ['fields'],
+  created () {
+    for (let index in this.props) {
+      this.fieldValues[index] = ''
+    }
+  },
+  methods: {
+    validateBeforeSubmit () {
+      this.$validator.validateAll().then(success => {
+        if (!success) {
+          // handle error
+          return
+        }
+        // emit parent data
+        this.start = false
+        this.$emit('search', this.search)
+      })
+    }
+  },
+  computed: {
+    fieldValues: function () {
+      const values = []
+      if (this.fields) {
+        for (let index in this.fields) {
+          values.push({
+            type: this.fields[index].type,
+            value: ''
+          })
+        }
+      }
+      console.log(values)
+      return values
+    }
+  }
+
+}
+</script>
+
+<style scoped lang="scss">
+
+@import "../_variables.scss";
+
+form{
+  background: $red_znk;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: all 0.2s;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-width: $break-large) {
+    width: 112% !important;
+    margin-left: -6%;
+  }
+
+  &.big{
+    height: 150px;
+  }
+
+  input{
+    vertical-align: middle;
+    width: 400px!important;
+    max-width: 80%!important;
+    border-radius: 0px;
+    border: none;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .btn{
+    width: 120px;
+    border-radius: 0px;
+    border: none;
+    height: 40px;
+  }
+
+  span{
+    color: white;
+    margin: auto 10px;
+    font-weight: 700;
+  }
+
+  a{
+    img{
+      height: 30px;
+    }
+  }
+
+}
+
+</style>

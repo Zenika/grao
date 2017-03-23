@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
+import HomeGRAO from '@/components/HomeGRAO'
+import HomeADV from '@/components/HomeADV'
 
 Vue.use(Router)
 
@@ -8,8 +9,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
+      name: 'HomeGRAO',
+      component: HomeGRAO
+    },
+    {
+      path: '/adv',
+      name: 'HomeADV',
+      component: HomeADV
     }
   ]
 })
