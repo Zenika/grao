@@ -144,7 +144,6 @@ export default {
       this.search(this.searching, page)
     },
     search (values, page) {
-      console.log('fuzz')
       this.loading = true
       if (typeof page === 'undefined') page = this.page
 
@@ -161,7 +160,6 @@ export default {
       if (this.stringFilters) params.filters = this.stringFilters
 
       this.$http.post(this.url, params).then(response => {
-        console.log(response, 'fuzzz')
         this.documents = response.body.hits
         this.page = response.body.page
         this.hits = response.body.nbHits
