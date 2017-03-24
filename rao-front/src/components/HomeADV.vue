@@ -23,7 +23,7 @@
 
         <ul class="list_documents" v-if="documents.length">
           <li v-for="doc in documents" >
-            <v-document :item="doc" :search="searching"></v-document>
+            <v-order-document :item="doc" :search="searching"></v-order-document>
           </li>
         </ul>
 
@@ -51,7 +51,7 @@
 import AdvancedSearch from './AdvancedSearch'
 import Filter from './Filter'
 import Result from './Result'
-import Doc from './Document'
+import Doc from './OrderDocument'
 import Paging from './Paging'
 
 export default {
@@ -91,7 +91,7 @@ export default {
     'v-advanced-search': AdvancedSearch,
     'v-filter': Filter,
     'v-result': Result,
-    'v-document': Doc,
+    'v-order-document': Doc,
     'v-page': Paging
   },
   created () {

@@ -1,17 +1,22 @@
 <template>
   <div class="document">
-    <div class="title">
+    <div class="title" v-if="item.Title">
       <strong>{{item.Title}}</strong>
     </div>
     <div class="flex">
       <div class="icon">
         <i class="fa" :class="getDocType(item.Mime)" aria-hidden="true"></i>
       </div>
-      <div class="informations">
-        Client : <strong>{{item.Client}}</strong><br>
-        Région : <strong>{{item.Region}}</strong><br>
+      <div class="info-wrapper">
+        <div class="informations">
+          Client : <strong>{{item.Client}}</strong><br>
+          Projet : <strong>{{item.Projet}}</strong><br>
+        </div>
+        <div class="informations">
+          Agence : <strong>{{item.Agence}}</strong><br>
+          Consultant : <strong>{{item.Consultant}}</strong><br>
+        </div>
       </div>
-      <v-contents :content="item._snippetResult.Content.value" :search="search"></v-contents>
     </div>
     <div class="path">
       <span><i class="fa fa-folder-open-o" aria-hidden="true"></i> <strong>{{item.Path}}</strong></span>
@@ -20,13 +25,8 @@
 </template>
 
 <script>
-import Contents from './Contents'
-
 export default {
-  name: 'document',
-  components: {
-    'v-contents': Contents
-  },
+  name: 'order-document',
   data () {
     return {
     }
@@ -70,20 +70,25 @@ export default {
   .flex{
     display: flex;
     align-items: center;
-
+    position: relative;
     .icon{
       font-size: 5em;
       margin-left: 20px;
     }
-
+    .info-wrapper {
+      display: flex;
+      width: calc(100% - 80px);
+    }
     .informations{
+      width: calc(50%);
       min-width: 220px;
       text-align: left;
-      padding-left: 50px;
+      padding-left: 40px;
     }
+
   }
 
-  .path{
+  .path {
     margin-top: 10px;
     background: #dfe0dc;
     padding: 10px;
@@ -105,6 +110,13 @@ export default {
       }
     }
   }
+
+  @media screen and (max-width: $break-medium-small) {
+    .info-wrapper {
+      flex-flow: column;
+    }
+  }
+
 }
 
 </style>
