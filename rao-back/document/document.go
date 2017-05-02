@@ -76,7 +76,6 @@ func (doc *Document) GetBytes() int64 {
 func (doc *Document) SetTitle(t string) {
 	doc.Title = t
 }
-
 func (doc *Document) SetPath(p string) {
 	doc.Path = p
 }
