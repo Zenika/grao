@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: 'filter',
+  name: 'result',
   data () {
     return {
       reducing: false

@@ -13,7 +13,7 @@
       <span>No indexed document...</span>
     </div>
 
-    <v-search v-if="ready" @search="searchAction"></v-search>
+    <v-advanced-search v-if="ready" :fields="fields" @search="searchAction"></v-advanced-search>
     <div class="row" v-if="ready">
       <div class="col-md-2">
         <v-result v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-result>
@@ -49,14 +49,14 @@
 <script>
 /* eslint no-undef: "error" */
 
-import Search from './Search'
+import AdvancedSearch from './AdvancedSearch'
 import Filter from './Filter'
 import Result from './Result'
 import Doc from './Document'
 import Paging from './Paging'
 
 export default {
-  name: 'home',
+  name: 'home-grao',
   data () {
     return {
       loading: false,
@@ -72,11 +72,17 @@ export default {
       allfilters: [],
       url: process.env.API_URL,
       start: false,
-      ready: true
+      ready: true,
+      fields: [
+        {
+          type: 'keywords',
+          placeholder: 'Keywords, clients, locations, framework...'
+        }
+      ]
     }
   },
   components: {
-    'v-search': Search,
+    'v-advanced-search': AdvancedSearch,
     'v-filter': Filter,
     'v-result': Result,
     'v-document': Doc,
@@ -88,10 +94,10 @@ export default {
   methods: {
     searchAction (search) {
       this.page = 0
-      this.searching = search
+      this.searching = search[0].value
       this.activeFilters = {}
       this.stringFilters = ''
-      this.search(search)
+      this.search(search[0].value)
       this.start = true
     },
     getAllFilters () {

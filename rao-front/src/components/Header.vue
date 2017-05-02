@@ -2,12 +2,23 @@
   <nav class="navbar">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">
+        <router-link class="navbar-brand" to="/">
           <img alt="Brand" src="../assets/znk.png">
-        </a>
+        </router-link>
+        <router-link class="navbar-link" to="/">
+          <div>
+            GRAO
+          </div>
+        </router-link>
+        <router-link class="navbar-link" to="adv">
+          <div>
+            ADV
+          </div>
+        </router-link>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>
 </template>
 
 <script>
@@ -20,11 +31,12 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
 @import "../_variables.scss";
 
 nav{
+  text-align: left;
   border-radius: 0!important;
   background-color: $red_znk;
   .navbar-brand{
@@ -34,4 +46,23 @@ nav{
     }
   }
 }
+
+.navbar-header{
+  width: 100%;
+  text-align: right;
+  .navbar-link {
+    display: inline-block;
+    &:hover {
+      background-color: black;
+    }
+    div {
+      display: inline-block;
+      font-weight: 700;
+      margin: 15px 10px;
+      text-decoration: none;
+      color: white;
+    }
+  }
+}
+
 </style>
