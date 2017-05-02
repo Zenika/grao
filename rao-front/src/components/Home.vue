@@ -10,7 +10,7 @@
 
     <div v-if="!ready" class="not_ready">
       <img src="../assets/no_files.png" alt="">
-      <span>No document indexing...</span>
+      <span>No indexed document...</span>
     </div>
 
     <v-search v-if="ready" @search="searchAction"></v-search>
@@ -37,7 +37,7 @@
       </div>
 
       <div class="col-md-10 no_result" v-if="documents.length == 0 && !loading">
-        <p>Aucun résultat pour votre recherche</p>
+        <p>No result found</p>
         <img src="../assets/noresult.jpg" alt="">
       </div>
 

@@ -158,7 +158,7 @@ export default {
       max-height: 200px;
       overflow-y: scroll;
       overflow-x: hidden;
-      // border: 2px solid #2c3e50;
+      // border: 4px solid #2c3e50;
 
       li{
         display: flex;
