@@ -18,9 +18,12 @@ func SplitString(input string, size int) []string {
 	slices := []string{}
 	count := 0
 	lastIndex := 0
+	if len(input) <= size {
+		return []string{input}
+	}
 	for i, _ := range input {
 		count++
-		if count%(size + 1) == 0 {
+		if count%(size+1) == 0 {
 			slices = append(slices, input[lastIndex:i])
 			lastIndex = i
 		}

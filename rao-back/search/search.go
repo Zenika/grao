@@ -9,24 +9,23 @@ type SearchEngine interface {
 	Search(query SearchQuery) ([]byte, error)
 }
 
-type SearchService struct {
-	engine SearchEngine
-}
-
-type SearchQuery struct {
-	Query string
-	Facets string
-	FacetFilters string
-	Filters string
-	Page int
-}
-
 func New(eng SearchEngine) *SearchService {
 	return &SearchService{
 		engine: eng,
 	}
 }
 
+type SearchService struct {
+	engine SearchEngine
+}
+
+type SearchQuery struct {
+	Query        string
+	Facets       string
+	FacetFilters string
+	Filters      string
+	Page         int
+}
 
 func (search SearchService) Store(documents []document.IDocument) {
 	search.engine.Store(documents)
