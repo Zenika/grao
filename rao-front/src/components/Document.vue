@@ -9,7 +9,7 @@
       </div>
       <div class="informations">
         Client : <strong>{{item.Client}}</strong><br>
-        Région : <strong>{{item.Region}}</strong><br>
+        Agence : <strong>{{item.Agence}}</strong><br>
       </div>
       <v-contents :content="item._snippetResult.Content.value" :search="search"></v-contents>
     </div>
