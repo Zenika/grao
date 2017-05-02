@@ -22,6 +22,9 @@ export default {
       'start': true
     }
   },
+  created () {
+    this.validateBeforeSubmit()
+  },
   methods: {
     validateBeforeSubmit () {
       this.$validator.validateAll().then(success => {

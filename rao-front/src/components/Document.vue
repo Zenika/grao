@@ -9,12 +9,14 @@
       </div>
       <div class="informations">
         Client : <strong>{{item.Client}}</strong><br>
-        Région : <strong>{{item.Region}}</strong><br>
+        Agence : <strong>{{item.Agence}}</strong><br>
       </div>
       <v-contents :content="item._snippetResult.Content.value" :search="search"></v-contents>
     </div>
     <div class="path">
-      <span><i class="fa fa-folder-open-o" aria-hidden="true"></i> <strong>{{item.Path}}</strong></span>
+      <a target="_blank" :href="'http://dropbox.com/work'+item.Path">
+      <span><i class="fa fa-folder-open-o" aria-hidden="true"></i> <strong>http://dropbox.com/work{{item.Path}}</strong></span>
+      </a>
     </div>
   </div>
 </template>
@@ -84,6 +86,12 @@ export default {
   }
 
   .path{
+
+    a{
+      text-decoration: none;
+      color: black;
+    }
+
     margin-top: 10px;
     background: #dfe0dc;
     padding: 10px;
@@ -101,7 +109,7 @@ export default {
     }
     &:hover{
       span{
-        transform: scale(0.9);
+        transform: scale(0.95);
       }
     }
   }
