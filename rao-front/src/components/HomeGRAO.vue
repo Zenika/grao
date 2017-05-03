@@ -103,8 +103,8 @@ export default {
     getAllFilters () {
       let params = {'facets': '*'}
       this.$http.post(this.url, params).then(response => {
-        this.allfilters = response.body.facets
-        if (response.body.nbHits) {
+        this.allfilters = response.data.facets
+        if (response.data.nbHits) {
           this.ready = true
         } else {
           this.ready = false
@@ -150,14 +150,13 @@ export default {
       }
 
       if (this.stringFilters) params.filters = this.stringFilters
-
       this.$http.post(this.url, params).then(response => {
-        this.documents = response.body.hits
-        this.page = response.body.page
-        this.hits = response.body.nbHits
-        this.pages = response.body.nbPages
+        this.documents = response.data.hits
+        this.page = response.data.page
+        this.hits = response.data.nbHits
+        this.pages = response.data.nbPages
         this.loading = false
-        this.facets = response.body.facets
+        this.facets = response.data.facets
       }, error => {
         console.log(error)
         this.ready = false
