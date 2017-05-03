@@ -1,7 +1,6 @@
 package algolia
 
 import (
-	"encoding/json"
 	"github.com/Zenika/RAO/auth"
 	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/log"
@@ -71,7 +70,7 @@ func (alg Algolia) Store(documents []document.IDocument) {
 	}
 }
 
-func (alg Algolia) Search(query search.SearchQuery) ([]byte, error) {
+func (alg Algolia) Search(query search.Query) (*search.Response, error) {
 	if nil == index {
 		index = alg.client.InitIndex("rao")
 	}
@@ -82,10 +81,9 @@ func (alg Algolia) Search(query search.SearchQuery) ([]byte, error) {
 		"page":         query.Page,
 		// "typoTolerance": query.TypoTolerance,
 	}
-	res, err := index.Search(query.Query, settings)
-	recs, err := json.Marshal(res)
+	response, err := index.Search(query.Query, settings)
 	if err == nil {
-		return recs, nil
+		return &(search.Response{Data: response}), err
 	} else {
 		log.Error(err, log.ERROR)
 		return nil, err

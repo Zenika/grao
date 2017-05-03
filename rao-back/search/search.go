@@ -6,7 +6,7 @@ import (
 
 type SearchEngine interface {
 	Store(documents []document.IDocument)
-	Search(query SearchQuery) ([]byte, error)
+	Search(query Query) (*Response, error)
 }
 
 func New(eng SearchEngine) *SearchService {
@@ -19,7 +19,7 @@ type SearchService struct {
 	engine SearchEngine
 }
 
-type SearchQuery struct {
+type Query struct {
 	Query        string
 	Facets       string
 	FacetFilters string
@@ -27,10 +27,15 @@ type SearchQuery struct {
 	Page         int
 }
 
+type Response struct {
+	Data interface{}
+}
+
 func (search SearchService) Store(documents []document.IDocument) {
 	search.engine.Store(documents)
 }
 
-func (search SearchService) Search(query SearchQuery) ([]byte, error) {
+// []byte
+func (search SearchService) Search(query Query) (*Response, error) {
 	return search.engine.Search(query)
 }
