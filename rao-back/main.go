@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Zenika/RAO/controller"
 	"github.com/gorilla/mux"
+	"github.com/robfig/cron"
 	"github.com/rs/cors"
 	"log"
 	"net/http"
@@ -24,20 +25,20 @@ func main() {
 	log.SetOutput(f)
 	log.Println("Application started")
 
-	controller.Poll(nil, nil)
-
+	cronExp := os.Getenv("RAO_POLL_EVERY")
+	if len(cronExp) == 0 {
+		cronExp = "@daily" // equivalent to 0 0 0 * * *
+	}
+	cron := cron.New()
+	cron.AddFunc(cronExp, controller.Poll)
+	cron.Start()
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
 		AllowCredentials: true,
 	})
-
 	r := mux.NewRouter()
-	r.HandleFunc("/api/v1/walk", controller.Walk)
 	r.HandleFunc("/api/v1/search", controller.Search)
-	// r.HandleFunc("/api/v1/poll", controller.Poll)
-
 	handler := c.Handler(r)
 	http.ListenAndServe(":8090", handler)
-
 }

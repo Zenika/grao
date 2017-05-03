@@ -145,7 +145,8 @@ export default {
       let params = {
         'query': value,
         'facets': '*',
-        'page': page
+        'page': page,
+        'restriction': 'Content'
         // 'filters': '(Region:Lille OR Region:Lyon)'
       }
 

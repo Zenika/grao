@@ -57,13 +57,14 @@ func (alg Algolia) Store(documents []document.IDocument) {
 		_, err := index.AddObject(
 			algoliasearch.Object{
 				"Content": doc.GetContent(),
+				"Title":   doc.GetTitle(),
 				"Path":    doc.GetPath(),
-				"Mime":    doc.GetMime(),
-				"Ext":     doc.GetExt(),
-				"Mtime":   doc.GetMtime(),
-				"Bytes":   doc.GetBytes(),
 				"Client":  doc.GetClient(),
 				"Agence":  doc.GetAgence(),
+				"Ext":     doc.GetExt(),
+				"Mime":    doc.GetMime(),
+				"Mtime":   doc.GetMtime(),
+				"Bytes":   doc.GetBytes(),
 				"Sum":     doc.GetSum(),
 			})
 		log.Error(err, log.ERROR)

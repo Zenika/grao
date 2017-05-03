@@ -28,6 +28,7 @@ go get github.com/stacktic/dropbox
 go get -u github.com/sajari/docconv
 go get github.com/JalfResi/justext
 go get github.com/algolia/algoliasearch-client-go/algoliasearch
+go get github.com/robfig/cron
 ```
 
 ## Build
@@ -49,6 +50,8 @@ export RAO_ALGOLIA_ID="algolia_api_client_id"
 export RAO_ALG_KEY="algolia_api_key"
 export RAO_LOG_FILE="/tmp/rao.log"
 export RAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
+export RAO_POLL_EVERY="@daily"
+export RAO_POLL_FROM="REPONSE ENVOYEE"
 ```
 
 ## Run

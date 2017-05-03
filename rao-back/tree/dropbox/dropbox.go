@@ -1,6 +1,7 @@
 package dropbox
 
 import (
+	"fmt"
 	"github.com/Zenika/RAO/auth"
 	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/log"
@@ -14,7 +15,12 @@ import (
 	"time"
 )
 
-var filterPattern string = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)(/(?P<Client>[\w\s]+)(/.*))*`
+var srcDir string = os.Getenv("RAO_POLL_FROM")
+
+var filterPattern string = fmt.Sprintf(
+	`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)(/(?P<Client>[^/]+)(/.*))/%s.*`,
+	srcDir)
+
 var filter = regexp.MustCompile(filterPattern)
 
 // Adding support for docx documents:
@@ -50,9 +56,17 @@ func (db Dropbox) Walk(root string, handler document.DocumentHandler) {
 }
 
 func (db Dropbox) Poll(root string, handler document.DocumentHandler) {
+	log.Debug("Polling started")
+	cursor := db.lastCursor()
+	db.writeCursor(db.delta(cursor, root, handler))
+}
+
+func (db Dropbox) LongPoll(root string, handler document.DocumentHandler) {
+	log.Debug("Long Polling started")
 	cursor := db.lastCursor()
 	for {
-		cursor = db.delta(cursor, root, handler)
+		// cursor = db.delta(cursor, root, handler)
+		db.writeCursor(db.delta(cursor, root, handler))
 		changes := false
 		for !changes {
 			poll, err := db.client.LongPollDelta(cursor, 30)
@@ -67,16 +81,15 @@ func (db Dropbox) Poll(root string, handler document.DocumentHandler) {
 }
 
 func (db Dropbox) delta(cursor string, root string, handler document.DocumentHandler) string {
-	log.Debug("cursor " + cursor)
 	dp, err := db.client.Delta(cursor, root)
 	log.Error(err, log.ERROR)
 	cursor = dp.Cursor.Cursor
-	db.writeCursor(cursor)
+	// db.writeCursor(cursor)
 	for _, e := range dp.Entries {
 		db.handleDeltaEntry(e, handler)
 	}
 	if dp.HasMore {
-		db.delta(cursor, root, handler)
+		cursor = db.delta(cursor, root, handler)
 	}
 	return cursor
 }
@@ -113,6 +126,7 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 		return nil
 	}
 	matches := filter.FindStringSubmatch(e.Path)
+	log.Debug("Filter: " + filterPattern)
 	if nil == matches {
 		log.Debug("no match")
 		return nil
