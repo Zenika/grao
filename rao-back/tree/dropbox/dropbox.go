@@ -2,23 +2,24 @@ package dropbox
 
 import (
 	"fmt"
-	"github.com/Zenika/RAO/auth"
-	"github.com/Zenika/RAO/document"
-	"github.com/Zenika/RAO/log"
-	"github.com/Zenika/RAO/utils"
-	"github.com/stacktic/dropbox"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"time"
+
+	"github.com/Zenika/RAO/auth"
+	"github.com/Zenika/RAO/document"
+	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/RAO/utils"
+	"github.com/stacktic/dropbox"
 )
 
 var srcDir string = os.Getenv("RAO_POLL_FROM")
 
 var filterPattern string = fmt.Sprintf(
-	`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)(/(?P<Client>[^/]+)(/.*))/%s.*`,
+	`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/%s/.*`,
 	srcDir)
 
 var filter = regexp.MustCompile(filterPattern)
@@ -56,13 +57,11 @@ func (db Dropbox) Walk(root string, handler document.DocumentHandler) {
 }
 
 func (db Dropbox) Poll(root string, handler document.DocumentHandler) {
-	log.Debug("Polling started")
 	cursor := db.lastCursor()
 	db.writeCursor(db.delta(cursor, root, handler))
 }
 
 func (db Dropbox) LongPoll(root string, handler document.DocumentHandler) {
-	log.Debug("Long Polling started")
 	cursor := db.lastCursor()
 	for {
 		// cursor = db.delta(cursor, root, handler)
@@ -96,12 +95,10 @@ func (db Dropbox) delta(cursor string, root string, handler document.DocumentHan
 
 func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, handler document.DocumentHandler) {
 	if nil == e.Entry {
-		log.Debug("nil entry")
 		return
 	}
 	doc := db.createDocument(*e.Entry)
 	if nil == doc {
-		log.Debug("nil doc")
 		return
 	}
 	bytes, _ := db.downloadFile(*e.Entry)
@@ -118,7 +115,6 @@ func (db Dropbox) downloadFile(e dropbox.Entry) ([]byte, int64) {
 }
 
 func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
-	log.Debug(e.Path)
 	if e.IsDir {
 		return nil
 	}
@@ -126,13 +122,11 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 		return nil
 	}
 	matches := filter.FindStringSubmatch(e.Path)
-	log.Debug("Filter: " + filterPattern)
 	if nil == matches {
-		log.Debug("no match")
 		return nil
 	}
 	agence := matches[2]
-	client := matches[4]
+	client := matches[3]
 	size := e.Bytes
 	modified := e.Modified
 	doc := &document.Document{
