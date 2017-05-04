@@ -8,7 +8,7 @@ type IDocument interface {
 	GetTitle() string
 	GetPath() string
 	GetMime() string
-	GetExt() string
+	GetExtension() string
 	GetContent() string
 	GetClient() string
 	GetAgence() string
@@ -18,7 +18,7 @@ type IDocument interface {
 	SetTitle(t string)
 	SetPath(p string)
 	SetMime(m string)
-	SetExt(e string)
+	SetExtension(e string)
 	SetContent(c string)
 	SetClient(c string)
 	SetAgence(r string)
@@ -28,16 +28,16 @@ type IDocument interface {
 }
 
 type Document struct {
-	Title   string
-	Path    string
-	Mime    string
-	Ext     string
-	Content string
-	Client  string
-	Agence  string
-	Mtime   time.Time
-	Bytes   int64
-	Sum     string
+	Title     string
+	Path      string
+	Mime      string
+	Extension string
+	Content   string
+	Client    string
+	Agence    string
+	Mtime     time.Time
+	Bytes     int64
+	Sum       string
 }
 
 type DocumentHandler func(bytes []byte, doc IDocument)
@@ -52,8 +52,8 @@ func (doc *Document) GetPath() string {
 func (doc *Document) GetMime() string {
 	return doc.Mime
 }
-func (doc *Document) GetExt() string {
-	return doc.Ext
+func (doc *Document) GetExtension() string {
+	return doc.Extension
 }
 func (doc *Document) GetContent() string {
 	return doc.Content
@@ -82,8 +82,8 @@ func (doc *Document) SetPath(p string) {
 func (doc *Document) SetMime(m string) {
 	doc.Mime = m
 }
-func (doc *Document) SetExt(e string) {
-	doc.Ext = e
+func (doc *Document) SetExtension(e string) {
+	doc.Extension = e
 }
 func (doc *Document) SetContent(c string) {
 	doc.Content = c
