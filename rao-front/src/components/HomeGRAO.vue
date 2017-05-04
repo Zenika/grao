@@ -14,19 +14,16 @@
     </div>
 
     <v-advanced-search v-if="ready" :fields="fields" @search="searchAction"></v-advanced-search>
+
     <div class="row" v-if="ready">
       <div class="col-md-2">
-        <v-result v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-result>
+        <v-statistics v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-statistics>
         <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
       <div class="col-md-10" v-if="!loading">
         <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
 
-        <ul class="list_documents" v-if="documents.length">
-          <li v-for="doc in documents" >
-            <v-document :item="doc" :search="searching"></v-document>
-          </li>
-        </ul>
+        <v-responses-list :documents="documents" :search="searching"></v-responses-list>
 
         <v-page v-if="documents.length && pages > 1" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
       </div>
@@ -51,8 +48,8 @@
 
 import AdvancedSearch from './AdvancedSearch'
 import Filter from './Filter'
-import Result from './Result'
-import Doc from './Document'
+import Statistics from './Statistics'
+import Responses from './responses/List'
 import Paging from './Paging'
 
 export default {
@@ -70,7 +67,7 @@ export default {
       activeFilters: {},
       stringFilters: '',
       allfilters: [],
-      url: process.env.API_URL,
+      url: process.env.API_URL + 'rao',
       start: false,
       ready: true,
       fields: [
@@ -84,8 +81,8 @@ export default {
   components: {
     'v-advanced-search': AdvancedSearch,
     'v-filter': Filter,
-    'v-result': Result,
-    'v-document': Doc,
+    'v-statistics': Statistics,
+    'v-responses-list': Responses,
     'v-page': Paging
   },
   created () {

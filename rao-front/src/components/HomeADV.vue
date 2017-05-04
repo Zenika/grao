@@ -15,17 +15,13 @@
     <v-advanced-search v-if="ready" :fields="fields" @search="searchAction"></v-advanced-search>
     <div class="row" v-if="ready">
       <div class="col-md-2">
-        <v-result v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-result>
+        <v-statistics v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-statistics>
         <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
       <div class="col-md-10" v-if="!loading">
         <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
 
-        <ul class="list_documents" v-if="documents.length">
-          <li v-for="doc in documents" >
-            <v-order-document :item="doc" :search="searching"></v-order-document>
-          </li>
-        </ul>
+        <v-purchase-list :documents="documents" class="list_documents" v-if="documents.length"></v-purchase-list>
 
         <v-page v-if="documents.length && pages > 1" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
       </div>
@@ -50,8 +46,8 @@
 
 import AdvancedSearch from './AdvancedSearch'
 import Filter from './Filter'
-import Result from './Result'
-import Doc from './OrderDocument'
+import Statistics from './Statistics'
+import List from './purchases/List'
 import Paging from './Paging'
 
 export default {
@@ -68,7 +64,7 @@ export default {
       activeFilters: {},
       stringFilters: '',
       allfilters: [],
-      url: process.env.API_URL,
+      url: process.env.API_URL + 'rao',
       start: false,
       ready: true,
       fields: [
@@ -90,8 +86,8 @@ export default {
   components: {
     'v-advanced-search': AdvancedSearch,
     'v-filter': Filter,
-    'v-result': Result,
-    'v-order-document': Doc,
+    'v-statistics': Statistics,
+    'v-purchase-list': List,
     'v-page': Paging
   },
   created () {
@@ -149,7 +145,6 @@ export default {
 
       // TODO build proper query
       const query = values[0].value || values[1].value || values[2].value
-      console.log(query)
       let params = {
         'query': query,
         'facets': '*',

@@ -7,12 +7,17 @@
         </router-link>
         <router-link class="navbar-link" to="/">
           <div>
-            GRAO
+            Response
           </div>
         </router-link>
         <router-link class="navbar-link" to="adv">
           <div>
-            ADV
+            Purchase Order
+          </div>
+        </router-link>
+        <router-link class="navbar-link settings" to="settings">
+          <div>
+            <i class="fa fa-cog" aria-hidden="true"></i>
           </div>
         </router-link>
       </div>
@@ -51,6 +56,7 @@ nav{
   width: 100%;
   text-align: right;
   .navbar-link {
+    padding: 0 15px;
     display: inline-block;
     &:hover {
       background-color: black;

@@ -46,7 +46,7 @@ export default {
 
 <style scoped lang="scss">
 
-@import "../_variables.scss";
+@import "../../_variables.scss";
 
 .contents{
   //display: table;
