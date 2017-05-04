@@ -64,7 +64,6 @@ func (db Dropbox) Poll(root string, handler document.DocumentHandler) {
 func (db Dropbox) LongPoll(root string, handler document.DocumentHandler) {
 	cursor := db.lastCursor()
 	for {
-		// cursor = db.delta(cursor, root, handler)
 		db.writeCursor(db.delta(cursor, root, handler))
 		changes := false
 		for !changes {
@@ -83,7 +82,6 @@ func (db Dropbox) delta(cursor string, root string, handler document.DocumentHan
 	dp, err := db.client.Delta(cursor, root)
 	log.Error(err, log.ERROR)
 	cursor = dp.Cursor.Cursor
-	// db.writeCursor(cursor)
 	for _, e := range dp.Entries {
 		db.handleDeltaEntry(e, handler)
 	}
@@ -130,16 +128,16 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	size := e.Bytes
 	modified := e.Modified
 	doc := &document.Document{
-		Title:   filepath.Base(e.Path),
-		Path:    filepath.Dir(e.Path),
-		Ext:     filepath.Ext(e.Path),
-		Mime:    e.MimeType,
-		Content: "",
-		Client:  client,
-		Agence:  agence,
-		Mtime:   time.Time(modified),
-		Bytes:   size,
-		Sum:     "",
+		Title:     filepath.Base(e.Path),
+		Path:      filepath.Dir(e.Path),
+		Extension: filepath.Ext(e.Path),
+		Mime:      e.MimeType,
+		Content:   "",
+		Client:    client,
+		Agence:    agence,
+		Mtime:     time.Time(modified),
+		Bytes:     size,
+		Sum:       "",
 	}
 	return doc
 }

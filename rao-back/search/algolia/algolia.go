@@ -19,6 +19,46 @@ type SearchOptions struct {
 	Index string
 }
 
+/*
+settings := algoliasearch.Map{
+	"attributesToRetrieve": []string{
+		"Client",
+		"Agence",
+		"Content",
+		"Mime",
+		"Extension",
+		"Bytes",
+		"Sum",
+		"Title",
+		"Path",
+	},
+	"attributesForFaceting": []string{
+		"Path",
+		"Title",
+		"Extension",
+		"Client",
+		"Agence",
+	},
+	"attributesToSnippet": []string{
+		"Content:80",
+	},
+	"attributesToHighlight": []string{
+		"Content",
+	},
+	"highlightPreTag":  `<em class="snippet">`,
+	"highlightPostTag": "</em>",
+}
+*/
+func (alg Algolia) ConfigureIndex(indexId string, settings algoliasearch.Map) error {
+	index := alg.client.InitIndex(indexId)
+	_, err := index.SetSettings(settings)
+	if nil != err {
+		log.Error(err, log.ERROR)
+	}
+	return err
+
+}
+
 func (alg Algolia) getIndex(id string) algoliasearch.Index {
 	if nil == alg.index[id] {
 		alg.index[id] = alg.client.InitIndex(id)
@@ -46,16 +86,16 @@ func (alg Algolia) Store(documents []document.IDocument, options interface{}) {
 	for _, doc := range documents {
 		_, err := index.AddObject(
 			algoliasearch.Object{
-				"Content": doc.GetContent(),
-				"Title":   doc.GetTitle(),
-				"Path":    doc.GetPath(),
-				"Client":  doc.GetClient(),
-				"Agence":  doc.GetAgence(),
-				"Ext":     doc.GetExt(),
-				"Mime":    doc.GetMime(),
-				"Mtime":   doc.GetMtime(),
-				"Bytes":   doc.GetBytes(),
-				"Sum":     doc.GetSum(),
+				"Content":   doc.GetContent(),
+				"Title":     doc.GetTitle(),
+				"Path":      doc.GetPath(),
+				"Client":    doc.GetClient(),
+				"Agence":    doc.GetAgence(),
+				"Extension": doc.GetExtension(),
+				"Mime":      doc.GetMime(),
+				"Mtime":     doc.GetMtime(),
+				"Bytes":     doc.GetBytes(),
+				"Sum":       doc.GetSum(),
 			})
 		log.Error(err, log.ERROR)
 	}
