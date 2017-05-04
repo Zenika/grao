@@ -58,7 +58,7 @@ export default {
 
 <style scoped lang="scss">
 
-@import "../_variables.scss";
+@import "../../_variables.scss";
 
 .document{
   display: block;

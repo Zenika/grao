@@ -10,23 +10,20 @@
 
     <div v-if="!ready" class="not_ready">
       <img src="../assets/no_files.png" alt="">
-      <span>No document indexing...</span>
+      <span>No indexed document...</span>
     </div>
 
-    <v-search v-if="ready" @search="searchAction"></v-search>
+    <v-advanced-search v-if="ready" :fields="fields" @search="searchAction"></v-advanced-search>
+
     <div class="row" v-if="ready">
       <div class="col-md-2">
-        <v-result v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-result>
+        <v-statistics v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-statistics>
         <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
       <div class="col-md-10" v-if="!loading">
         <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
 
-        <ul class="list_documents" v-if="documents.length">
-          <li v-for="doc in documents" >
-            <v-document :item="doc" :search="searching"></v-document>
-          </li>
-        </ul>
+        <v-responses-list :documents="documents" :search="searching"></v-responses-list>
 
         <v-page v-if="documents.length && pages > 1" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
       </div>
@@ -37,7 +34,7 @@
       </div>
 
       <div class="col-md-10 no_result" v-if="documents.length == 0 && !loading">
-        <p>Aucun résultat pour votre recherche</p>
+        <p>No result found</p>
         <img src="../assets/noresult.jpg" alt="">
       </div>
 
@@ -49,14 +46,14 @@
 <script>
 /* eslint no-undef: "error" */
 
-import Search from './Search'
+import AdvancedSearch from './AdvancedSearch'
 import Filter from './Filter'
-import Result from './Result'
-import Doc from './Document'
+import Statistics from './Statistics'
+import Responses from './responses/List'
 import Paging from './Paging'
 
 export default {
-  name: 'home',
+  name: 'home-grao',
   data () {
     return {
       loading: false,
@@ -70,16 +67,22 @@ export default {
       activeFilters: {},
       stringFilters: '',
       allfilters: [],
-      url: process.env.API_URL,
+      url: process.env.API_URL + 'rao',
       start: false,
-      ready: true
+      ready: true,
+      fields: [
+        {
+          type: 'keywords',
+          placeholder: 'Keywords, clients, locations, framework...'
+        }
+      ]
     }
   },
   components: {
-    'v-search': Search,
+    'v-advanced-search': AdvancedSearch,
     'v-filter': Filter,
-    'v-result': Result,
-    'v-document': Doc,
+    'v-statistics': Statistics,
+    'v-responses-list': Responses,
     'v-page': Paging
   },
   created () {
@@ -88,16 +91,17 @@ export default {
   methods: {
     searchAction (search) {
       this.page = 0
-      this.searching = search
+      this.searching = search[0].value
       this.activeFilters = {}
-      this.search(search)
+      this.stringFilters = ''
+      this.search(search[0].value)
       this.start = true
     },
     getAllFilters () {
       let params = {'facets': '*'}
       this.$http.post(this.url, params).then(response => {
-        this.allfilters = response.body.facets
-        if (response.body.nbHits) {
+        this.allfilters = response.data.facets
+        if (response.data.nbHits) {
           this.ready = true
         } else {
           this.ready = false
@@ -138,19 +142,19 @@ export default {
       let params = {
         'query': value,
         'facets': '*',
-        'page': page
+        'page': page,
+        'restriction': 'Content'
         // 'filters': '(Region:Lille OR Region:Lyon)'
       }
 
       if (this.stringFilters) params.filters = this.stringFilters
-
       this.$http.post(this.url, params).then(response => {
-        this.documents = response.body.hits
-        this.page = response.body.page
-        this.hits = response.body.nbHits
-        this.pages = response.body.nbPages
+        this.documents = response.data.hits
+        this.page = response.data.page
+        this.hits = response.data.nbHits
+        this.pages = response.data.nbPages
         this.loading = false
-        this.facets = response.body.facets
+        this.facets = response.data.facets
       }, error => {
         console.log(error)
         this.ready = false

@@ -10,15 +10,18 @@
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
+    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
+    "deploy": "./tools/deploy.sh"
   },
   "dependencies": {
+    "axios": "^0.16.1",
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
+    "js-base64": "^2.1.9",
     "vee-validate": "^2.0.0-beta.23",
     "vue": "^2.2.1",
     "vue-resource": "^1.2.1",
-    "vue-router": "^2.2.0",
+    "vue-router": "^2.5.3",
     "vue-toast": "^3.0.0"
   },
   "devDependencies": {
