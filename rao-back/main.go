@@ -36,6 +36,7 @@ func main() {
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
 		AllowCredentials: true,
+		AllowedHeaders: []{"Authorization"},
 	})
 	r := mux.NewRouter()
 	r.HandleFunc("/api/v1/search", controller.Search)
