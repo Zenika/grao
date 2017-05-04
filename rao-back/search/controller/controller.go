@@ -17,6 +17,16 @@ func SearchHandler(searchService *search.SearchService) func(w http.ResponseWrit
 	}
 }
 
+func SettingsHandler(searchService *search.SearchService) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		handlerConfig(w, r, searchService)
+	}
+}
+
+func handlerConfig(w http.ResponseWriter, r *http.Request, searchService *search.SearchService) {
+
+}
+
 func handleSearch(w http.ResponseWriter, r *http.Request, searchService *search.SearchService) {
 	vars := mux.Vars(r)
 	index := vars["index"]

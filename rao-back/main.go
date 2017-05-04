@@ -61,7 +61,8 @@ func main() {
 		AllowCredentials: true,
 	})
 	r := mux.NewRouter()
-	r.HandleFunc("/api/v1/{index}", searchController.SearchHandler(searchService)).Methods("POST")
+	r.HandleFunc("/api/v1/{index}/search", searchController.SearchHandler(searchService)).Methods("POST")
+	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).Methods("POST")
 	handler := c.Handler(r)
 	http.ListenAndServe(":8090", handler)
 }

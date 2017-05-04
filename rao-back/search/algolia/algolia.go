@@ -19,39 +19,14 @@ type SearchOptions struct {
 	Index string
 }
 
-/*
-settings := algoliasearch.Map{
-	"attributesToRetrieve": []string{
-		"Client",
-		"Agence",
-		"Content",
-		"Mime",
-		"Extension",
-		"Bytes",
-		"Sum",
-		"Title",
-		"Path",
-	},
-	"attributesForFaceting": []string{
-		"Path",
-		"Title",
-		"Extension",
-		"Client",
-		"Agence",
-	},
-	"attributesToSnippet": []string{
-		"Content:80",
-	},
-	"attributesToHighlight": []string{
-		"Content",
-	},
-	"highlightPreTag":  `<em class="snippet">`,
-	"highlightPostTag": "</em>",
+type IndexSettings struct {
+	Index    string
+	Settings algoliasearch.Map
 }
-*/
-func (alg Algolia) ConfigureIndex(indexId string, settings algoliasearch.Map) error {
-	index := alg.client.InitIndex(indexId)
-	_, err := index.SetSettings(settings)
+
+func (alg Algolia) Configure(settings interface{}) error {
+	index := alg.getIndex(settings.(IndexSettings).Index)
+	_, err := index.SetSettings(settings.(IndexSettings).Settings)
 	if nil != err {
 		log.Error(err, log.ERROR)
 	}
