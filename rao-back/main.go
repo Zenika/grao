@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/Zenika/RAO/controller"
 	"github.com/gorilla/mux"
 	"github.com/robfig/cron"
 	"github.com/rs/cors"
-	"log"
-	"net/http"
-	"os"
 )
 
 var logFile string = os.Getenv("RAO_LOG_FILE")
@@ -36,7 +37,7 @@ func main() {
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
 		AllowCredentials: true,
-		AllowedHeaders: []{"Authorization"},
+		AllowedHeaders:   []string{"Authorization"},
 	})
 	r := mux.NewRouter()
 	r.HandleFunc("/api/v1/search", controller.Search)
