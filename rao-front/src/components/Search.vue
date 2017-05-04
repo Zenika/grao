@@ -1,10 +1,14 @@
 <template>
 
-  <form class="navbar-form navbar-left" role="search" @submit.prevent="validateBeforeSubmit">
-    <div class="form-group">
-      <input v-model="search" type="text" class="form-control" placeholder="Search">
-    </div>
-    <button type="submit" class="btn btn-default">Search</button>
+  <form class="navbar-form navbar-left" role="search" @submit.prevent="validateBeforeSubmit" :class="{'big': start}">
+    <input v-model="search" type="text" class="form-control" placeholder="Keywords, clients, locations, framework...">
+    <button type="submit" class="btn btn-default">
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </button>
+    <span class="hidden-xs">by</span>
+    <a class="hidden-xs" target="_blank" href="https://algolia.com">
+      <img src="../assets/algolia.png" alt="">
+    </a>
   </form>
 
 </template>
@@ -14,7 +18,8 @@ export default {
   name: 'search',
   data () {
     return {
-      'search': ''
+      'search': null,
+      'start': true
     }
   },
   methods: {
@@ -25,6 +30,7 @@ export default {
           return
         }
         // emit parent data
+        this.start = false
         this.$emit('search', this.search)
       })
     }
@@ -42,9 +48,47 @@ form{
   padding: 10px;
   width: 100%;
   margin-bottom: 20px;
+  transition: all 0.2s;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media screen and (max-width: $break-large) {
-    width: 110%!important;
+    width: 112% !important;
+    margin-left: -6%;
+  }
+
+  &.big{
+    height: 150px;
+  }
+
+  input{
+    vertical-align: middle;
+    width: 400px!important;
+    max-width: 80%!important;
+    border-radius: 0px;
+    border: none;
+    height: 40px;
+  }
+
+  .btn{
+    width: 120px;
+    border-radius: 0px;
+    border: none;
+    height: 40px;
+  }
+
+  span{
+    color: white;
+    margin: auto 10px;
+    font-weight: 700;
+  }
+
+  a{
+    img{
+      height: 30px;
+    }
   }
 
 }

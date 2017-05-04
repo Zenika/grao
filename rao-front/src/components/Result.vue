@@ -1,13 +1,23 @@
 <template>
   <div class="result">
-    <h4>Result</h4>
-
-    <ul>
-      <li><strong>{{ calcData.length }}</strong> documents</li>
-      <li><strong>{{ clients.length }}</strong> clients</li>
-      <li><strong>{{ regions.length }}</strong> région</li>
-    </ul>
-
+    <i @click="reduce" class="visible-xs-block fa fa-window-minimize" aria-hidden="true"></i>
+    <h4>Result<span v-if="hits && hits > 1">s</span></h4>
+    <div class="section">
+      <ul>
+        <li>
+          <span>Page<span v-if="pages > 1">s</span></span>
+          <strong>{{ pages || '...' }}</strong>
+        </li>
+        <li>
+          <span>Document<span v-if="hits > 1">s</span></span>
+          <strong>{{ hits || '...' }}</strong>
+        </li>
+        <li v-for="(name, key) in facets" v-if="facets">
+          <span>{{key}}<span v-if="Object.keys(name).length > 1">s</span></span>
+          <strong>{{ Object.keys(name).length || '...' }}</strong>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -16,22 +26,17 @@ export default {
   name: 'filter',
   data () {
     return {
-      clients: [],
-      regions: []
+      reducing: false
     }
   },
   props: [
-    'documents'
+    'facets',
+    'hits',
+    'pages'
   ],
-  computed: {
-    calcData: function () {
-      this.clients = []
-      this.regions = []
-      this.documents.map((doc) => {
-        if (this.clients.indexOf(doc.Client) === -1) this.clients.push(doc.Client)
-        if (this.regions.indexOf(doc.Region) === -1) this.regions.push(doc.Region)
-      })
-      return this.documents
+  methods: {
+    reduce () {
+      this.reducing = !this.reducing
     }
   }
 }
@@ -47,9 +52,24 @@ export default {
   color: white;
   padding: 20px;
   margin-bottom: 20px;
+  position: relative;
 
   h4{
     text-align: left;
+  }
+
+  .fa{
+    position: absolute;
+    right: 10px;
+    top: 5px;
+  }
+
+  ul{
+    li{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 
 }

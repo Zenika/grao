@@ -1,43 +1,134 @@
 package algolia
 
-import(
-  "github.com/algolia/algoliasearch-client-go/algoliasearch"
-  "github.com/Zenika/RAO/dropbox"
-  "github.com/Zenika/RAO/auth"
-  "github.com/Zenika/RAO/log"
-  "encoding/json"
+import (
+	"fmt"
+
+	"github.com/Zenika/RAO/auth"
+	"github.com/Zenika/RAO/document"
+	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/RAO/search"
+	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 )
 
 type Algolia struct {
-  client algoliasearch.Client
+	client algoliasearch.Client
+	index  map[string]algoliasearch.Index
 }
 
-func (alg Algolia) Store(documents []dropbox.DbxDocument){
-  var objects []algoliasearch.Object = nil
-  index := alg.client.InitIndex("rao")
-  // todo: replace
-  pld, err := json.Marshal(documents)
-  err = json.Unmarshal(pld, &objects)
-  _, err = index.AddObjects(objects)
-  log.Error(err, log.ERROR)
+type SearchOptions struct {
+	Index string
 }
 
-func (alg Algolia) Search(pattern string)([]byte, error){
-  index := alg.client.InitIndex("rao")
-  res, err := index.Search(pattern, nil)
-  recs, err := json.Marshal(res)
-  if err == nil {
-      return recs, nil
-  } else {
-      log.Error(err, log.ERROR)
-      return nil, err
-  }
+/*
+settings := algoliasearch.Map{
+	"attributesToRetrieve": []string{
+		"Client",
+		"Agence",
+		"Content",
+		"Mime",
+		"Extension",
+		"Bytes",
+		"Sum",
+		"Title",
+		"Path",
+	},
+	"attributesForFaceting": []string{
+		"Path",
+		"Title",
+		"Extension",
+		"Client",
+		"Agence",
+	},
+	"attributesToSnippet": []string{
+		"Content:80",
+	},
+	"attributesToHighlight": []string{
+		"Content",
+	},
+	"highlightPreTag":  `<em class="snippet">`,
+	"highlightPostTag": "</em>",
+}
+*/
+func (alg Algolia) ConfigureIndex(indexId string, settings algoliasearch.Map) error {
+	index := alg.client.InitIndex(indexId)
+	_, err := index.SetSettings(settings)
+	if nil != err {
+		log.Error(err, log.ERROR)
+	}
+	return err
+
 }
 
+func (alg Algolia) getIndex(id string) algoliasearch.Index {
+	if nil == alg.index[id] {
+		alg.index[id] = alg.client.InitIndex(id)
+	}
+	return alg.index[id]
+}
 
+func (alg Algolia) dedupe(index algoliasearch.Index, documents []document.IDocument) error {
+	for _, doc := range documents {
+		dups := fmt.Sprintf(`Path:"%s" AND Title:"%s"`, doc.GetPath(), doc.GetTitle())
+		err := index.DeleteByQuery("", algoliasearch.Map{
+			"filters": dups,
+		})
+		if nil != err {
+			log.Error(err, log.ERROR)
+			return err
+		}
+	}
+	return nil
+}
+
+func (alg Algolia) Store(documents []document.IDocument, options interface{}) {
+	index := alg.getIndex(options.(SearchOptions).Index)
+	alg.dedupe(index, documents)
+	for _, doc := range documents {
+		_, err := index.AddObject(
+			algoliasearch.Object{
+				"Content":   doc.GetContent(),
+				"Title":     doc.GetTitle(),
+				"Path":      doc.GetPath(),
+				"Client":    doc.GetClient(),
+				"Agence":    doc.GetAgence(),
+				"Extension": doc.GetExtension(),
+				"Mime":      doc.GetMime(),
+				"Mtime":     doc.GetMtime(),
+				"Bytes":     doc.GetBytes(),
+				"Sum":       doc.GetSum(),
+			})
+		log.Error(err, log.ERROR)
+	}
+}
+
+func (alg Algolia) Search(query search.Query, options interface{}) (*search.Response, error) {
+	index := alg.getIndex(options.(SearchOptions).Index)
+	if 0 == query.HitsPerPage {
+		query.HitsPerPage = 20
+	}
+	settings := algoliasearch.Map{
+		"facets":                       query.Facets,
+		"facetFilters":                 query.FacetFilters,
+		"filters":                      query.Filters,
+		"page":                         query.Page,
+		"hitsPerPage":                  query.HitsPerPage,
+		"restrictSearchableAttributes": query.Restriction,
+	}
+	response, err := index.Search(query.Query, settings)
+	if err == nil {
+		return &(search.Response{Data: response}), err
+	} else {
+		log.Error(err, log.ERROR)
+		return nil, err
+	}
+}
 
 func New() *Algolia {
-    return &Algolia {
-        client: auth.RequireAlgoliaClient(),
-    }
+	client := auth.RequireAlgoliaClient()
+	// index := initIndex(client, "rao")
+	index := make(map[string]algoliasearch.Index)
+	return &Algolia{
+		client: client,
+		index:  index,
+	}
 }
