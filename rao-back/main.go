@@ -43,7 +43,7 @@ func main() {
 	log.Init()
 	defer log.Close()
 	log.Info("Application started")
-	/* INIT SCHEDULLER */
+	/* INIT SCHEDULLER TODO make scheduler its own land */
 	cronExp := os.Getenv("RAO_POLL_EVERY")
 	if len(cronExp) == 0 {
 		cronExp = "@daily" // equivalent to 0 0 0 * * *
@@ -52,12 +52,10 @@ func main() {
 
 	raoFilter := func(doc document.IDocument) bool {
 		if !utils.ArrayContainsString(mimes, doc.GetMime()) {
-			log.Debug("bad mime " + doc.GetMime())
 			return false
 		}
 		matches := raoPatternFilter.FindStringSubmatch(doc.GetPath())
 		if nil == matches {
-			log.Debug("no match " + doc.GetPath())
 			return false
 		}
 		return true
@@ -119,8 +117,10 @@ func main() {
 		AllowCredentials: true,
 	})
 	r := mux.NewRouter()
-	r.HandleFunc("/api/v1/{index}/search", searchController.SearchHandler(searchService)).Methods("POST")
-	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).Methods("POST")
+	r.HandleFunc("/api/v1/{index}/search", searchController.SearchHandler(searchService)).
+		Methods("POST")
+	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).
+		Methods("POST")
 	handler := c.Handler(r)
 	http.ListenAndServe(":8090", handler)
 }

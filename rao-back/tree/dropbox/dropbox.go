@@ -63,23 +63,19 @@ func (db Dropbox) delta(cursor string, root string, filter document.DocumentFilt
 
 func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, filter document.DocumentFilter, handler document.DocumentHandler) {
 	if nil == e.Entry {
-		log.Debug("nil entry")
 		return
 	}
 	doc := db.createDocument(*e.Entry)
 	if nil == doc {
-		log.Debug("nil doc")
 		return
 	}
 	if !filter(doc) {
-		log.Debug("filtered")
 		return
 	}
 	handler(doc)
 }
 
 func (db Dropbox) DownloadFile(doc document.IDocument) ([]byte, int64) {
-	log.Debug("download")
 	fullPath := fmt.Sprintf("%s/%s", doc.GetPath(), doc.GetTitle())
 	resp, size, err := db.client.Download(fullPath, "", 0)
 	log.Error(err, log.ERROR)
@@ -91,7 +87,6 @@ func (db Dropbox) DownloadFile(doc document.IDocument) ([]byte, int64) {
 
 func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	if e.IsDir {
-		log.Debug("dir found, return nil")
 		return nil
 	}
 	modified := e.Modified
@@ -102,7 +97,6 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 		Mime:      e.MimeType,
 		Mtime:     time.Time(modified),
 	}
-	log.Debug("document created")
 	return doc
 }
 

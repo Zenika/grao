@@ -49,14 +49,12 @@ func (alg Algolia) dedupe(index algoliasearch.Index, doc document.IDocument) err
 	if nil != err {
 		log.Error(err, log.ERROR)
 	}
-	log.Debug("deduped")
 	return err
 }
 
 func (alg Algolia) Store(doc document.IDocument, docMapper document.DocumentMapper, options interface{}) {
 	index := alg.getIndex(options.(SearchOptions).Index)
 	alg.dedupe(index, doc)
-	log.Debug("store object")
 	_, err := index.AddObject(docMapper(doc).(algoliasearch.Object))
 	log.Error(err, log.ERROR)
 }
