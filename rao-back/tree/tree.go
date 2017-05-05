@@ -5,24 +5,24 @@ import (
 )
 
 type TreeEngine interface {
-	Walk(root string, handler document.DocumentHandler)
-	Poll(root string, handler document.DocumentHandler)
+	Poll(root string, filter document.DocumentFilter, handler document.DocumentHandler)
+	LongPoll(root string, filter document.DocumentFilter, handler document.DocumentHandler)
 }
 
 type TreeService struct {
 	engine TreeEngine
 }
 
-func (tree TreeService) Walk(root string, handler document.DocumentHandler) {
-	tree.engine.Walk(root, handler)
+func (tree TreeService) Poll(root string, filter document.DocumentFilter, handler document.DocumentHandler) {
+	tree.engine.Poll(root, filter, handler)
 }
 
-func (tree TreeService) Poll(root string, handler document.DocumentHandler) {
-	tree.engine.Poll(root, handler)
+func (tree TreeService) LongPoll(root string, filter document.DocumentFilter, handler document.DocumentHandler) {
+	tree.engine.LongPoll(root, filter, handler)
 }
 
-func (tree TreeService) LongPoll(root string, handler document.DocumentHandler) {
-	tree.engine.Poll(root, handler)
+func (tree TreeService) GetEngine() TreeEngine {
+	return tree.engine
 }
 
 func New(eng TreeEngine) *TreeService {

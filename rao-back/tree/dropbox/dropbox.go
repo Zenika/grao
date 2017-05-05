@@ -5,28 +5,16 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strconv"
 	"time"
 
 	"github.com/Zenika/RAO/auth"
 	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/log"
-	"github.com/Zenika/RAO/utils"
 	"github.com/stacktic/dropbox"
 )
 
 var srcDir string = os.Getenv("RAO_POLL_FROM")
-
-var filterPattern string = fmt.Sprintf(
-	`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/%s/.*`,
-	srcDir)
-
-var filter = regexp.MustCompile(filterPattern)
-
-// Adding support for docx documents:
-// "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-var mimes = []string{"application/pdf"}
 
 type Dropbox struct {
 	client *dropbox.Dropbox
@@ -38,33 +26,15 @@ func New() *Dropbox {
 	}
 }
 
-func (db Dropbox) Walk(root string, handler document.DocumentHandler) {
-	entry, err := db.client.Metadata(root, true, false, "", "", 0)
-	log.Error(err, log.FATAL)
-	contents := entry.Contents
-	for _, e := range contents {
-		if !e.IsDir {
-			doc := db.createDocument(e)
-			if nil == doc {
-				continue
-			}
-			bytes, _ := db.downloadFile(e)
-			handler(bytes, doc)
-			return
-		}
-		db.Walk(e.Path, handler)
-	}
-}
-
-func (db Dropbox) Poll(root string, handler document.DocumentHandler) {
+func (db Dropbox) Poll(root string, filter document.DocumentFilter, handler document.DocumentHandler) {
 	cursor := db.lastCursor()
-	db.writeCursor(db.delta(cursor, root, handler))
+	db.writeCursor(db.delta(cursor, root, filter, handler))
 }
 
-func (db Dropbox) LongPoll(root string, handler document.DocumentHandler) {
+func (db Dropbox) LongPoll(root string, filter document.DocumentFilter, handler document.DocumentHandler) {
 	cursor := db.lastCursor()
 	for {
-		db.writeCursor(db.delta(cursor, root, handler))
+		db.writeCursor(db.delta(cursor, root, filter, handler))
 		changes := false
 		for !changes {
 			poll, err := db.client.LongPollDelta(cursor, 30)
@@ -78,20 +48,20 @@ func (db Dropbox) LongPoll(root string, handler document.DocumentHandler) {
 	}
 }
 
-func (db Dropbox) delta(cursor string, root string, handler document.DocumentHandler) string {
+func (db Dropbox) delta(cursor string, root string, filter document.DocumentFilter, handler document.DocumentHandler) string {
 	dp, err := db.client.Delta(cursor, root)
 	log.Error(err, log.ERROR)
 	cursor = dp.Cursor.Cursor
 	for _, e := range dp.Entries {
-		db.handleDeltaEntry(e, handler)
+		db.handleDeltaEntry(e, filter, handler)
 	}
 	if dp.HasMore {
-		cursor = db.delta(cursor, root, handler)
+		cursor = db.delta(cursor, root, filter, handler)
 	}
 	return cursor
 }
 
-func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, handler document.DocumentHandler) {
+func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, filter document.DocumentFilter, handler document.DocumentHandler) {
 	if nil == e.Entry {
 		return
 	}
@@ -99,12 +69,15 @@ func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, handler document.Docume
 	if nil == doc {
 		return
 	}
-	bytes, _ := db.downloadFile(*e.Entry)
-	handler(bytes, doc)
+	if !filter(doc) {
+		return
+	}
+	handler(doc)
 }
 
-func (db Dropbox) downloadFile(e dropbox.Entry) ([]byte, int64) {
-	resp, size, err := db.client.Download(e.Path, "", 0)
+func (db Dropbox) DownloadFile(doc document.IDocument) ([]byte, int64) {
+	fullPath := fmt.Sprintf("%s/%s", doc.GetPath(), doc.GetTitle())
+	resp, size, err := db.client.Download(fullPath, "", 0)
 	log.Error(err, log.ERROR)
 	defer resp.Close()
 	bytes, err := ioutil.ReadAll(resp)
@@ -116,28 +89,13 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	if e.IsDir {
 		return nil
 	}
-	if !utils.ArrayContainsString(mimes, e.MimeType) {
-		return nil
-	}
-	matches := filter.FindStringSubmatch(e.Path)
-	if nil == matches {
-		return nil
-	}
-	agence := matches[2]
-	client := matches[3]
-	size := e.Bytes
 	modified := e.Modified
 	doc := &document.Document{
 		Title:     filepath.Base(e.Path),
 		Path:      filepath.Dir(e.Path),
 		Extension: filepath.Ext(e.Path),
 		Mime:      e.MimeType,
-		Content:   "",
-		Client:    client,
-		Agence:    agence,
 		Mtime:     time.Time(modified),
-		Bytes:     size,
-		Sum:       "",
 	}
 	return doc
 }
