@@ -41,39 +41,24 @@ func (alg Algolia) getIndex(id string) algoliasearch.Index {
 	return alg.index[id]
 }
 
-func (alg Algolia) dedupe(index algoliasearch.Index, documents []document.IDocument) error {
-	for _, doc := range documents {
-		dups := fmt.Sprintf(`Path:"%s" AND Title:"%s"`, doc.GetPath(), doc.GetTitle())
-		err := index.DeleteByQuery("", algoliasearch.Map{
-			"filters": dups,
-		})
-		if nil != err {
-			log.Error(err, log.ERROR)
-			return err
-		}
-	}
-	return nil
-}
-
-func (alg Algolia) Store(documents []document.IDocument, options interface{}) {
-	index := alg.getIndex(options.(SearchOptions).Index)
-	alg.dedupe(index, documents)
-	for _, doc := range documents {
-		_, err := index.AddObject(
-			algoliasearch.Object{
-				"Content":   doc.GetContent(),
-				"Title":     doc.GetTitle(),
-				"Path":      doc.GetPath(),
-				"Client":    doc.GetClient(),
-				"Agence":    doc.GetAgence(),
-				"Extension": doc.GetExtension(),
-				"Mime":      doc.GetMime(),
-				"Mtime":     doc.GetMtime(),
-				"Bytes":     doc.GetBytes(),
-				"Sum":       doc.GetSum(),
-			})
+func (alg Algolia) dedupe(index algoliasearch.Index, doc document.IDocument) error {
+	dups := fmt.Sprintf(`Path:"%s" AND Title:"%s"`, doc.GetPath(), doc.GetTitle())
+	err := index.DeleteByQuery("", algoliasearch.Map{
+		"filters": dups,
+	})
+	if nil != err {
 		log.Error(err, log.ERROR)
 	}
+	log.Debug("deduped")
+	return err
+}
+
+func (alg Algolia) Store(doc document.IDocument, docMapper document.DocumentMapper, options interface{}) {
+	index := alg.getIndex(options.(SearchOptions).Index)
+	alg.dedupe(index, doc)
+	log.Debug("store object")
+	_, err := index.AddObject(docMapper(doc).(algoliasearch.Object))
+	log.Error(err, log.ERROR)
 }
 
 func (alg Algolia) Search(query search.Query, options interface{}) (*search.Response, error) {

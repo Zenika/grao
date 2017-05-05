@@ -5,7 +5,7 @@ import (
 )
 
 type SearchEngine interface {
-	Store(documents []document.IDocument, options interface{})
+	Store(doc document.IDocument, docMapper document.DocumentMapper, options interface{})
 	Search(query Query, options interface{}) (*Response, error)
 }
 
@@ -33,8 +33,8 @@ type Response struct {
 	Data interface{}
 }
 
-func (search SearchService) Store(documents []document.IDocument, options interface{}) {
-	search.engine.Store(documents, options)
+func (search SearchService) Store(doc document.IDocument, docMapper document.DocumentMapper, options interface{}) {
+	search.engine.Store(doc, docMapper, options)
 }
 
 // []byte
