@@ -14,8 +14,8 @@ func (doc BusinessDocument) GetClient() string {
 	return doc.Client
 }
 
-func (doc BusinessDocument) SetAgence(r string) {
-	doc.Agence = r
+func (doc BusinessDocument) SetAgence(a string) {
+	doc.Agence = a
 }
 
 func (doc BusinessDocument) GetAgence() string {
