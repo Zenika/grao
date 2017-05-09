@@ -7,7 +7,6 @@ import (
 
 	"github.com/Zenika/RAO/log"
 	"github.com/Zenika/RAO/search"
-	"github.com/Zenika/RAO/search/algolia"
 	"github.com/gorilla/mux"
 )
 
@@ -19,12 +18,18 @@ func SearchHandler(searchService *search.SearchService) func(w http.ResponseWrit
 
 func SettingsHandler(searchService *search.SearchService) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		handlerConfig(w, r, searchService)
+		handleConfig(w, r, searchService)
 	}
 }
 
-func handlerConfig(w http.ResponseWriter, r *http.Request, searchService *search.SearchService) {
-
+func handleConfig(w http.ResponseWriter, r *http.Request, searchService *search.SearchService) {
+	vars := mux.Vars(r)
+	index := vars["index"]
+	var settings map[string]interface{}
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&settings)
+	log.Error(err, log.ERROR)
+	searchService.Configure(index, settings)
 }
 
 func handleSearch(w http.ResponseWriter, r *http.Request, searchService *search.SearchService) {
@@ -39,7 +44,7 @@ func handleSearch(w http.ResponseWriter, r *http.Request, searchService *search.
 		w.Write([]byte(fmt.Sprintf("There was an error: %v", err)))
 		return
 	}
-	queryRes, err := searchService.Search(query, algolia.SearchOptions{Index: index})
+	queryRes, err := searchService.Search(index, query)
 	response, err := json.Marshal(queryRes.Data)
 	if err == nil {
 		w.Write([]byte(response))

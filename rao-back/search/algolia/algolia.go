@@ -15,18 +15,13 @@ type Algolia struct {
 	index  map[string]algoliasearch.Index
 }
 
-type SearchOptions struct {
-	Index string
-}
+// type SearchOptions struct {
+// 	Index string
+// }
 
-type IndexSettings struct {
-	Index    string
-	Settings algoliasearch.Map
-}
-
-func (alg Algolia) Configure(settings interface{}) error {
-	index := alg.getIndex(settings.(IndexSettings).Index)
-	_, err := index.SetSettings(settings.(IndexSettings).Settings)
+func (alg Algolia) Configure(index string, settings map[string]interface{}) error {
+	i := alg.getIndex(index)
+	_, err := i.SetSettings(settings)
 	if nil != err {
 		log.Error(err, log.ERROR)
 	}
@@ -52,15 +47,16 @@ func (alg Algolia) dedupe(index algoliasearch.Index, doc document.IDocument) err
 	return err
 }
 
-func (alg Algolia) Store(doc document.IDocument, docMapper document.DocumentMapper, options interface{}) {
-	index := alg.getIndex(options.(SearchOptions).Index)
-	alg.dedupe(index, doc)
-	_, err := index.AddObject(docMapper(doc).(algoliasearch.Object))
+func (alg Algolia) Store(index string, doc document.IDocument, docMapper document.DocumentMapper) {
+	i := alg.getIndex(index)
+	alg.dedupe(i, doc)
+	_, err := i.AddObject(docMapper(doc))
+	log.Debug("algolia")
 	log.Error(err, log.ERROR)
 }
 
-func (alg Algolia) Search(query search.Query, options interface{}) (*search.Response, error) {
-	index := alg.getIndex(options.(SearchOptions).Index)
+func (alg Algolia) Search(index string, query search.Query) (*search.Response, error) {
+	i := alg.getIndex(index)
 	if 0 == query.HitsPerPage {
 		query.HitsPerPage = 20
 	}
@@ -72,7 +68,7 @@ func (alg Algolia) Search(query search.Query, options interface{}) (*search.Resp
 		"hitsPerPage":                  query.HitsPerPage,
 		"restrictSearchableAttributes": query.Restriction,
 	}
-	response, err := index.Search(query.Query, settings)
+	response, err := i.Search(query.Query, settings)
 	if err == nil {
 		return &(search.Response{Data: response}), err
 	} else {
