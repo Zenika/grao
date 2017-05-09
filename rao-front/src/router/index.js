@@ -10,12 +10,16 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HomeGRAO',
+      redirect: '/rao'
+    },
+    {
+      path: '/rao',
+      name: 'rao',
       component: HomeGRAO
     },
     {
       path: '/adv',
-      name: 'HomeADV',
+      name: 'adv',
       component: HomeADV
     },
     {
