@@ -17,7 +17,7 @@
         </li>
       </ul>
 
-      <div class="facets" v-for="(values, key) in allfilters" v-if="!config.hidden_facets.includes(key)">
+      <div class="facets" v-for="(values, key) in allfilters" v-if="!config.hidden_facets[$route.name].includes(key)">
         <h4>{{key}}s</h4>
         <ul>
           <li :title="name" v-for="(count, name) in values" @click="setFilter(key, name)" v-if="isNotActive(key, name)">
@@ -47,6 +47,8 @@ export default {
     'allfilters',
     'activefilters'
   ],
+  created () {
+  },
   methods: {
     deleteFilter (key, name) {
       delete this.activefilters[key][name]
