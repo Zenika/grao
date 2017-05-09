@@ -11,11 +11,8 @@ import (
 	"github.com/Zenika/RAO/auth"
 	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/log"
-	"github.com/Zenika/RAO/utils"
 	"github.com/stacktic/dropbox"
 )
-
-var srcDir string = os.Getenv("RAO_POLL_FROM")
 
 type Dropbox struct {
 	client *dropbox.Dropbox
@@ -28,14 +25,14 @@ func New() *Dropbox {
 }
 
 func (db Dropbox) Poll(root string, pairs [][]interface{}) {
-	cursor := db.lastCursor(utils.Md5Sum(root))
-	db.writeCursor(db.delta(cursor, root, pairs), utils.Md5Sum(root))
+	cursor := db.lastCursor(db.cursorFileName())
+	db.writeCursor(db.delta(cursor, root, pairs), db.cursorFileName())
 }
 
 func (db Dropbox) LongPoll(root string, pairs [][]interface{}) {
-	cursor := db.lastCursor(utils.Md5Sum(root))
+	cursor := db.lastCursor(db.cursorFileName())
 	for {
-		db.writeCursor(db.delta(cursor, root, pairs), utils.Md5Sum(root))
+		db.writeCursor(db.delta(cursor, root, pairs), db.cursorFileName())
 		changes := false
 		for !changes {
 			poll, err := db.client.LongPollDelta(cursor, 30)
@@ -49,9 +46,18 @@ func (db Dropbox) LongPoll(root string, pairs [][]interface{}) {
 	}
 }
 
+func (db Dropbox) DownloadFile(doc document.IDocument) ([]byte, int64) {
+	fullPath := fmt.Sprintf("%s/%s", doc.GetPath(), doc.GetTitle())
+	resp, size, err := db.client.Download(fullPath, "", 0)
+	log.Error(err, log.ERROR)
+	defer resp.Close()
+	bytes, err := ioutil.ReadAll(resp)
+	log.Error(err, log.ERROR)
+	return bytes, size
+}
+
 func (db Dropbox) delta(cursor string, root string, pairs [][]interface{}) string {
 	dp, err := db.client.Delta(cursor, root)
-	log.Debug("dropbox " + root)
 	log.Error(err, log.ERROR)
 	cursor = dp.Cursor.Cursor
 	for _, e := range dp.Entries {
@@ -79,16 +85,6 @@ func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, filter func(document.ID
 	handler(doc)
 }
 
-func (db Dropbox) DownloadFile(doc document.IDocument) ([]byte, int64) {
-	fullPath := fmt.Sprintf("%s/%s", doc.GetPath(), doc.GetTitle())
-	resp, size, err := db.client.Download(fullPath, "", 0)
-	log.Error(err, log.ERROR)
-	defer resp.Close()
-	bytes, err := ioutil.ReadAll(resp)
-	log.Error(err, log.ERROR)
-	return bytes, size
-}
-
 func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	if e.IsDir {
 		return nil
@@ -113,13 +109,12 @@ func (db Dropbox) lastCursor(filename string) string {
 }
 
 func (db Dropbox) writeCursor(cursor string, filename string) {
-	// cursorFileName := db.cursorFileName()
 	err := ioutil.WriteFile(filename, []byte(cursor), 0644)
 	log.Error(err, log.FATAL)
 }
 
 func (db Dropbox) cursorFileName() string {
-	cursorFileName := os.Getenv("RAO_DBX_CURSOR")
+	cursorFileName := os.Getenv("GRAO_DBX_CURSOR")
 	if 0 == len(cursorFileName) {
 		cursorFileName = "cursor"
 	}

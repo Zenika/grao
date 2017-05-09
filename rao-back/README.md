@@ -40,19 +40,29 @@ go build -o bin/rao
 ## Env
 
 ```shell
-export RAO_DBX_KEY="dropbox_key"
-export RAO_DBX_SECRET="dropbox_secret"
-export RAO_DBX_TOKEN="dropbox_token"
-export RAO_DBX_ROOT="dropbox_root_path"
-export RAO_DBX_CURSOR="cursor_file"
-export RAO_DOCD_PORT="docd_listening_port"
-export RAO_ALGOLIA_ID="algolia_api_client_id"
-export RAO_ALG_KEY="algolia_api_key"
-export RAO_LOG_FILE="/tmp/rao.log"
-export RAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
-export RAO_POLL_EVERY="@daily"
-export RAO_POLL_FROM="REPONSE ENVOYEE"
+export GRAO_DBX_KEY="dropbox_key"
+export GRAO_DBX_SECRET="dropbox_secret"
+export GRAO_DBX_TOKEN="dropbox_token"
+export GRAO_DBX_ROOT="dropbox_root_path"
+export GRAO_DBX_CURSOR="cursor_file"
+export GRAO_ALGOLIA_ID="algolia_api_client_id"
+export GRAO_ALG_KEY="algolia_api_key"
+export GRAO_LOG_FILE="/tmp/rao.log"
+export GRAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
+export GRAO_POLL_EVERY="@daily"
+export RAO_POLL_FROM="rao_filter_regexp_string"
+export BDC_POLL_FROM="bdc_filter_regexp_string"
 ```
+
+## Indexes
+
+Configuration of indexes can be performed by posting on the following endpoint
+
+```
+http://{host}/api/v1/{index_name}/settings
+```
+
+Payloads are available [in this repository](config)
 
 ## Run
 

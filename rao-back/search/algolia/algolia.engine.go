@@ -15,9 +15,14 @@ type Algolia struct {
 	index  map[string]algoliasearch.Index
 }
 
-// type SearchOptions struct {
-// 	Index string
-// }
+func New() *Algolia {
+	client := auth.RequireAlgoliaClient()
+	index := make(map[string]algoliasearch.Index)
+	return &Algolia{
+		client: client,
+		index:  index,
+	}
+}
 
 func (alg Algolia) Configure(index string, settings map[string]interface{}) error {
 	i := alg.getIndex(index)
@@ -29,29 +34,10 @@ func (alg Algolia) Configure(index string, settings map[string]interface{}) erro
 
 }
 
-func (alg Algolia) getIndex(id string) algoliasearch.Index {
-	if nil == alg.index[id] {
-		alg.index[id] = alg.client.InitIndex(id)
-	}
-	return alg.index[id]
-}
-
-func (alg Algolia) dedupe(index algoliasearch.Index, doc document.IDocument) error {
-	dups := fmt.Sprintf(`Path:"%s" AND Title:"%s"`, doc.GetPath(), doc.GetTitle())
-	err := index.DeleteByQuery("", algoliasearch.Map{
-		"filters": dups,
-	})
-	if nil != err {
-		log.Error(err, log.ERROR)
-	}
-	return err
-}
-
 func (alg Algolia) Store(index string, doc document.IDocument, docMapper document.DocumentMapper) {
 	i := alg.getIndex(index)
 	alg.dedupe(i, doc)
 	_, err := i.AddObject(docMapper(doc))
-	log.Debug("algolia")
 	log.Error(err, log.ERROR)
 }
 
@@ -77,12 +63,20 @@ func (alg Algolia) Search(index string, query search.Query) (*search.Response, e
 	}
 }
 
-func New() *Algolia {
-	client := auth.RequireAlgoliaClient()
-	// index := initIndex(client, "rao")
-	index := make(map[string]algoliasearch.Index)
-	return &Algolia{
-		client: client,
-		index:  index,
+func (alg Algolia) getIndex(id string) algoliasearch.Index {
+	if nil == alg.index[id] {
+		alg.index[id] = alg.client.InitIndex(id)
 	}
+	return alg.index[id]
+}
+
+func (alg Algolia) dedupe(index algoliasearch.Index, doc document.IDocument) error {
+	dups := fmt.Sprintf(`Path:"%s" AND Title:"%s"`, doc.GetPath(), doc.GetTitle())
+	err := index.DeleteByQuery("", algoliasearch.Map{
+		"filters": dups,
+	})
+	if nil != err {
+		log.Error(err, log.ERROR)
+	}
+	return err
 }

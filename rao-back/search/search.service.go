@@ -8,12 +8,6 @@ type SearchEngine interface {
 	Configure(index string, settings map[string]interface{}) error
 }
 
-func New(eng SearchEngine) *SearchService {
-	return &SearchService{
-		engine: eng,
-	}
-}
-
 type SearchService struct {
 	engine SearchEngine
 }
@@ -28,25 +22,20 @@ type Query struct {
 	Restriction  string
 }
 
-// type Settings struct {
-// 	Index string
-// 	Data  map[string]interface{}
-// }
-//
-// type Options struct {
-// 	Index string
-// 	Data  map[string]interface{}
-// }
-
 type Response struct {
 	Data interface{}
+}
+
+func New(eng SearchEngine) *SearchService {
+	return &SearchService{
+		engine: eng,
+	}
 }
 
 func (search SearchService) Store(index string, doc document.IDocument, docMapper document.DocumentMapper) {
 	search.engine.Store(index, doc, docMapper)
 }
 
-// []byte
 func (search SearchService) Search(index string, query Query) (*Response, error) {
 	return search.engine.Search(index, query)
 }

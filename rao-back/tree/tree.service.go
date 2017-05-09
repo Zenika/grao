@@ -9,6 +9,12 @@ type TreeService struct {
 	engine TreeEngine
 }
 
+func New(eng TreeEngine) *TreeService {
+	return &TreeService{
+		engine: eng,
+	}
+}
+
 func (tree TreeService) Poll(root string, pairs [][]interface{}) {
 	tree.engine.Poll(root, pairs)
 }
@@ -19,10 +25,4 @@ func (tree TreeService) LongPoll(root string, pairs [][]interface{}) {
 
 func (tree TreeService) GetEngine() TreeEngine {
 	return tree.engine
-}
-
-func New(eng TreeEngine) *TreeService {
-	return &TreeService{
-		engine: eng,
-	}
 }
