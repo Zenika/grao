@@ -6,7 +6,7 @@ type DocumentHandler func(doc IDocument) // TODO errror handling
 
 type DocumentFilter func(doc IDocument) bool
 
-type DocumentMapper func(doc IDocument) interface{}
+type DocumentMapper func(doc IDocument) map[string]interface{}
 
 type IDocument interface {
 	GetTitle() string

@@ -11,6 +11,7 @@ import (
 	"github.com/Zenika/RAO/auth"
 	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/RAO/utils"
 	"github.com/stacktic/dropbox"
 )
 
@@ -26,15 +27,15 @@ func New() *Dropbox {
 	}
 }
 
-func (db Dropbox) Poll(root string, filter document.DocumentFilter, handler document.DocumentHandler) {
-	cursor := db.lastCursor()
-	db.writeCursor(db.delta(cursor, root, filter, handler))
+func (db Dropbox) Poll(root string, pairs [][]interface{}) {
+	cursor := db.lastCursor(utils.Md5Sum(root))
+	db.writeCursor(db.delta(cursor, root, pairs), utils.Md5Sum(root))
 }
 
-func (db Dropbox) LongPoll(root string, filter document.DocumentFilter, handler document.DocumentHandler) {
-	cursor := db.lastCursor()
+func (db Dropbox) LongPoll(root string, pairs [][]interface{}) {
+	cursor := db.lastCursor(utils.Md5Sum(root))
 	for {
-		db.writeCursor(db.delta(cursor, root, filter, handler))
+		db.writeCursor(db.delta(cursor, root, pairs), utils.Md5Sum(root))
 		changes := false
 		for !changes {
 			poll, err := db.client.LongPollDelta(cursor, 30)
@@ -48,20 +49,23 @@ func (db Dropbox) LongPoll(root string, filter document.DocumentFilter, handler 
 	}
 }
 
-func (db Dropbox) delta(cursor string, root string, filter document.DocumentFilter, handler document.DocumentHandler) string {
+func (db Dropbox) delta(cursor string, root string, pairs [][]interface{}) string {
 	dp, err := db.client.Delta(cursor, root)
+	log.Debug("dropbox " + root)
 	log.Error(err, log.ERROR)
 	cursor = dp.Cursor.Cursor
 	for _, e := range dp.Entries {
-		db.handleDeltaEntry(e, filter, handler)
-	}
-	if dp.HasMore {
-		cursor = db.delta(cursor, root, filter, handler)
+		for _, p := range pairs {
+			db.handleDeltaEntry(e, p[0].(func(document.IDocument) bool), p[1].(func(document.IDocument)))
+		}
+		if dp.HasMore {
+			cursor = db.delta(cursor, root, pairs)
+		}
 	}
 	return cursor
 }
 
-func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, filter document.DocumentFilter, handler document.DocumentHandler) {
+func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, filter func(document.IDocument) bool, handler func(document.IDocument)) {
 	if nil == e.Entry {
 		return
 	}
@@ -100,17 +104,17 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	return doc
 }
 
-func (db Dropbox) lastCursor() string {
-	b, err := ioutil.ReadFile(db.cursorFileName())
+func (db Dropbox) lastCursor(filename string) string {
+	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return ""
 	}
 	return string(b)
 }
 
-func (db Dropbox) writeCursor(cursor string) {
-	cursorFileName := db.cursorFileName()
-	err := ioutil.WriteFile(cursorFileName, []byte(cursor), 0644)
+func (db Dropbox) writeCursor(cursor string, filename string) {
+	// cursorFileName := db.cursorFileName()
+	err := ioutil.WriteFile(filename, []byte(cursor), 0644)
 	log.Error(err, log.FATAL)
 }
 
