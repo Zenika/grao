@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strconv"
 	"time"
 
@@ -18,16 +17,6 @@ import (
 
 var srcDir string = os.Getenv("RAO_POLL_FROM")
 
-var filterPattern string = fmt.Sprintf(
-	`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/%s/.*`,
-	srcDir)
-
-var filter = regexp.MustCompile(filterPattern)
-
-// Adding support for docx documents:
-// "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-var mimes = []string{"application/pdf"}
-
 type Dropbox struct {
 	client *dropbox.Dropbox
 }
@@ -38,33 +27,15 @@ func New() *Dropbox {
 	}
 }
 
-func (db Dropbox) Walk(root string, handler document.DocumentHandler) {
-	entry, err := db.client.Metadata(root, true, false, "", "", 0)
-	log.Error(err, log.FATAL)
-	contents := entry.Contents
-	for _, e := range contents {
-		if !e.IsDir {
-			doc := db.createDocument(e)
-			if nil == doc {
-				continue
-			}
-			bytes, _ := db.downloadFile(e)
-			handler(bytes, doc)
-			return
-		}
-		db.Walk(e.Path, handler)
-	}
+func (db Dropbox) Poll(root string, pairs [][]interface{}) {
+	cursor := db.lastCursor(utils.Md5Sum(root))
+	db.writeCursor(db.delta(cursor, root, pairs), utils.Md5Sum(root))
 }
 
-func (db Dropbox) Poll(root string, handler document.DocumentHandler) {
-	cursor := db.lastCursor()
-	db.writeCursor(db.delta(cursor, root, handler))
-}
-
-func (db Dropbox) LongPoll(root string, handler document.DocumentHandler) {
-	cursor := db.lastCursor()
+func (db Dropbox) LongPoll(root string, pairs [][]interface{}) {
+	cursor := db.lastCursor(utils.Md5Sum(root))
 	for {
-		db.writeCursor(db.delta(cursor, root, handler))
+		db.writeCursor(db.delta(cursor, root, pairs), utils.Md5Sum(root))
 		changes := false
 		for !changes {
 			poll, err := db.client.LongPollDelta(cursor, 30)
@@ -78,20 +49,23 @@ func (db Dropbox) LongPoll(root string, handler document.DocumentHandler) {
 	}
 }
 
-func (db Dropbox) delta(cursor string, root string, handler document.DocumentHandler) string {
+func (db Dropbox) delta(cursor string, root string, pairs [][]interface{}) string {
 	dp, err := db.client.Delta(cursor, root)
+	log.Debug("dropbox " + root)
 	log.Error(err, log.ERROR)
 	cursor = dp.Cursor.Cursor
 	for _, e := range dp.Entries {
-		db.handleDeltaEntry(e, handler)
-	}
-	if dp.HasMore {
-		cursor = db.delta(cursor, root, handler)
+		for _, p := range pairs {
+			db.handleDeltaEntry(e, p[0].(func(document.IDocument) bool), p[1].(func(document.IDocument)))
+		}
+		if dp.HasMore {
+			cursor = db.delta(cursor, root, pairs)
+		}
 	}
 	return cursor
 }
 
-func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, handler document.DocumentHandler) {
+func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, filter func(document.IDocument) bool, handler func(document.IDocument)) {
 	if nil == e.Entry {
 		return
 	}
@@ -99,12 +73,15 @@ func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, handler document.Docume
 	if nil == doc {
 		return
 	}
-	bytes, _ := db.downloadFile(*e.Entry)
-	handler(bytes, doc)
+	if !filter(doc) {
+		return
+	}
+	handler(doc)
 }
 
-func (db Dropbox) downloadFile(e dropbox.Entry) ([]byte, int64) {
-	resp, size, err := db.client.Download(e.Path, "", 0)
+func (db Dropbox) DownloadFile(doc document.IDocument) ([]byte, int64) {
+	fullPath := fmt.Sprintf("%s/%s", doc.GetPath(), doc.GetTitle())
+	resp, size, err := db.client.Download(fullPath, "", 0)
 	log.Error(err, log.ERROR)
 	defer resp.Close()
 	bytes, err := ioutil.ReadAll(resp)
@@ -116,43 +93,28 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	if e.IsDir {
 		return nil
 	}
-	if !utils.ArrayContainsString(mimes, e.MimeType) {
-		return nil
-	}
-	matches := filter.FindStringSubmatch(e.Path)
-	if nil == matches {
-		return nil
-	}
-	agence := matches[2]
-	client := matches[3]
-	size := e.Bytes
 	modified := e.Modified
 	doc := &document.Document{
 		Title:     filepath.Base(e.Path),
 		Path:      filepath.Dir(e.Path),
 		Extension: filepath.Ext(e.Path),
 		Mime:      e.MimeType,
-		Content:   "",
-		Client:    client,
-		Agence:    agence,
 		Mtime:     time.Time(modified),
-		Bytes:     size,
-		Sum:       "",
 	}
 	return doc
 }
 
-func (db Dropbox) lastCursor() string {
-	b, err := ioutil.ReadFile(db.cursorFileName())
+func (db Dropbox) lastCursor(filename string) string {
+	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return ""
 	}
 	return string(b)
 }
 
-func (db Dropbox) writeCursor(cursor string) {
-	cursorFileName := db.cursorFileName()
-	err := ioutil.WriteFile(cursorFileName, []byte(cursor), 0644)
+func (db Dropbox) writeCursor(cursor string, filename string) {
+	// cursorFileName := db.cursorFileName()
+	err := ioutil.WriteFile(filename, []byte(cursor), 0644)
 	log.Error(err, log.FATAL)
 }
 
