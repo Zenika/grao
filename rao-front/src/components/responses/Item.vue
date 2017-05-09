@@ -1,5 +1,5 @@
 <template>
-  <div class="document" :class="{'hidden':ishidden}">
+  <div class="document">
     <div class="title">
       <strong>{{item.Title}}</strong>
     </div>
@@ -15,7 +15,7 @@
     </div>
     <div class="path">
       <a target="_blank" :href="'http://dropbox.com/work'+item.Path">
-      <span><i class="fa fa-folder-open-o" aria-hidden="true"></i> <strong>http://dropbox.com/work{{item.Path}}</strong></span>
+        <span><i class="fa fa-folder-open-o" aria-hidden="true"></i> <strong>http://dropbox.com/work{{item.Path}}</strong></span>
       </a>
     </div>
   </div>
@@ -31,7 +31,6 @@ export default {
   },
   data () {
     return {
-      ishidden: false
     }
   },
   props: [
@@ -64,6 +63,36 @@ export default {
   display: block;
   border: solid 3px $red_znk;
   overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  &.hidden_item{
+    font-size: 10px;
+    border: 0;
+    background: #dfe0dc;
+    .flex{
+      display: none;
+    }
+    .path{
+      display: none;
+    }
+  }
+
+  &:hover{
+    .hideme{
+      top: 5px;
+    }
+  }
+
+  .hideme{
+    cursor: pointer;
+    position: absolute;
+    transition: all 0.2s;
+    float: right;
+    font-size: 25px;
+    top: -50px;
+    right: 5px;
+  }
 
   .title{
     font-size: 1.1em;
@@ -71,6 +100,7 @@ export default {
   }
 
   .flex{
+    transition: 0.2s all;
     display: flex;
     align-items: center;
 

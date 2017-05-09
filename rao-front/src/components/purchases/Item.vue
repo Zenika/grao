@@ -1,11 +1,13 @@
 <template>
   <tr>
-    <td>Lavoir Moderne</td>
-    <td>Creation Outils de test</td>
-    <td>Aurélien Loyer</td>
+    <td class="icon"><i class="fa" :class="getDocType(item.Mime)" aria-hidden="true"></i></td>
+    <td>{{item.Client}}</td>
+    <td>{{item.Projet}}</td>
+    <td>{{item.Consultant}}</td>
     <td>
-      <i class="fa fa-link" aria-hidden="true"></i>
-      <i class="fa fa-dropbox" aria-hidden="true"></i>
+      <a target="_blank" :href="'http://dropbox.com/work'+item.Path">
+        <i class="fa fa-dropbox" aria-hidden="true"></i>
+      </a>
     </td>
   </tr>
 </template>
@@ -45,5 +47,26 @@ export default {
 <style scoped lang="scss">
 
 @import "../../_variables.scss";
+
+#app{
+
+  td{
+    vertical-align: middle;
+
+    &.icon{
+      width: 50px;
+    }
+  }
+
+  i{
+    padding: 0 20px;
+    font-size: 2em;
+    transition: all 0.2s;
+    &.fa-dropbox:hover{
+      transform: scale(1.5);
+    }
+  }
+
+}
 
 </style>

@@ -19,9 +19,9 @@
         <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
       <div class="col-md-10" v-if="!loading">
-        <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
+        <v-page v-if="0 && documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
 
-        <v-purchase-list :documents="documents" class="list_documents" v-if="documents.length"></v-purchase-list>
+        <v-purchase-list :documents="documents" class="list_documents" :order="orderby" @orderby="sort" v-if="documents.length"></v-purchase-list>
 
         <v-page v-if="documents.length && pages > 1" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
       </div>
@@ -60,11 +60,12 @@ export default {
       page: 0,
       hits: 0,
       pages: 0,
+      orderby: null,
       facets: null,
       activeFilters: {},
       stringFilters: '',
       allfilters: [],
-      url: process.env.API_URL + 'rao',
+      url: process.env.API_URL + 'bdc/search',
       start: false,
       ready: true,
       fields: [
@@ -94,6 +95,21 @@ export default {
     this.getAllFilters()
   },
   methods: {
+    sort (order) {
+      this.orderby = order
+      this.documents = this.documents.sort(this.dynamicSort(order))
+    },
+    dynamicSort (property) {
+      let sortOrder = 1
+      if (property[0] === '-') {
+        sortOrder = -1
+        property = property.substr(1)
+      }
+      return function (a, b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0
+        return result * sortOrder
+      }
+    },
     searchAction (search) {
       this.page = 0
       this.searching = search
@@ -148,7 +164,9 @@ export default {
       let params = {
         'query': query,
         'facets': '*',
-        'page': page
+        'page': page,
+        'hitsPerPage': 99999,
+        'CustomRanking': [this.orderby]
         // 'filters': '(Region:Lille OR Region:Lyon)'
       }
 

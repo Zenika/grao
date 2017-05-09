@@ -2,10 +2,11 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Client</th>
-        <th>Projet</th>
-        <th>Collaborator</th>
         <th></th>
+        <th class="sortable" v-sort @click="orderBy('Client')">Client <i class="fa fa-sort" :class="'fa-sort-'+ getOrderFor('Client')" aria-hidden="true"></i></th>
+        <th class="sortable" v-sort @click="orderBy('Projet')">Projet <i class="fa fa-sort" :class="'fa-sort-'+ getOrderFor('Projet')" aria-hidden="true"></i></th>
+        <th class="sortable" v-sort @click="orderBy('Collaborator')">Collaborator <i class="fa fa-sort" :class="'fa-sort-'+ getOrderFor('Collaborator')" aria-hidden="true"></i></th>
+        <th class="action">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -28,12 +29,29 @@ export default {
     }
   },
   props: [
+    'order',
     'documents'
   ],
   created () {
-    // console.log(this.item)
+    if (this.order) console.log(this.order)
   },
   methods: {
+    getOrderFor (type) {
+      switch (this.order) {
+        case '' + type:
+          return 'desc'
+        case '-' + type:
+          return 'asc'
+        default:
+          return ''
+      }
+    },
+    orderBy (type) {
+      if (this.order === type) type = '-' + type
+      this.$emit('orderby', type)
+    }
+  },
+  computed: {
 
   }
 }
@@ -43,5 +61,15 @@ export default {
 
 @import "../../_variables.scss";
 
+th{
+  text-align: center;
+  i{
+    float: right;
+  }
+  &.sortable{
+    cursor: pointer;
+    user-select: none;
+  }
+}
 
 </style>
