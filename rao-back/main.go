@@ -8,15 +8,14 @@ import (
 
 	"github.com/Zenika/RAO/conv"
 	"github.com/Zenika/RAO/conv/docd"
-	"github.com/Zenika/RAO/document"
+	"github.com/Zenika/RAO/document/bdc"
+	"github.com/Zenika/RAO/document/rao"
 	"github.com/Zenika/RAO/log"
 	"github.com/Zenika/RAO/search"
 	"github.com/Zenika/RAO/search/algolia"
 	searchController "github.com/Zenika/RAO/search/controller"
 	"github.com/Zenika/RAO/tree"
 	"github.com/Zenika/RAO/tree/dropbox"
-	"github.com/Zenika/RAO/utils"
-	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 	"github.com/gorilla/mux"
 	"github.com/robfig/cron"
 	"github.com/rs/cors"
@@ -50,65 +49,73 @@ func main() {
 	}
 	cron := cron.New()
 
-	raoFilter := func(doc document.IDocument) bool {
-		if !utils.ArrayContainsString(mimes, doc.GetMime()) {
-			return false
-		}
-		matches := raoPatternFilter.FindStringSubmatch(doc.GetPath())
-		if nil == matches {
-			return false
-		}
-		return true
-	}
-
-	docMapper := func(doc document.IDocument) interface{} {
-		return algoliasearch.Object{
-			"Content":   doc.(document.RaoDocument).GetContent(),
-			"Title":     doc.GetTitle(),
-			"Path":      doc.GetPath(),
-			"Client":    doc.(document.RaoDocument).GetClient(),
-			"Agence":    doc.(document.RaoDocument).GetAgence(),
-			"Extension": doc.GetExtension(),
-			"Mime":      doc.GetMime(),
-			"Mtime":     doc.GetMtime(),
-			"Bytes":     doc.(document.RaoDocument).GetBytes(),
-			"Sum":       doc.(document.RaoDocument).GetSum(),
-		}
-	}
-
-	raoHandler := func(doc document.IDocument) {
-		bytes, size := treeService.GetEngine().(*dropbox.Dropbox).DownloadFile(doc)
-		b, err := convService.Convert(bytes, doc.GetMime())
-		log.Error(err, log.ERROR)
-		content := string(b[:])
-		if "" == content {
-			return // Shall we index the document if we could not extract its content ?
-		}
-		matches := raoPatternFilter.FindStringSubmatch(doc.GetPath())
-		agence := matches[2]
-		client := matches[3]
-		chunks := utils.SplitString(content, 10000)
-		for _, chunk := range chunks {
-			raoDocument := document.RaoDocument{
-				doc,
-				document.BusinessDocument{
-					doc,
-					agence,
-					client,
-				},
-				document.FullTextDocument{
-					Bytes:   size,
-					Sum:     utils.Md5Sum(content),
-					Content: chunk,
-				},
-			}
-			searchService.Store(raoDocument, docMapper, algolia.SearchOptions{Index: "rao"})
-		}
-	}
+	// raoFilter := func(doc document.IDocument) bool {
+	// 	if !utils.ArrayContainsString(mimes, doc.GetMime()) {
+	// 		return false
+	// 	}
+	// 	matches := raoPatternFilter.FindStringSubmatch(doc.GetPath())
+	// 	if nil == matches {
+	// 		return false
+	// 	}
+	// 	return true
+	// }
+	//
+	// docMapper := func(doc document.IDocument) interface{} {
+	// 	return map[string]interface{}{
+	// 		"Content":   doc.(rao.RaoDocument).GetContent(),
+	// 		"Title":     doc.GetTitle(),
+	// 		"Path":      doc.GetPath(),
+	// 		"Client":    doc.(rao.RaoDocument).GetClient(),
+	// 		"Agence":    doc.(rao.RaoDocument).GetAgence(),
+	// 		"Extension": doc.GetExtension(),
+	// 		"Mime":      doc.GetMime(),
+	// 		"Mtime":     doc.GetMtime(),
+	// 		"Bytes":     doc.(rao.RaoDocument).GetBytes(),
+	// 		"Sum":       doc.(rao.RaoDocument).GetSum(),
+	// 	}
+	// }
+	//
+	// raoHandler := func(doc document.IDocument) {
+	// 	bytes, size := treeService.GetEngine().(*dropbox.Dropbox).DownloadFile(doc)
+	// 	b, err := convService.Convert(bytes, doc.GetMime())
+	// 	log.Error(err, log.ERROR)
+	// 	content := string(b[:])
+	// 	if "" == content {
+	// 		return // Shall we index the document if we could not extract its content ?
+	// 	}
+	// 	matches := raoPatternFilter.FindStringSubmatch(doc.GetPath())
+	// 	agence := matches[2]
+	// 	client := matches[3]
+	// 	chunks := utils.SplitString(content, 10000)
+	// 	for _, chunk := range chunks {
+	// 		raoDocument := rao.RaoDocument{
+	// 			doc,
+	// 			document.BusinessDocument{
+	// 				doc,
+	// 				agence,
+	// 				client,
+	// 			},
+	// 			document.FullTextDocument{
+	// 				Bytes:   size,
+	// 				Sum:     utils.Md5Sum(content),
+	// 				Content: chunk,
+	// 			},
+	// 		}
+	// 		searchService.Store(raoDocument, docMapper, algolia.SearchOptions{Index: "rao"})
+	// 	}
+	// }
+	// raoService := rao.NewService(*searchService, *convService, *treeService)
 	cron.AddFunc(cronExp, func() {
 		root := fmt.Sprintf("/%v", os.Getenv("RAO_DBX_ROOT"))
-		treeService.Poll(root, raoFilter, raoHandler)
+		bdcService := bdc.NewService(*searchService, *treeService)
+		raoService := rao.NewService(*searchService, *convService, *treeService)
+		pairs := [][]interface{}{{bdcService.DocFilter, bdcService.DocHandler}, {raoService.DocFilter, raoService.DocHandler}}
+		treeService.Poll(root, pairs)
 	})
+	// bdcService := bdc.NewService(*searchService, *convService, *treeService)
+	// cron.AddFunc(cronExp, func() {
+	// 	go bdcService.Poll()
+	// })
 	cron.Start()
 	/* INIT HTTP CONTROLLER */
 	c := cors.New(cors.Options{

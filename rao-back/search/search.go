@@ -1,12 +1,11 @@
 package search
 
-import (
-	"github.com/Zenika/RAO/document"
-)
+import "github.com/Zenika/RAO/document"
 
 type SearchEngine interface {
-	Store(doc document.IDocument, docMapper document.DocumentMapper, options interface{})
-	Search(query Query, options interface{}) (*Response, error)
+	Store(index string, doc document.IDocument, docMapper document.DocumentMapper)
+	Search(index string, query Query) (*Response, error)
+	Configure(index string, settings map[string]interface{}) error
 }
 
 func New(eng SearchEngine) *SearchService {
@@ -29,15 +28,29 @@ type Query struct {
 	Restriction  string
 }
 
+// type Settings struct {
+// 	Index string
+// 	Data  map[string]interface{}
+// }
+//
+// type Options struct {
+// 	Index string
+// 	Data  map[string]interface{}
+// }
+
 type Response struct {
 	Data interface{}
 }
 
-func (search SearchService) Store(doc document.IDocument, docMapper document.DocumentMapper, options interface{}) {
-	search.engine.Store(doc, docMapper, options)
+func (search SearchService) Store(index string, doc document.IDocument, docMapper document.DocumentMapper) {
+	search.engine.Store(index, doc, docMapper)
 }
 
 // []byte
-func (search SearchService) Search(query Query, options interface{}) (*Response, error) {
-	return search.engine.Search(query, options)
+func (search SearchService) Search(index string, query Query) (*Response, error) {
+	return search.engine.Search(index, query)
+}
+
+func (search SearchService) Configure(index string, settings map[string]interface{}) error {
+	return search.engine.Configure(index, settings)
 }
