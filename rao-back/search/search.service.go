@@ -3,25 +3,22 @@
 //
 // A search service compose a SearchEngine interface implementation,
 // provided as an argument to the factory call
-//
-// SearchEngine implementation own the responsability of
-// implementing search service core methods
 package search
 
 import "github.com/Zenika/RAO/document"
 
-// SearchEngine interface is the base interface
-// for providing SearchService core implementations
+// SearchEngine implementation own the responsability of
+// implementing search service core methods
 //
-// Store stores the provided document to an index referenced
+// **Store** stores the provided document to an index referenced
 // by its first argument. docMapper function may be used to convert
 // document to a map[string]interface{} complying with the underlying
 // implementation
 //
-// Search will perform on an indexed referenced by its first argument
+// **Search** will perform on an indexed referenced by its first argument
 // a query provided as a seconde argument under the form of a Query object
 //
-// Configure should be used to tune index before performing queries if needed
+// **Configure** should be used to tune index before performing queries if needed
 type SearchEngine interface {
 	Store(index string, doc document.IDocument, docMapper document.DocumentMapper)
 	Search(index string, query Query) (*Response, error)

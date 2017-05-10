@@ -204,6 +204,68 @@ type IDocument interface {
 ```
 
 IDocument is the common inherited interface for documents
+# tree
+--
+    import "github.com/Zenika/RAO/tree"
+
+Tree Package contains tree service interfaces with subpackages related to their
+### implementations
+
+A tree service compose a TreeEngine interface implementation, provided as an
+argument to the factory call
+
+## Usage
+
+#### type TreeEngine
+
+```go
+type TreeEngine interface {
+	Poll(root string, pairs [][]interface{})
+	LongPoll(root string, pairs [][]interface{})
+}
+```
+
+TreeEngine implementation own the responsability of implementing tree service
+core methods
+
+Both **Poll** and **LongPoll** methods take a root path as their first argument
+and an array of function pair as their second argument:
+
+*pairs[0]* is of type ```go func(IDocument)(bool)``` and acts as a filter
+*pairs[1]* is of type func(IDocument) and is called only if *pairs[0]* evaluates
+to true
+
+#### type TreeService
+
+```go
+type TreeService struct {
+}
+```
+
+
+#### func  New
+
+```go
+func New(eng TreeEngine) *TreeService
+```
+
+#### func (TreeService) GetEngine
+
+```go
+func (tree TreeService) GetEngine() TreeEngine
+```
+
+#### func (TreeService) LongPoll
+
+```go
+func (tree TreeService) LongPoll(root string, pairs [][]interface{})
+```
+
+#### func (TreeService) Poll
+
+```go
+func (tree TreeService) Poll(root string, pairs [][]interface{})
+```
 # conv
 --
     import "github.com/Zenika/RAO/conv"
@@ -213,9 +275,6 @@ conv Package contains conv service interfaces with subpackages related to their
 
 A conv service compose a ConvEngine interface implementation, provided as an
 argument to the factory call
-
-ConvEngine implementation own the responsability of implementing conv service
-core method
 
 ## Usage
 
@@ -227,8 +286,12 @@ type ConvEngine interface {
 }
 ```
 
-Convert takes a binary content as an input and convert its content as a readable
-fulltext stream using mimetype to guess which conversion strategy to use
+ConvEngine implementation own the responsability of implementing conv service
+core method
+
+**Convert** takes a binary content as an input and convert its content as a
+readable fulltext stream using mimetype to guess which conversion strategy to
+use
 
 #### type ConvService
 
@@ -258,9 +321,6 @@ their implementations
 
 A search service compose a SearchEngine interface implementation, provided as an
 argument to the factory call
-
-SearchEngine implementation own the responsability of implementing search
-service core methods
 
 ## Usage
 
@@ -298,17 +358,17 @@ type SearchEngine interface {
 }
 ```
 
-SearchEngine interface is the base interface for providing SearchService core
-implementations
+SearchEngine implementation own the responsability of implementing search
+service core methods
 
-Store stores the provided document to an index referenced by its first argument.
-docMapper function may be used to convert document to a map[string]interface{}
-complying with the underlying implementation
+**Store** stores the provided document to an index referenced by its first
+argument. docMapper function may be used to convert document to a
+map[string]interface{} complying with the underlying implementation
 
-Search will perform on an indexed referenced by its first argument a query
+**Search** will perform on an indexed referenced by its first argument a query
 provided as a seconde argument under the form of a Query object
 
-Configure should be used to tune index before performing queries if needed
+**Configure** should be used to tune index before performing queries if needed
 
 #### type SearchService
 

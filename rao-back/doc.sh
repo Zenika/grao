@@ -27,9 +27,9 @@ clean(){
 }
 
 doc(){
-  echo "INFO: generating documentation"
   for i in "${PACKAGES[@]}"
   do
+      echo "INFO: generating documentation for $i package"
       "$COMMAND" "$i" >> "$DEST/README.md"
   done
 }
