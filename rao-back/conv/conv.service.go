@@ -1,5 +1,17 @@
+// conv Package contains conv service interfaces
+// with subpackages related to their implementations
+//
+// A conv service compose a ConvEngine interface implementation,
+// provided as an argument to the factory call
+//
+// ConvEngine implementation own the responsability of
+// implementing conv service core method
 package conv
 
+// Convert takes a binary content as an input
+// and convert its content as a readable fulltext
+// stream using mimetype to guess which conversion
+// strategy to use
 type ConvEngine interface {
 	Convert(input []byte, mimeType string) ([]byte, error)
 }

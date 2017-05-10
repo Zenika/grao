@@ -64,11 +64,11 @@ func (service BdcService) DocHandler(doc document.IDocument) {
 		doc,
 		document.BusinessDocument{
 			doc,
-			client,
-			agence,
+			utils.NormalizeString(client),
+			utils.NormalizeString(agence),
 		},
 		projet,
-		consultant,
+		utils.NormalizeString(consultant),
 	}
 	service.searchService.Store(INDEX_ID, bdcDocument, service.docMapper)
 }

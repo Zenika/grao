@@ -71,14 +71,14 @@ func (service RaoService) DocHandler(doc document.IDocument) {
 	matches := RAO_PATTERN_FILTER.FindStringSubmatch(doc.GetPath())
 	agence := matches[2]
 	client := matches[3]
-	chunks := utils.SplitString(content, 10000)
+	chunks := utils.ChunkString(content, 10000)
 	for _, chunk := range chunks {
 		raoDocument := rao.RaoDocument{
 			doc,
 			document.BusinessDocument{
 				doc,
-				client,
-				agence,
+				utils.NormalizeString(client),
+				utils.NormalizeString(agence),
 			},
 			document.FullTextDocument{
 				Bytes:   size,

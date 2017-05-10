@@ -1,3 +1,7 @@
+// dropbox Package is a TreeEngune implementation
+// that uses dropbox as a repository for documents
+//
+// see https://github.com/stacktic/dropbox/blob/master/dropbox.go
 package dropbox
 
 import (
@@ -6,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Zenika/RAO/auth"
@@ -25,14 +30,16 @@ func New() *Dropbox {
 }
 
 func (db Dropbox) Poll(root string, pairs [][]interface{}) {
-	cursor := db.lastCursor(db.cursorFileName())
-	db.writeCursor(db.delta(cursor, root, pairs), db.cursorFileName())
+	cursorFileName := db.cursorFileName()
+	cursor := db.lastCursor(cursorFileName)
+	db.writeCursor(db.delta(cursor, root, pairs), cursorFileName)
 }
 
 func (db Dropbox) LongPoll(root string, pairs [][]interface{}) {
-	cursor := db.lastCursor(db.cursorFileName())
+	cursorFileName := db.cursorFileName()
+	cursor := db.lastCursor(cursorFileName)
 	for {
-		db.writeCursor(db.delta(cursor, root, pairs), db.cursorFileName())
+		db.writeCursor(db.delta(cursor, root, pairs), cursorFileName)
 		changes := false
 		for !changes {
 			poll, err := db.client.LongPollDelta(cursor, 30)
@@ -60,6 +67,7 @@ func (db Dropbox) delta(cursor string, root string, pairs [][]interface{}) strin
 	dp, err := db.client.Delta(cursor, root)
 	log.Error(err, log.ERROR)
 	cursor = dp.Cursor.Cursor
+	log.Debug("poll " + root)
 	for _, e := range dp.Entries {
 		for _, p := range pairs {
 			db.handleDeltaEntry(e, p[0].(func(document.IDocument) bool), p[1].(func(document.IDocument)))
@@ -82,6 +90,7 @@ func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, filter func(document.ID
 	if !filter(doc) {
 		return
 	}
+	log.Debug("handle " + doc.GetPath())
 	handler(doc)
 }
 
@@ -93,7 +102,7 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	doc := &document.Document{
 		Title:     filepath.Base(e.Path),
 		Path:      filepath.Dir(e.Path),
-		Extension: filepath.Ext(e.Path),
+		Extension: strings.TrimPrefix(filepath.Ext(e.Path), "."),
 		Mime:      e.MimeType,
 		Mtime:     time.Time(modified),
 	}

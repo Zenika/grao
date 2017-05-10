@@ -1,3 +1,8 @@
+// algolia Package is a SearchEngine implementation
+// used to store and search documents using the
+// algolia cloud platform
+//
+// see https://www.algolia.com
 package algolia
 
 import (

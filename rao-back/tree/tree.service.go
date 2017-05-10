@@ -1,5 +1,19 @@
-package tree
-
+// Tree Package contains tree service interfaces
+// with subpackages related to their implementations
+//
+// A tree service compose a TreeEngine interface implementation,
+// provided as an argument to the factory call
+//
+// TreeEngine implementation own the responsability of
+// implementing tree service core methods
+//
+// Both Poll and LongPoll methods take a root path as their
+// first argument and an array of function pair as their second
+// argument:
+//
+// pairs[0] is of type func(IDocument)(bool) and acts as a filter
+// pairs[1] is of type func(IDocument) and is called only
+// if pairs[0] evaluates to true
 type TreeEngine interface {
 	Poll(root string, pairs [][]interface{})
 	LongPoll(root string, pairs [][]interface{})
