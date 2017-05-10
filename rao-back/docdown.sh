@@ -3,10 +3,14 @@
 # This util scripts generates package documentation
 # as github mardown that can be committed to the
 # repository
+
 # To document a package use godoc comment in source file
 # and add it to the $PACKAGE array below
 # Packages will be appended to a README.md file in
 # same order as they were declared in the $PACKAGE array
+
+# /!\ Working installation of golang
+# with an existing $GOPATH is assumed here
 COMMAND="$GOPATH/bin/godocdown"
 DEST="documentation"
 declare -a PACKAGES=(
