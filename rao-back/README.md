@@ -1,12 +1,4 @@
-# Réponse aux Appels d'Offres
-
-```
-- P1: Lire le chemin racine des documents dans le fichier de config (ou variable d'env)
-- P1: Au lancement : parcourir tous les documents et les indexer dans Algolia
-- P1: Tous les soirs, parcourir les nouveaux documents et les indexer dans Algolia
-- P2: services pour rechercher dans Algolia
-- P2: offrir une IHM pour rechercher les documents via mots clés
- ```
+# GRAO
 
 ## Set up
 
@@ -75,7 +67,11 @@ nohup $GOPATH/bin/docd &
 $GOPATH/src/github.com/Zenika/RAO/bin/rao
 ```
 
-## Sources & Credits
+## Source Code Documentation
+
+Source code doc is available [here in the repository](documentation)
+
+## Other Source & Credits
 
 [docconv](https://github.com/sajari/docconv) by Sajari
 
