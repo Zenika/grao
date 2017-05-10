@@ -71,6 +71,9 @@ $GOPATH/src/github.com/Zenika/RAO/bin/rao
 
 Source code doc is available [here in the repository](documentation)
 
+The source code documentation README.md file is generated using the
+docdown.sh script available [in this repository](docdown.sh)
+
 ## Other Source & Credits
 
 [docconv](https://github.com/sajari/docconv) by Sajari
