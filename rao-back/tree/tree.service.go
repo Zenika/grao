@@ -13,6 +13,7 @@ package tree
 // argument:
 //
 // *pairs[0]* is of type ```go func(IDocument)(bool)``` and acts as a filter
+//
 // *pairs[1]* is of type func(IDocument) and is called only
 // if *pairs[0]* evaluates to true
 type TreeEngine interface {
