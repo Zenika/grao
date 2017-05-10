@@ -1,3 +1,7 @@
+// dropbox Package is a TreeEngune implementation
+// that uses dropbox as a repository for documents
+//
+// see https://github.com/stacktic/dropbox/blob/master/dropbox.go
 package dropbox
 
 import (
@@ -6,16 +10,14 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Zenika/RAO/auth"
 	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/log"
-	"github.com/Zenika/RAO/utils"
 	"github.com/stacktic/dropbox"
 )
-
-var srcDir string = os.Getenv("RAO_POLL_FROM")
 
 type Dropbox struct {
 	client *dropbox.Dropbox
@@ -28,14 +30,16 @@ func New() *Dropbox {
 }
 
 func (db Dropbox) Poll(root string, pairs [][]interface{}) {
-	cursor := db.lastCursor(utils.Md5Sum(root))
-	db.writeCursor(db.delta(cursor, root, pairs), utils.Md5Sum(root))
+	cursorFileName := db.cursorFileName()
+	cursor := db.lastCursor(cursorFileName)
+	db.writeCursor(db.delta(cursor, root, pairs), cursorFileName)
 }
 
 func (db Dropbox) LongPoll(root string, pairs [][]interface{}) {
-	cursor := db.lastCursor(utils.Md5Sum(root))
+	cursorFileName := db.cursorFileName()
+	cursor := db.lastCursor(cursorFileName)
 	for {
-		db.writeCursor(db.delta(cursor, root, pairs), utils.Md5Sum(root))
+		db.writeCursor(db.delta(cursor, root, pairs), cursorFileName)
 		changes := false
 		for !changes {
 			poll, err := db.client.LongPollDelta(cursor, 30)
@@ -49,11 +53,21 @@ func (db Dropbox) LongPoll(root string, pairs [][]interface{}) {
 	}
 }
 
+func (db Dropbox) DownloadFile(doc document.IDocument) ([]byte, int64) {
+	fullPath := fmt.Sprintf("%s/%s", doc.GetPath(), doc.GetTitle())
+	resp, size, err := db.client.Download(fullPath, "", 0)
+	log.Error(err, log.ERROR)
+	defer resp.Close()
+	bytes, err := ioutil.ReadAll(resp)
+	log.Error(err, log.ERROR)
+	return bytes, size
+}
+
 func (db Dropbox) delta(cursor string, root string, pairs [][]interface{}) string {
 	dp, err := db.client.Delta(cursor, root)
-	log.Debug("dropbox " + root)
 	log.Error(err, log.ERROR)
 	cursor = dp.Cursor.Cursor
+	log.Debug("poll " + root)
 	for _, e := range dp.Entries {
 		for _, p := range pairs {
 			db.handleDeltaEntry(e, p[0].(func(document.IDocument) bool), p[1].(func(document.IDocument)))
@@ -76,17 +90,8 @@ func (db Dropbox) handleDeltaEntry(e dropbox.DeltaEntry, filter func(document.ID
 	if !filter(doc) {
 		return
 	}
+	log.Debug("handle " + doc.GetPath())
 	handler(doc)
-}
-
-func (db Dropbox) DownloadFile(doc document.IDocument) ([]byte, int64) {
-	fullPath := fmt.Sprintf("%s/%s", doc.GetPath(), doc.GetTitle())
-	resp, size, err := db.client.Download(fullPath, "", 0)
-	log.Error(err, log.ERROR)
-	defer resp.Close()
-	bytes, err := ioutil.ReadAll(resp)
-	log.Error(err, log.ERROR)
-	return bytes, size
 }
 
 func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
@@ -97,7 +102,7 @@ func (db Dropbox) createDocument(e dropbox.Entry) document.IDocument {
 	doc := &document.Document{
 		Title:     filepath.Base(e.Path),
 		Path:      filepath.Dir(e.Path),
-		Extension: filepath.Ext(e.Path),
+		Extension: strings.TrimPrefix(filepath.Ext(e.Path), "."),
 		Mime:      e.MimeType,
 		Mtime:     time.Time(modified),
 	}
@@ -113,13 +118,12 @@ func (db Dropbox) lastCursor(filename string) string {
 }
 
 func (db Dropbox) writeCursor(cursor string, filename string) {
-	// cursorFileName := db.cursorFileName()
 	err := ioutil.WriteFile(filename, []byte(cursor), 0644)
 	log.Error(err, log.FATAL)
 }
 
 func (db Dropbox) cursorFileName() string {
-	cursorFileName := os.Getenv("RAO_DBX_CURSOR")
+	cursorFileName := os.Getenv("GRAO_DBX_CURSOR")
 	if 0 == len(cursorFileName) {
 		cursorFileName = "cursor"
 	}

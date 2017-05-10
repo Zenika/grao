@@ -1,14 +1,20 @@
+// docd Package is a ConvEngine implementation
+// that uses doconv to perform conversion operations
+// docconv must be installed and running on the system
+//
+// see https://github.com/sajari/docconv
 package docd
 
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/Zenika/RAO/log"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
+
+	"github.com/Zenika/RAO/log"
 )
 
 type ConversionResponse struct {

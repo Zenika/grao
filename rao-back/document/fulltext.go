@@ -1,5 +1,12 @@
 package document
 
+// FullTextDocument adds the following fields to IDocument
+//
+// Content stands for a fulltext content attached to the document
+//
+// Sum stands for the computed hash of a fulltext content that
+//
+// Bytes stands for content length expressed in bytes
 type FullTextDocument struct {
 	IDocument
 	Content string

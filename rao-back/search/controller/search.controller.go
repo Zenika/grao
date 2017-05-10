@@ -1,3 +1,5 @@
+// The controller subpackage exposes endpoint handlers
+// used to call search service through REST API
 package controller
 
 import (

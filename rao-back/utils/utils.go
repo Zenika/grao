@@ -3,6 +3,8 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"regexp"
+	"strings"
 )
 
 func ArrayContainsString(list []string, a string) bool {
@@ -14,7 +16,7 @@ func ArrayContainsString(list []string, a string) bool {
 	return false
 }
 
-func SplitString(input string, size int) []string {
+func ChunkString(input string, size int) []string {
 	slices := []string{}
 	count := 0
 	lastIndex := 0
@@ -35,4 +37,9 @@ func Md5Sum(input string) string {
 	hasher := md5.New()
 	hasher.Write([]byte(input))
 	return hex.EncodeToString(hasher.Sum(nil))
+}
+
+func NormalizeString(input string) string {
+	re := regexp.MustCompile(`[\s_]+`)
+	return strings.Title(strings.ToLower(re.ReplaceAllString(input, " ")))
 }

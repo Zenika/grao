@@ -1,13 +1,23 @@
+// Package document contains common document interfaces,
+// with subpackages related to document implementations
+// and their associated services
 package document
 
 import "time"
 
+/*
 type DocumentHandler func(doc IDocument) // TODO errror handling
 
 type DocumentFilter func(doc IDocument) bool
+*/
 
+// DocumentMapper is a mapper function that can be used
+// by external services to convert any implentation of IDocument
+// into a map
 type DocumentMapper func(doc IDocument) map[string]interface{}
 
+// IDocument is the common inherited interface
+// for documents
 type IDocument interface {
 	GetTitle() string
 	GetPath() string

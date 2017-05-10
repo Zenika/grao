@@ -19,7 +19,7 @@ const (
 	FATAL
 )
 
-var level string = os.Getenv("RAO_LOG_LEVEL")
+var level string = os.Getenv("GRAO_LOG_LEVEL")
 var file os.File
 
 func _level() int {
@@ -37,7 +37,7 @@ func _level() int {
 }
 
 func Init() {
-	dest := os.Getenv("RAO_LOG_FILE")
+	dest := os.Getenv("GRAO_LOG_FILE")
 	if "" == dest {
 		dest = "rao.log"
 	}
