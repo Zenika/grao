@@ -1,4 +1,10 @@
 {
+  "searchableAttributes": [
+    "Content",
+    "Client",
+    "Title",
+    "Path"
+  ],
   "attributesToRetrieve" : [
     "Client",
 		"Agence",

@@ -209,7 +209,7 @@ IDocument is the common inherited interface for documents
     import "."
 
 Tree Package contains tree service interfaces with subpackages related to their
-### implementations
+implementations.
 
 A tree service compose a TreeEngine interface implementation, provided as an
 argument to the factory call
@@ -272,7 +272,7 @@ func (tree TreeService) Poll(root string, pairs [][]interface{})
     import "."
 
 conv Package contains conv service interfaces with subpackages related to their
-### implementations
+implementations.
 
 A conv service compose a ConvEngine interface implementation, provided as an
 argument to the factory call
@@ -318,7 +318,7 @@ func (conv ConvService) Convert(input []byte, mimeType string) ([]byte, error)
     import "."
 
 Search Package contains search service interfaces with subpackages related to
-their implementations
+their implementations.
 
 A search service compose a SearchEngine interface implementation, provided as an
 argument to the factory call

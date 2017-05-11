@@ -1,5 +1,5 @@
 // Tree Package contains tree service interfaces
-// with subpackages related to their implementations
+// with subpackages related to their implementations.
 //
 // A tree service compose a TreeEngine interface implementation,
 // provided as an argument to the factory call

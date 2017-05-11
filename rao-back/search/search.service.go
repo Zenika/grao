@@ -1,5 +1,5 @@
 // Search Package contains search service interfaces
-// with subpackages related to their implementations
+// with subpackages related to their implementations.
 //
 // A search service compose a SearchEngine interface implementation,
 // provided as an argument to the factory call

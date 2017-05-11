@@ -1,4 +1,4 @@
-// dropbox Package is a TreeEngune implementation
+// dropbox Package is a TreeEngine implementation
 // that uses dropbox as a repository for documents
 //
 // see https://github.com/stacktic/dropbox/blob/master/dropbox.go
@@ -69,6 +69,7 @@ func (db Dropbox) delta(cursor string, root string, pairs [][]interface{}) strin
 	cursor = dp.Cursor.Cursor
 	log.Debug("poll " + root)
 	for _, e := range dp.Entries {
+		log.Debug("entry found: " + e.Path)
 		for _, p := range pairs {
 			db.handleDeltaEntry(e, p[0].(func(document.IDocument) bool), p[1].(func(document.IDocument)))
 		}

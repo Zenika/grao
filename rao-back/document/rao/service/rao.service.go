@@ -41,6 +41,7 @@ func (service RaoService) DocFilter(doc document.IDocument) bool {
 	if nil == matches {
 		return false
 	}
+	log.Debug("doc complies with filter assertion, processing: " + doc.GetPath())
 	return true
 }
 

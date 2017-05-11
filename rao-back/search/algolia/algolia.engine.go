@@ -44,6 +44,7 @@ func (alg Algolia) Store(index string, doc document.IDocument, docMapper documen
 	alg.dedupe(i, doc)
 	_, err := i.AddObject(docMapper(doc))
 	log.Error(err, log.ERROR)
+	log.Debug("document stored to algolia index: " + index + ", doc: " + doc.GetPath())
 }
 
 func (alg Algolia) Search(index string, query search.Query) (*search.Response, error) {

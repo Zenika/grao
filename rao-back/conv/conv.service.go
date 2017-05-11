@@ -1,5 +1,5 @@
 // conv Package contains conv service interfaces
-// with subpackages related to their implementations
+// with subpackages related to their implementations.
 //
 // A conv service compose a ConvEngine interface implementation,
 // provided as an argument to the factory call

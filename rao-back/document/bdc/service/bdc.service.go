@@ -6,11 +6,13 @@ import (
 
 	"github.com/Zenika/RAO/document"
 	"github.com/Zenika/RAO/document/bdc"
+	"github.com/Zenika/RAO/log"
 	"github.com/Zenika/RAO/search"
 	"github.com/Zenika/RAO/tree"
 	"github.com/Zenika/RAO/utils"
 )
 
+//var BDC_FILTER_PATTERN = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/BON DE COMMANDE/(?P<Consultant>[^/]+)`
 var BDC_FILTER_PATTERN = os.Getenv("BDC_POLL_FROM")
 var BDC_PATTERN_FILTER = regexp.MustCompile(BDC_FILTER_PATTERN)
 var MIMES = []string{"application/pdf"} // "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -30,12 +32,16 @@ func New(searchService search.SearchService, treeService tree.TreeService) *BdcS
 
 func (service BdcService) DocFilter(doc document.IDocument) bool {
 	if !utils.ArrayContainsString(MIMES, doc.GetMime()) {
+		log.Debug("bad mime " + doc.GetMime())
 		return false
 	}
 	matches := BDC_PATTERN_FILTER.FindStringSubmatch(doc.GetPath())
 	if nil == matches {
+		log.Debug("regexp filter: " + BDC_FILTER_PATTERN)
+		log.Debug("no match " + doc.GetPath())
 		return false
 	}
+	log.Debug("doc complies with filter assertion, processing: " + doc.GetPath())
 	return true
 }
 
