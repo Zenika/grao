@@ -18,10 +18,12 @@
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
     "js-base64": "^2.1.9",
+    "v-tooltip": "^1.1.6",
     "vee-validate": "^2.0.0-beta.23",
     "vue": "^2.2.1",
     "vue-resource": "^1.2.1",
     "vue-router": "^2.5.3",
+    "vue-tables-2": "git+https://github.com/T3kstiil3/vue-tables-2.git",
     "vue-toast": "^3.0.0"
   },
   "devDependencies": {
