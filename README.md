@@ -24,3 +24,24 @@ server {
 }
 
 ```
+
+## Systemd configuration
+
+```systemd
+[Unit]
+AssertPathExists=/home/ubuntu
+Description=GRAO core service
+BindsTo=docd.service
+
+[Service]
+EnvironmentFile=/home/ubuntu/env
+WorkingDirectory=/home/ubuntu
+ExecStart=/bin/bash -c '/home/ubuntu/rao'
+Restart=always
+PrivateTmp=true
+NoNewPrivileges=true
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target
+```
