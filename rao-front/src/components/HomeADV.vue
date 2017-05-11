@@ -15,13 +15,13 @@
     <v-advanced-search v-if="ready" :fields="fields" @search="searchAction"></v-advanced-search>
     <div class="row" v-if="ready">
       <div class="col-md-2">
-        <v-statistics v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-statistics>
-        <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
+        <v-statistics v-if="start && 0" :hits="hits" :pages="pages" :facets="facets"></v-statistics>
+        <v-filter v-show="start" v-if="allfilters && 0" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
-      <div class="col-md-10" v-if="!loading">
+      <div class="col-md-12" v-if="!loading || 1">
         <v-page v-if="0 && documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
 
-        <v-purchase-list :documents="documents" class="list_documents" :order="orderby" @orderby="sort" v-if="documents.length"></v-purchase-list>
+        <v-purchase-list @filter="setFilters" :allfilters="facets" :activefilters="activeFilters" :documents="documents" class="list_documents" :order="orderby" @orderby="sort"></v-purchase-list>
 
         <v-page v-if="documents.length && pages > 1" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
       </div>

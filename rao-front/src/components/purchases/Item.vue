@@ -1,6 +1,7 @@
 <template>
   <tr>
     <td class="icon"><i class="fa" :class="getDocType(item.Mime)" aria-hidden="true"></i></td>
+    <td>{{item.Agence}}</td>
     <td>{{item.Client}}</td>
     <td>{{item.Projet}}</td>
     <td>{{item.Consultant}}</td>
