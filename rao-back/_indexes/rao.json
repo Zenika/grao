@@ -29,6 +29,6 @@
 	"attributesToHighlight": [
 		"Content"
 	],
-	"highlightPreTag":  "em class=\"snippet\">",
+	"highlightPreTag":  "<em class=\"snippet\">",
 	"highlightPostTag": "</em>"
 }
