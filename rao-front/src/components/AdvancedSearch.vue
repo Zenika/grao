@@ -1,7 +1,7 @@
 <template>
 
   <form class="navbar-form navbar-left" role="search" @submit.prevent="validateBeforeSubmit" :class="{'big': start}">
-    <input v-for="(field, index) in fields" v-model="fieldValues[index].value" type="text" class="form-control" :placeholder="field.placeholder">
+    <input v-model="searching" type="text" class="form-control" placeholder="Keywords, clients, locations, framework...">
     <button type="submit" class="btn btn-default">
       <i class="fa fa-search" aria-hidden="true"></i>
     </button>
@@ -19,14 +19,12 @@ export default {
   name: 'advanced-search',
   data () {
     return {
-      'start': true
+      'start': true,
+      'searching': ''
     }
   },
-  props: ['fields'],
+  props: [],
   created () {
-    for (let index in this.props) {
-      this.fieldValues[index] = ''
-    }
     this.validateBeforeSubmit()
   },
   methods: {
@@ -38,25 +36,10 @@ export default {
         }
         // emit parent data
         this.start = false
-        this.$emit('search', this.fieldValues)
+        this.$emit('search', this.searching)
       })
     }
-  },
-  computed: {
-    fieldValues: function () {
-      const values = []
-      if (this.fields) {
-        for (let index in this.fields) {
-          values.push({
-            type: this.fields[index].type,
-            value: ''
-          })
-        }
-      }
-      return values
-    }
   }
-
 }
 </script>
 

@@ -65,13 +65,7 @@ export default {
       allfilters: [],
       url: process.env.API_URL + 'rao/search',
       start: false,
-      ready: true,
-      fields: [
-        {
-          type: 'keywords',
-          placeholder: 'Keywords, clients, locations, framework...'
-        }
-      ]
+      ready: true
     }
   },
   components: {
@@ -87,10 +81,10 @@ export default {
   methods: {
     searchAction (search) {
       this.page = 0
-      this.searching = search[0].value
+      this.searching = search
       this.activeFilters = {}
       this.stringFilters = ''
-      this.search(search[0].value)
+      this.search(this.searching)
       this.start = true
     },
     getAllFilters () {
