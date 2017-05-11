@@ -45,3 +45,18 @@ User=ubuntu
 [Install]
 WantedBy=multi-user.target
 ```
+
+```SystemdAssertPathExists=/home/ubuntu
+Description=Document conversion service
+
+[Service]
+WorkingDirectory=/home/ubuntu
+ExecStart=/bin/bash -c '/home/ubuntu/docd'
+Restart=always
+PrivateTmp=true
+NoNewPrivileges=true
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target
+```
