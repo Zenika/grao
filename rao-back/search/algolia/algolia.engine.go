@@ -29,9 +29,17 @@ func New() *Algolia {
 	}
 }
 
-func (alg Algolia) Configure(index string, settings map[string]interface{}) error {
+func (alg Algolia) Configure(index string, settings search.Settings) error {
 	i := alg.getIndex(index)
-	_, err := i.SetSettings(settings)
+	_, err := i.SetSettings(algoliasearch.Map{
+		"searchableAttributes":  settings.SearchableAttributes,
+		"attributesToRetrieve":  settings.AttributesToRetrieve,
+		"attributesForFaceting": settings.AttributesForFaceting,
+		"attributesToSnippet":   settings.AttributesToSnippet,
+		"attributesToHighlight": settings.AttributesToHighlight,
+		"highlightPreTag":       settings.HighlightPreTag,
+		"highlightPostTag":      settings.HighlightPostTag,
+	})
 	if nil != err {
 		log.Error(err, log.ERROR)
 	}

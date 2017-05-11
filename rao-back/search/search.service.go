@@ -22,7 +22,7 @@ import "github.com/Zenika/RAO/document"
 type SearchEngine interface {
 	Store(index string, doc document.IDocument, docMapper document.DocumentMapper)
 	Search(index string, query Query) (*Response, error)
-	Configure(index string, settings map[string]interface{}) error
+	Configure(index string, settings Settings) error
 }
 
 type SearchService struct {
@@ -37,6 +37,16 @@ type Query struct {
 	Page         int
 	HitsPerPage  int
 	Restriction  string
+}
+
+type Settings struct {
+	SearchableAttributes  []string
+	AttributesToRetrieve  []string
+	AttributesForFaceting []string
+	AttributesToSnippet   []string
+	AttributesToHighlight []string
+	HighlightPreTag       string
+	HighlightPostTag      string
 }
 
 type Response struct {
@@ -57,6 +67,6 @@ func (search SearchService) Search(index string, query Query) (*Response, error)
 	return search.engine.Search(index, query)
 }
 
-func (search SearchService) Configure(index string, settings map[string]interface{}) error {
+func (search SearchService) Configure(index string, settings Settings) error {
 	return search.engine.Configure(index, settings)
 }

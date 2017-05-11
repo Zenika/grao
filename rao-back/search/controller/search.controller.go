@@ -27,7 +27,7 @@ func SettingsHandler(searchService *search.SearchService) func(w http.ResponseWr
 func handleConfig(w http.ResponseWriter, r *http.Request, searchService *search.SearchService) {
 	vars := mux.Vars(r)
 	index := vars["index"]
-	var settings map[string]interface{}
+	var settings search.Settings
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&settings)
 	log.Error(err, log.ERROR)
