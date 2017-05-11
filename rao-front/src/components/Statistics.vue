@@ -1,7 +1,7 @@
 <template>
   <div class="result">
     <i @click="reduce" class="visible-xs-block fa fa-window-minimize" aria-hidden="true"></i>
-    <h4>Statistics<span v-if="hits && hits > 1">s</span></h4>
+    <h4>Statistic<span v-if="hits && hits > 1">s</span></h4>
     <div class="section">
       <ul>
         <li>
@@ -12,7 +12,7 @@
           <span>Document<span v-if="hits > 1">s</span></span>
           <strong>{{ hits || '...' }}</strong>
         </li>
-        <li v-for="(name, key) in facets" v-if="facets && !config.hidden_facets.includes(key)">
+        <li v-for="(name, key) in facets" v-if="facets && !config.hidden_facets[$route.name].includes(key)">
           <span>{{key}}<span v-if="Object.keys(name).length > 1">s</span></span>
           <strong>{{ Object.keys(name).length || '...' }}</strong>
         </li>

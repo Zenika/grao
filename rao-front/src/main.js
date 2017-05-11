@@ -6,6 +6,8 @@ import router from './router'
 import axios from 'axios'
 import VeeValidate from 'vee-validate'
 
+import './directives/'
+
 Vue.prototype.$http = axios
 Vue.use(VeeValidate)
 

@@ -1,9 +1,16 @@
 const config = {
-  hidden_facets: [
-    'Path',
-    'Ext',
-    'Title'
-  ]
+  hidden_facets: {
+    rao: [
+      'Path',
+      'Extension',
+      'Title'
+    ],
+    adv: [
+      'Path',
+      'Title',
+      'Projet'
+    ]
+  }
 }
 
 export default config

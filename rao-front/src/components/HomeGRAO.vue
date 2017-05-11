@@ -21,11 +21,7 @@
         <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
       <div class="col-md-10" v-if="!loading">
-        <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
-
-        <v-responses-list :documents="documents" :search="searching"></v-responses-list>
-
-        <v-page v-if="documents.length && pages > 1" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
+        <v-responses-list v-if="documents.length > 1" :pages="pages" :page="page" :documents="documents" :search="searching" @next="moreItem"></v-responses-list>
       </div>
 
       <div class="loading col-md-10" v-if="loading">
@@ -56,8 +52,8 @@ export default {
   name: 'home-grao',
   data () {
     return {
-      loading: false,
-      documents: false,
+      loading: true,
+      documents: [],
       msg: 'Welcome to RAO a Vue.js App',
       searching: null,
       page: 0,
@@ -67,7 +63,7 @@ export default {
       activeFilters: {},
       stringFilters: '',
       allfilters: [],
-      url: process.env.API_URL + 'rao',
+      url: process.env.API_URL + 'rao/search',
       start: false,
       ready: true,
       fields: [
@@ -135,25 +131,32 @@ export default {
     goto (page) {
       this.search(this.searching, page)
     },
-    search (value, page) {
-      this.loading = true
+    moreItem () {
+      console.log('need more item')
+      this.search(this.searching, this.page++, true)
+    },
+    search (value, page, more) {
       if (typeof page === 'undefined') page = this.page
-
+      let hitsPerPage = localStorage.getItem('hitsPerPage') | 10
       let params = {
         'query': value,
         'facets': '*',
         'page': page,
+        'hitsPerPage': hitsPerPage,
         'restriction': 'Content'
         // 'filters': '(Region:Lille OR Region:Lyon)'
       }
 
       if (this.stringFilters) params.filters = this.stringFilters
       this.$http.post(this.url, params).then(response => {
-        this.documents = response.data.hits
-        this.page = response.data.page
+        if (more === true) {
+          this.documents = this.documents.concat(response.data.hits)
+        } else {
+          this.documents = response.data.hits
+        }
+        this.loading = false
         this.hits = response.data.nbHits
         this.pages = response.data.nbPages
-        this.loading = false
         this.facets = response.data.facets
       }, error => {
         console.log(error)
@@ -226,21 +229,4 @@ h1{
     margin: 0 0 20px;
   }
 }
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform:translateY(0);
-  }
-  40% {
-    transform:translateY(-30px);
-  }
-  60% {
-    transform:translateY(-15px);
-  }
-}
-
-.bounce {
-  animation: bounce 2s infinite;
-}
-
 </style>

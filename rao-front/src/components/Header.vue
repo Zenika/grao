@@ -5,7 +5,7 @@
         <router-link class="navbar-brand" to="/">
           <img alt="Brand" src="../assets/znk.png">
         </router-link>
-        <router-link class="navbar-link" to="/">
+        <router-link class="navbar-link" to="rao">
           <div>
             Response
           </div>
@@ -49,6 +49,20 @@ nav{
     img{
       max-height: 100%;
     }
+  }
+}
+
+.router-link-exact-active{
+  position: relative;
+
+  &:after{
+    content: '';
+    position: absolute;
+    background: black;
+    width: 100%;
+    height: 3px;
+    left: 0;
+    bottom: 0;
   }
 }
 

@@ -4,6 +4,8 @@
 *.ipr
 *.swp
 
+nohup.out
+
 /lib/
 rao-back/env.sh
 rao-back/*.log
