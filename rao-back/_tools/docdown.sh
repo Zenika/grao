@@ -12,7 +12,10 @@
 # /!\ Working installation of golang
 # with an existing $GOPATH is assumed here
 COMMAND="$GOPATH/bin/godocdown"
-DEST="documentation"
+DIR="$(dirname $(realpath $0))"
+DEST="$DIR/../_documentation"
+SRC="$DIR/.."
+
 declare -a PACKAGES=(
   "document"
   "tree"
@@ -41,7 +44,7 @@ doc(){
   for i in "${PACKAGES[@]}"
   do
       echo "INFO: generating documentation for $i package"
-      "$COMMAND" "$i" >> "$DEST/README.md"
+      "$COMMAND" "$SRC/$i" >> "$DEST/README.md"
   done
 }
 
