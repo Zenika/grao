@@ -7,7 +7,11 @@
 nohup.out
 
 /lib/
-rao-back/env.sh
+rao-back/_tools/env.sh
+rao-back/_tools/env
+rao-back/_tools/docd.service
+rao-back/_tools/grao.service
+rao-back/_tools/cursor
 rao-back/*.log
 rao-back/bin
 rao-back/samples

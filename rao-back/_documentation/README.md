@@ -1,6 +1,6 @@
 # document
 --
-    import "github.com/Zenika/RAO/document"
+    import "."
 
 Package document contains common document interfaces, with subpackages related
 to document implementations and their associated services
@@ -206,7 +206,7 @@ type IDocument interface {
 IDocument is the common inherited interface for documents
 # tree
 --
-    import "github.com/Zenika/RAO/tree"
+    import "."
 
 Tree Package contains tree service interfaces with subpackages related to their
 ### implementations
@@ -232,6 +232,7 @@ Both **Poll** and **LongPoll** methods take a root path as their first argument
 and an array of function pair as their second argument:
 
 *pairs[0]* is of type ```go func(IDocument)(bool)``` and acts as a filter
+
 *pairs[1]* is of type func(IDocument) and is called only if *pairs[0]* evaluates
 to true
 
@@ -268,7 +269,7 @@ func (tree TreeService) Poll(root string, pairs [][]interface{})
 ```
 # conv
 --
-    import "github.com/Zenika/RAO/conv"
+    import "."
 
 conv Package contains conv service interfaces with subpackages related to their
 ### implementations
@@ -314,7 +315,7 @@ func (conv ConvService) Convert(input []byte, mimeType string) ([]byte, error)
 ```
 # search
 --
-    import "github.com/Zenika/RAO/search"
+    import "."
 
 Search Package contains search service interfaces with subpackages related to
 their implementations

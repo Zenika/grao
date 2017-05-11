@@ -14,7 +14,6 @@ import (
 	"github.com/Zenika/RAO/utils"
 )
 
-//var RAO_FILTER_PATTERN string = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/REPONSE ENVOYEE`
 var RAO_FILTER_PATTERN string = os.Getenv("RAO_POLL_FROM")
 var RAO_PATTERN_FILTER = regexp.MustCompile(RAO_FILTER_PATTERN)
 var MIMES = []string{"application/pdf"}

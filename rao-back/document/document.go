@@ -5,12 +5,6 @@ package document
 
 import "time"
 
-/*
-type DocumentHandler func(doc IDocument) // TODO errror handling
-
-type DocumentFilter func(doc IDocument) bool
-*/
-
 // DocumentMapper is a mapper function that can be used
 // by external services to convert any implentation of IDocument
 // into a map
