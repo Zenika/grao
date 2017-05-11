@@ -1,4 +1,4 @@
 module.exports = {
   NODE_ENV: '"production"',
-  API_URL: '"/api/v1/search"'
+  API_URL: '"/api/v1/"'
 }
