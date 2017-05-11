@@ -1,0 +1,28 @@
+{
+  "attributesToRetrieve" : [
+    "Client",
+		"Agence",
+		"Content",
+		"Mime",
+		"Extension",
+		"Bytes",
+		"Sum",
+		"Title",
+		"Path"
+  ],
+  "attributesForFaceting": [
+		"Path",
+		"Title",
+		"Extension",
+		"Client",
+		"Agence",
+	],
+  "attributesToSnippet": [
+		"Content:80"
+	],
+	"attributesToHighlight": [
+		"Content"
+	],
+	"highlightPreTag":  "em class=\"snippet\">",
+	"highlightPostTag": "</em>"
+}

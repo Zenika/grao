@@ -13,22 +13,15 @@
       <span>No indexed document...</span>
     </div>
 
-    <v-search v-if="ready" @search="searchAction"></v-search>
+    <v-advanced-search v-if="ready" :fields="fields" @search="searchAction"></v-advanced-search>
+
     <div class="row" v-if="ready">
       <div class="col-md-2">
-        <v-result v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-result>
+        <v-statistics v-if="start" :hits="hits" :pages="pages" :facets="facets"></v-statistics>
         <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
       <div class="col-md-10" v-if="!loading">
-        <v-page v-if="documents.length && pages > 1 && 0" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
-
-        <ul class="list_documents" v-if="documents.length">
-          <li v-for="doc in documents" >
-            <v-document :item="doc" :search="searching"></v-document>
-          </li>
-        </ul>
-
-        <v-page v-if="documents.length && pages > 1" :page="page" :pages="pages" :hits="hits" @goto="goto"></v-page>
+        <v-responses-list v-if="documents.length > 1" :pages="pages" :page="page" :documents="documents" :search="searching" @next="moreItem"></v-responses-list>
       </div>
 
       <div class="loading col-md-10" v-if="loading">
@@ -49,18 +42,18 @@
 <script>
 /* eslint no-undef: "error" */
 
-import Search from './Search'
+import AdvancedSearch from './AdvancedSearch'
 import Filter from './Filter'
-import Result from './Result'
-import Doc from './Document'
+import Statistics from './Statistics'
+import Responses from './responses/List'
 import Paging from './Paging'
 
 export default {
-  name: 'home',
+  name: 'home-grao',
   data () {
     return {
-      loading: false,
-      documents: false,
+      loading: true,
+      documents: [],
       msg: 'Welcome to RAO a Vue.js App',
       searching: null,
       page: 0,
@@ -70,16 +63,22 @@ export default {
       activeFilters: {},
       stringFilters: '',
       allfilters: [],
-      url: process.env.API_URL,
+      url: process.env.API_URL + 'rao/search',
       start: false,
-      ready: true
+      ready: true,
+      fields: [
+        {
+          type: 'keywords',
+          placeholder: 'Keywords, clients, locations, framework...'
+        }
+      ]
     }
   },
   components: {
-    'v-search': Search,
+    'v-advanced-search': AdvancedSearch,
     'v-filter': Filter,
-    'v-result': Result,
-    'v-document': Doc,
+    'v-statistics': Statistics,
+    'v-responses-list': Responses,
     'v-page': Paging
   },
   created () {
@@ -88,17 +87,17 @@ export default {
   methods: {
     searchAction (search) {
       this.page = 0
-      this.searching = search
+      this.searching = search[0].value
       this.activeFilters = {}
       this.stringFilters = ''
-      this.search(search)
+      this.search(search[0].value)
       this.start = true
     },
     getAllFilters () {
       let params = {'facets': '*'}
       this.$http.post(this.url, params).then(response => {
-        this.allfilters = response.body.facets
-        if (response.body.nbHits) {
+        this.allfilters = response.data.facets
+        if (response.data.nbHits) {
           this.ready = true
         } else {
           this.ready = false
@@ -132,27 +131,33 @@ export default {
     goto (page) {
       this.search(this.searching, page)
     },
-    search (value, page) {
-      this.loading = true
+    moreItem () {
+      console.log('need more item')
+      this.search(this.searching, this.page++, true)
+    },
+    search (value, page, more) {
       if (typeof page === 'undefined') page = this.page
-
+      let hitsPerPage = localStorage.getItem('hitsPerPage') | 10
       let params = {
         'query': value,
         'facets': '*',
         'page': page,
+        'hitsPerPage': hitsPerPage,
         'restriction': 'Content'
         // 'filters': '(Region:Lille OR Region:Lyon)'
       }
 
       if (this.stringFilters) params.filters = this.stringFilters
-
       this.$http.post(this.url, params).then(response => {
-        this.documents = response.body.hits
-        this.page = response.body.page
-        this.hits = response.body.nbHits
-        this.pages = response.body.nbPages
+        if (more === true) {
+          this.documents = this.documents.concat(response.data.hits)
+        } else {
+          this.documents = response.data.hits
+        }
         this.loading = false
-        this.facets = response.body.facets
+        this.hits = response.data.nbHits
+        this.pages = response.data.nbPages
+        this.facets = response.data.facets
       }, error => {
         console.log(error)
         this.ready = false
@@ -224,21 +229,4 @@ h1{
     margin: 0 0 20px;
   }
 }
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform:translateY(0);
-  }
-  40% {
-    transform:translateY(-30px);
-  }
-  60% {
-    transform:translateY(-15px);
-  }
-}
-
-.bounce {
-  animation: bounce 2s infinite;
-}
-
 </style>

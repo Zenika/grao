@@ -13,12 +13,14 @@ type ErrorLevel uint8
 
 const (
 	DEBUG = iota + 1
+	INFO
 	WARNING
 	ERROR
 	FATAL
 )
 
-var level = os.Getenv("RAO_LOG_LEVEL")
+var level string = os.Getenv("GRAO_LOG_LEVEL")
+var file os.File
 
 func _level() int {
 	switch level {
@@ -28,8 +30,26 @@ func _level() int {
 		return ERROR
 	case "WARNING":
 		return WARNING
+	case "INFO":
+		return INFO
 	}
 	return DEBUG
+}
+
+func Init() {
+	dest := os.Getenv("GRAO_LOG_FILE")
+	if "" == dest {
+		dest = "rao.log"
+	}
+	file, err := os.OpenFile(dest, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.SetOutput(file)
+}
+
+func Close() {
+	file.Close()
 }
 
 func Error(err error, level ErrorLevel) {
@@ -43,6 +63,13 @@ func Debug(message string) {
 		return
 	}
 	log.Println(fmt.Sprintf("DEBUG %v", message))
+}
+
+func Info(message string) {
+	if _level() > INFO {
+		return
+	}
+	log.Println(fmt.Sprintf("INFO %v", message))
 }
 
 func handleError(err error, level ErrorLevel) {

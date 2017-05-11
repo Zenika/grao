@@ -1,45 +1,60 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 
-	"github.com/Zenika/RAO/controller"
+	"github.com/Zenika/RAO/conv"
+	"github.com/Zenika/RAO/conv/docd"
+	bdcService "github.com/Zenika/RAO/document/bdc/service"
+	raoService "github.com/Zenika/RAO/document/rao/service"
+	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/RAO/search"
+	"github.com/Zenika/RAO/search/algolia"
+	searchController "github.com/Zenika/RAO/search/controller"
+	"github.com/Zenika/RAO/tree"
+	"github.com/Zenika/RAO/tree/dropbox"
 	"github.com/gorilla/mux"
 	"github.com/robfig/cron"
 	"github.com/rs/cors"
 )
 
-var logFile string = os.Getenv("RAO_LOG_FILE")
+/* INIT SERVICES IMPLEMENTATIONS */
+var treeService = tree.New(dropbox.New())
+var convService = conv.New(docd.New())
+var searchService = search.New(algolia.New())
 
 func main() {
-
-	if len(logFile) == 0 {
-		logFile = "rao.log"
-	}
-	f, err := os.OpenFile(logFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-	log.SetOutput(f)
-	log.Println("Application started")
-
-	cronExp := os.Getenv("RAO_POLL_EVERY")
+	/* INIT LOGGING */
+	log.Init()
+	defer log.Close()
+	log.Info("Application started")
+	/* INIT SCHEDULLER */
+	cronExp := os.Getenv("GRAO_POLL_EVERY")
 	if len(cronExp) == 0 {
 		cronExp = "@daily" // equivalent to 0 0 0 * * *
 	}
 	cron := cron.New()
-	cron.AddFunc(cronExp, controller.Poll)
+	cron.AddFunc(cronExp, func() {
+		root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
+		bdcService := bdcService.New(*searchService, *treeService)
+		raoService := raoService.New(*searchService, *convService, *treeService)
+		pairs := [][]interface{}{{bdcService.DocFilter, bdcService.DocHandler}, {raoService.DocFilter, raoService.DocHandler}}
+		treeService.Poll(root, pairs)
+	})
 	cron.Start()
+	/* INIT HTTP CONTROLLER */
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
 		AllowCredentials: true,
 	})
 	r := mux.NewRouter()
-	r.HandleFunc("/api/v1/search", controller.Search)
+	r.HandleFunc("/api/v1/{index}/search", searchController.SearchHandler(searchService)).
+		Methods("POST")
+	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).
+		Methods("POST")
 	handler := c.Handler(r)
 	http.ListenAndServe(":8090", handler)
 }

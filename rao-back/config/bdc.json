@@ -1,0 +1,21 @@
+{
+  "attributesToRetrieve" : [
+    "Client",
+		"Agence",
+		"Mime",
+		"Extension",
+		"Title",
+		"Path",
+    "Projet",
+    "Consultant"
+  ],
+  "attributesForFaceting": [
+		"Path",
+		"Title",
+		"Extension",
+		"Client",
+		"Agence",
+    "Consultant",
+    "Projet"
+	]
+}
