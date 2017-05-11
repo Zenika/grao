@@ -3,10 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueResource from 'vue-resource'
+import axios from 'axios'
 import VeeValidate from 'vee-validate'
 
-Vue.use(VueResource)
+import './directives/'
+
+Vue.prototype.$http = axios
 Vue.use(VeeValidate)
 
 Vue.config.productionTip = false

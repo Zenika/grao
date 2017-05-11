@@ -1,7 +1,7 @@
 <template>
 
   <form class="navbar-form navbar-left" role="search" @submit.prevent="validateBeforeSubmit" :class="{'big': start}">
-    <input v-model="search" type="text" class="form-control" placeholder="Keywords, clients, locations, framework...">
+    <input v-for="(field, index) in fields" v-model="fieldValues[index].value" type="text" class="form-control" :placeholder="field.placeholder">
     <button type="submit" class="btn btn-default">
       <i class="fa fa-search" aria-hidden="true"></i>
     </button>
@@ -15,12 +15,19 @@
 
 <script>
 export default {
-  name: 'search',
+  // Purpose of this component is to replace simple search in the long run
+  name: 'advanced-search',
   data () {
     return {
-      'search': null,
       'start': true
     }
+  },
+  props: ['fields'],
+  created () {
+    for (let index in this.props) {
+      this.fieldValues[index] = ''
+    }
+    this.validateBeforeSubmit()
   },
   methods: {
     validateBeforeSubmit () {
@@ -31,8 +38,22 @@ export default {
         }
         // emit parent data
         this.start = false
-        this.$emit('search', this.search)
+        this.$emit('search', this.fieldValues)
       })
+    }
+  },
+  computed: {
+    fieldValues: function () {
+      const values = []
+      if (this.fields) {
+        for (let index in this.fields) {
+          values.push({
+            type: this.fields[index].type,
+            value: ''
+          })
+        }
+      }
+      return values
     }
   }
 
@@ -59,6 +80,24 @@ form{
     margin-left: -6%;
   }
 
+  @media screen and (max-width: $break-medium-large) {
+    float: none !important;
+  }
+
+  @media screen and (max-width: $break-medium-small) {
+      flex-wrap: wrap;
+      flex-direction: column;
+      height: auto !important;
+      input {
+            margin-bottom: 10px;
+            margin-right: 0 !important;
+      }
+      button {
+        width: 400px !important;
+        max-width: 80% !important;
+      }
+  }
+
   &.big{
     height: 150px;
   }
@@ -70,6 +109,7 @@ form{
     border-radius: 0px;
     border: none;
     height: 40px;
+    margin-right: 10px;
   }
 
   .btn{
