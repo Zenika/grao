@@ -13,7 +13,7 @@
 # with an existing $GOPATH is assumed here
 COMMAND="$GOPATH/bin/godocdown"
 DIR="$(dirname $(realpath $0))"
-DEST="$DIR/../_documentation"
+DEST=$(realpath "$DIR/../_documentation")
 SRC="$DIR/.."
 
 declare -a PACKAGES=(
