@@ -2,13 +2,13 @@ const config = {
   hidden_facets: {
     rao: [
       'Path',
-      'Ext',
+      'Extension',
       'Title'
     ],
     adv: [
       'Path',
-      'Ext',
-      'Title'
+      'Title',
+      'Projet'
     ]
   }
 }
