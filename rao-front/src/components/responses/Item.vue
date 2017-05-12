@@ -47,7 +47,6 @@ export default {
       } else if (type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
         return 'fa-file-word-o'
       } else {
-        console.log(type)
         return 'fa-file-o'
       }
     }
@@ -61,7 +60,7 @@ export default {
 
 .document{
   display: block;
-  border: solid 3px $red_znk;
+  border: solid 1px #cacaca;
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -124,7 +123,7 @@ export default {
     }
 
     margin-top: 10px;
-    background: #dfe0dc;
+    background: #E6E6E6;
     padding: 10px;
     cursor: pointer;
     transition: all 0.2s;

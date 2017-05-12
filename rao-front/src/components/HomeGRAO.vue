@@ -21,7 +21,7 @@
         <v-filter v-show="start" v-if="allfilters" :facets="facets" :allfilters="allfilters" :activefilters="activeFilters" @filter="setFilters"></v-filter>
       </div>
       <div class="col-md-10" v-if="!loading">
-        <v-responses-list v-if="documents.length > 1" :pages="pages" :page="page" :documents="documents" :search="searching" @next="moreItem"></v-responses-list>
+        <v-responses-list v-if="documents.length > 0" :pages="pages" :page="page" :documents="documents" :search="searching" @next="moreItem"></v-responses-list>
       </div>
 
       <div class="loading col-md-10" v-if="loading">
@@ -120,6 +120,7 @@ export default {
         testname = 0
       })
       console.log(this.stringFilters)
+      this.page = 0
       this.search(this.searching)
     },
     goto (page) {

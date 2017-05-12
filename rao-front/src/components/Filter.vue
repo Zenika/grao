@@ -76,13 +76,14 @@ export default {
 @import "../_variables.scss";
 
 .filters{
-  background: $red_znk;
-  color: white;
+  background: #E6E6E6;
+  color: black;
   padding: 20px;
   margin-bottom: 20px;
 
   h4{
     text-align: left;
+    color: $red_znk;
   }
 
   li{

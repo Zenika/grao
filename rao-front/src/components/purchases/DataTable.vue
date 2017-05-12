@@ -14,11 +14,12 @@ export default {
   data () {
     return {
       columns: [
-        'type',
+        // 'type',
         'Agence',
         'Client',
         'Projet',
         'Consultant',
+        'Title',
         'action'
       ],
       options: {
@@ -28,13 +29,15 @@ export default {
           'Agence',
           'Client',
           'Projet',
-          'Consultant'
+          'Consultant',
+          'Title'
         ],
         sortable: [
           'Agence',
           'Client',
           'Projet',
-          'Consultant'
+          'Consultant',
+          'Title'
         ],
         headings: {
           type: '',
@@ -45,20 +48,6 @@ export default {
           type,
           action
         }
-        /* checkboxColumns: {
-          Agence: [
-            {
-              id: 'lille',
-              text: 'lille'
-            },
-            {
-              id: 'nantes',
-              text: 'nantes'
-            }
-          ]
-        },
-        listColumns: {
-        } */
       }
     }
   },
@@ -95,6 +84,11 @@ export default {
 
 .VueTables{
   margin-top: 25px;
+}
+
+table td:nth-child(6){
+  max-width: 250px;
+  word-wrap: break-word;
 }
 
 .VueTables__sortable {

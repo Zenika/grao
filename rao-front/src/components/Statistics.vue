@@ -1,7 +1,7 @@
 <template>
   <div class="result">
     <i @click="reduce" class="visible-xs-block fa fa-window-minimize" aria-hidden="true"></i>
-    <h4>Statistic<span v-if="hits && hits > 1">s</span></h4>
+    <h3>Statistic<span v-if="hits && hits > 1">s</span></h3>
     <div class="section">
       <ul>
         <li>
@@ -50,15 +50,16 @@ export default {
 @import "../_variables.scss";
 
 .result{
-  background: $red_znk;
+  background: #E6E6E6;
   min-height: 80px;
-  color: white;
+  color: black;
   padding: 20px;
   margin-bottom: 20px;
   position: relative;
 
-  h4{
-    text-align: left;
+  h3{
+    text-align: center;
+    color: $red_znk;
   }
 
   .fa{
