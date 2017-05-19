@@ -20,11 +20,11 @@
             Purchase Order
           </div>
         </router-link>
-        <router-link class="navbar-link settings" to="settings">
+        <!-- router-link class="navbar-link settings" to="settings">
           <div>
             <i class="fa fa-cog" aria-hidden="true"></i>
           </div>
-        </router-link>
+        </router-link -->
       </div>
     </div>
   </nav>
