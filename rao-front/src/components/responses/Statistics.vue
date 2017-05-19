@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import config from './../config'
+import config from '../../config'
 
 export default {
   name: 'statistic',
@@ -47,7 +47,7 @@ export default {
 
 <style scoped lang="scss">
 
-@import "../_variables.scss";
+@import "../../variables";
 
 .result{
   background: #E6E6E6;

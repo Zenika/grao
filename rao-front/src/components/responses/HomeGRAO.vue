@@ -42,11 +42,11 @@
 <script>
 /* eslint no-undef: "error" */
 
-import AdvancedSearch from '../AdvancedSearch'
-import Filter from '../Filter'
-import Statistics from '../Statistics'
+import AdvancedSearch from './AdvancedSearch'
+import Filter from './Filter'
+import Statistics from './Statistics'
 import Responses from './List'
-import Paging from '../Paging'
+import Paging from '../purchases/Paging'
 
 export default {
   name: 'home-grao',

@@ -50,7 +50,7 @@ export default {
 
 <style scoped lang="scss">
 
-@import "../_variables.scss";
+@import "../../variables";
 
 .paging{
 

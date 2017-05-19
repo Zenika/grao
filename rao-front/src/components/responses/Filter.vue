@@ -33,7 +33,7 @@
 
 <script>
 
-import config from './../config'
+import config from '../../config'
 
 export default {
   name: 'filter',
@@ -73,7 +73,7 @@ export default {
 
 <style scoped lang="scss">
 
-@import "../_variables.scss";
+@import "../../variables";
 
 .filters{
   background: #E6E6E6;

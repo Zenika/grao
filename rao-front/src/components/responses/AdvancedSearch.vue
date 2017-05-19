@@ -7,7 +7,7 @@
     </button>
     <span class="hidden-xs">by</span>
     <a class="hidden-xs" target="_blank" href="https://algolia.com">
-      <img src="../assets/algolia.png" alt="">
+      <img src="../../assets/algolia.png" alt="">
     </a>
   </form>
 
@@ -45,7 +45,7 @@ export default {
 
 <style scoped lang="scss">
 
-@import "../_variables.scss";
+@import "../../variables";
 
 form{
   background: $red_znk;
