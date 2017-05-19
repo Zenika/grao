@@ -5,6 +5,11 @@
         <router-link class="navbar-brand" to="/">
           <img alt="Brand" src="../assets/znk.png">
         </router-link>
+        <router-link class="navbar-link" to="qualif">
+          <div>
+            Qualification
+          </div>
+        </router-link>
         <router-link class="navbar-link" to="rao">
           <div>
             Response
