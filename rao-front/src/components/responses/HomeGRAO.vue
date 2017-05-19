@@ -9,7 +9,7 @@
     </h1>
 
     <div v-if="!ready" class="not_ready">
-      <img src="../assets/no_files.png" alt="">
+      <img src="../../assets/no_files.png" alt="">
       <span>No indexed document...</span>
     </div>
 
@@ -25,13 +25,13 @@
       </div>
 
       <div class="loading col-md-10" v-if="loading">
-        <img class="bounce" src="../assets/znk_red.png" alt="">
+        <img class="bounce" src="../../assets/znk_red.png" alt="">
         <span>Search in progress...</span>
       </div>
 
       <div class="col-md-10 no_result" v-if="documents.length == 0 && !loading">
         <p>No result found</p>
-        <img src="../assets/noresult.jpg" alt="">
+        <img src="../../assets/noresult.jpg" alt="">
       </div>
 
     </div>
@@ -42,11 +42,11 @@
 <script>
 /* eslint no-undef: "error" */
 
-import AdvancedSearch from './AdvancedSearch'
-import Filter from './Filter'
-import Statistics from './Statistics'
-import Responses from './responses/List'
-import Paging from './Paging'
+import AdvancedSearch from '../AdvancedSearch'
+import Filter from '../Filter'
+import Statistics from '../Statistics'
+import Responses from './List'
+import Paging from '../Paging'
 
 export default {
   name: 'home-grao',
