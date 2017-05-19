@@ -8,7 +8,7 @@
     </h1>
 
     <div v-if="!ready" class="not_ready">
-      <img src="../assets/no_files.png" alt="">
+      <img src="../../assets/no_files.png" alt="">
       <span>No document indexing...</span>
     </div>
 
@@ -26,13 +26,13 @@
       </div>
 
       <div class="loading col-md-12" v-if="loading">
-        <img class="bounce" src="../assets/znk_red.png" alt="">
+        <img class="bounce" src="../../assets/znk_red.png" alt="">
         <span>Search in progress...</span>
       </div>
 
       <div class="col-md-12 no_result" v-if="documents.length == 0 && !loading">
         <p>No matching records</p>
-        <img src="../assets/noresult.jpg" alt="">
+        <img src="../../assets/noresult.jpg" alt="">
       </div>
 
     </div>
@@ -43,7 +43,7 @@
 <script>
 /* eslint no-undef: "error" */
 
-import DataTable from './purchases/DataTable'
+import DataTable from './DataTable'
 
 export default {
   name: 'home',
@@ -106,7 +106,7 @@ export default {
 
 <style scoped lang="scss">
 
-@import "../_variables.scss";
+@import "../../variables";
 
 h1{
   margin: 20px auto;

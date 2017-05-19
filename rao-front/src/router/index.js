@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HomeQualif from '@/components/qualification/HomeQualif'
 import HomeGRAO from '@/components/responses/HomeGRAO'
-import HomeADV from '@/components/HomeADV'
+import HomeADV from '@/components/purchases/HomeADV'
 import Settings from '@/components/Settings'
 
 Vue.use(Router)
