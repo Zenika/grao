@@ -2,7 +2,9 @@
   <div class="home largeur">
 
     <h1>
-      Q<span>ualification</span>
+      D<span>ocuments </span>
+      &
+      T<span>emplates </span>
     </h1>
 
     <div v-if="!ready" class="not_ready">
