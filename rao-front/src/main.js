@@ -6,7 +6,7 @@ import router from './router'
 import axios from 'axios'
 import VeeValidate from 'vee-validate'
 import VTooltip from 'v-tooltip'
-import {ClientTable} from 'vue-tables-2'
+import { ClientTable } from 'vue-tables-2'
 // import {ClientTable} from './../../../vue-tables-2/compiled'
 
 import './directives/'
@@ -32,5 +32,5 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: {App}
 })

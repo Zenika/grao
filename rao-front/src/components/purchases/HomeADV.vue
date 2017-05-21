@@ -41,128 +41,128 @@
 </template>
 
 <script>
-/* eslint no-undef: "error" */
+  /* eslint no-undef: "error" */
 
-import DataTable from './DataTable'
+  import DataTable from './DataTable'
 
-export default {
-  name: 'home',
-  data () {
-    return {
-      loading: false,
-      documents: [],
-      url: process.env.API_URL + 'bdc/search',
-      start: false,
-      ready: true
-    }
-  },
-  components: {
-    'v-datatable': DataTable
-  },
-  created () {
-    this.searchAction()
-  },
-  methods: {
-    searchAction (search) {
-      this.page = 0
-      this.documents = []
-
-      this.searching = search
-      this.activeFilters = {}
-      this.stringFilters = ''
-      this.search(search)
-      this.start = true
-    },
-    search (values, page) {
-      this.loading = true
-      if (typeof page === 'undefined') page = this.page
-
-      // TODO build proper query
-      const query = null
-      let params = {
-        'query': query,
-        'facets': '*',
-        'page': page,
-        'hitsPerPage': 99999,
-        'CustomRanking': [this.orderby]
-        // 'filters': '(Region:Lille OR Region:Lyon)'
+  export default {
+    name: 'home',
+    data () {
+      return {
+        loading: false,
+        documents: [],
+        url: process.env.API_URL + 'bdc/search',
+        start: false,
+        ready: true
       }
+    },
+    components: {
+      'v-datatable': DataTable
+    },
+    created () {
+      this.searchAction()
+    },
+    methods: {
+      searchAction (search) {
+        this.page = 0
+        this.documents = []
 
-      this.$http.post(this.url, params).then(response => {
-        this.documents = response.data.hits
-        this.page = response.data.page
-        this.hits = response.data.nbHits
-        this.pages = response.data.nbPages
-        this.loading = false
-        this.facets = response.data.facets
-      }, error => {
-        console.log(error)
-        this.ready = false
-      })
+        this.searching = search
+        this.activeFilters = {}
+        this.stringFilters = ''
+        this.search(search)
+        this.start = true
+      },
+      search (values, page) {
+        this.loading = true
+        if (typeof page === 'undefined') page = this.page
+
+        // TODO build proper query
+        const query = null
+        let params = {
+          'query': query,
+          'facets': '*',
+          'page': page,
+          'hitsPerPage': 99999,
+          'CustomRanking': [this.orderby]
+          // 'filters': '(Region:Lille OR Region:Lyon)'
+        }
+
+        this.$http.post(this.url, params).then(response => {
+          this.documents = response.data.hits
+          this.page = response.data.page
+          this.hits = response.data.nbHits
+          this.pages = response.data.nbPages
+          this.loading = false
+          this.facets = response.data.facets
+        }, error => {
+          console.log(error)
+          this.ready = false
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="scss">
 
-@import "../../variables";
+  @import "../../variables";
 
-h1{
-  margin: 20px auto;
-  font-size: $title_high_font_size;
-  span{
-    font-size: $title_low_font_size;
-  }
-}
-
-.row-actions{
-  width: 100%;
-  background: $red_znk;
-  padding: 10px;
-  text-align: left;
-  margin-top: 15px;
-  .btn-default{
-    i{
-      margin-right: 10px;
+  h1 {
+    margin: 20px auto;
+    font-size: $title_high_font_size;
+    span {
+      font-size: $title_low_font_size;
     }
   }
-}
 
-.loading{
-  margin-top: 80px;
-  img{
-    height: 100px;
+  .row-actions {
+    width: 100%;
+    background: $red_znk;
+    padding: 10px;
+    text-align: left;
+    margin-top: 15px;
+    .btn-default {
+      i {
+        margin-right: 10px;
+      }
+    }
   }
-  span{
-    display: block;
-    margin-top: 20px;
-    font-weight: 600;
-    font-size: 1em;
-  }
-}
 
-.not_ready{
-  margin-top: 80px;
-  img{
-    height: 150px;
+  .loading {
+    margin-top: 80px;
+    img {
+      height: 100px;
+    }
+    span {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      font-size: 1em;
+    }
   }
-  span{
-    display: block;
-    margin-top: 20px;
-    font-weight: 600;
-    font-size: 1em;
-  }
-}
 
-.no_result{
-  padding: 20px;
-  font-size: 2em;
-  background: #F5F6F8;
-  text-align: center;
-  p{
-    margin-top: 20px;
+  .not_ready {
+    margin-top: 80px;
+    img {
+      height: 150px;
+    }
+    span {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      font-size: 1em;
+    }
   }
-}
+
+  .no_result {
+    padding: 20px;
+    font-size: 2em;
+    background: #F5F6F8;
+    text-align: center;
+    p {
+      margin-top: 20px;
+    }
+  }
 
 </style>

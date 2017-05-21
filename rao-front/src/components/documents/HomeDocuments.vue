@@ -30,20 +30,20 @@
 <script>
 
   export default {
-    name      : 'home',
+    name: 'home',
     data () {
       return {
-        loading  : false,
+        loading: false,
         documents: [],
-        url      : process.env.API_URL + 'bdc/search',
-        start    : false,
-        ready    : true
+        url: process.env.API_URL + 'bdc/search',
+        start: false,
+        ready: true
       }
     },
     components: {},
     created () {
     },
-    methods   : {}
+    methods: {}
   }
 </script>
 

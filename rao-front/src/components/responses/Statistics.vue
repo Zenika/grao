@@ -6,15 +6,15 @@
       <ul>
         <li>
           <span>Page<span v-if="pages > 1">s</span></span>
-          <strong>{{ pages || '...' }}</strong>
+          <strong>{{ pages || '...' }}</strong>
         </li>
         <li>
           <span>Document<span v-if="hits > 1">s</span></span>
-          <strong>{{ hits || '...' }}</strong>
+          <strong>{{ hits || '...' }}</strong>
         </li>
         <li v-for="(name, key) in facets" v-if="facets && !config.hidden_facets[$route.name].includes(key)">
           <span>{{key}}<span v-if="Object.keys(name).length > 1">s</span></span>
-          <strong>{{ Object.keys(name).length || '...' }}</strong>
+          <strong>{{ Object.keys(name).length || '...' }}</strong>
         </li>
       </ul>
     </div>
@@ -22,59 +22,59 @@
 </template>
 
 <script>
-import config from '../../config'
+  import config from '../../config'
 
-export default {
-  name: 'statistic',
-  data () {
-    return {
-      config: config,
-      reducing: false
-    }
-  },
-  props: [
-    'facets',
-    'hits',
-    'pages'
-  ],
-  methods: {
-    reduce () {
-      this.reducing = !this.reducing
+  export default {
+    name: 'statistic',
+    data () {
+      return {
+        config: config,
+        reducing: false
+      }
+    },
+    props: [
+      'facets',
+      'hits',
+      'pages'
+    ],
+    methods: {
+      reduce () {
+        this.reducing = !this.reducing
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="scss">
 
-@import "../../variables";
+  @import "../../variables";
 
-.result{
-  background: #E6E6E6;
-  min-height: 80px;
-  color: black;
-  padding: 20px;
-  margin-bottom: 20px;
-  position: relative;
+  .result {
+    background: #E6E6E6;
+    min-height: 80px;
+    color: black;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
 
-  h3{
-    text-align: center;
-    color: $red_znk;
-  }
-
-  .fa{
-    position: absolute;
-    right: 10px;
-    top: 5px;
-  }
-
-  ul{
-    li{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    h3 {
+      text-align: center;
+      color: $red_znk;
     }
-  }
 
-}
+    .fa {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+    }
+
+    ul {
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+  }
 </style>

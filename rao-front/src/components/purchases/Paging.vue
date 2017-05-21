@@ -8,11 +8,11 @@
           </a>
           <span v-if="page == 0" aria-hidden="true">&laquo;</span>
         </li>
-        <li v-if="page-1 > 0" @click="goto(page-2)"><a>{{page-1}}</a></li>
+        <li v-if="page-1 > 0" @click="goto(page-2)"><a>{{page - 1}}</a></li>
         <li v-if="page > 0" @click="goto(page-1)"><a>{{page}}</a></li>
-        <li class="active"><a>{{page+1}}</a></li>
-        <li v-if="page+1 < pages"@click="goto(page+1)"><a>{{page+2}}</a></li>
-        <li v-if="page+2 < pages" @click="goto(page+2)"><a>{{page+3}}</a></li>
+        <li class="active"><a>{{page + 1}}</a></li>
+        <li v-if="page+1 < pages" @click="goto(page+1)"><a>{{page + 2}}</a></li>
+        <li v-if="page+2 < pages" @click="goto(page+2)"><a>{{page + 3}}</a></li>
         <li :class="{disabled : page+1 == pages}">
           <a aria-label="Next" @click="goto(pages-1)" v-if="page+1 < pages">
             <span aria-hidden="true">&raquo;</span>
@@ -25,76 +25,74 @@
 </template>
 
 <script>
-export default {
-  name: 'paging',
-  data () {
-    return {
-    }
-  },
-  props: [
-    'hits',
-    'page',
-    'pages'
-  ],
-  created () {
-  },
-  computed: {
-  },
-  methods: {
-    goto (page) {
-      this.$emit('goto', page)
+  export default {
+    name: 'paging',
+    data () {
+      return {}
+    },
+    props: [
+      'hits',
+      'page',
+      'pages'
+    ],
+    created () {
+    },
+    computed: {},
+    methods: {
+      goto (page) {
+        this.$emit('goto', page)
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="scss">
 
-@import "../../variables";
+  @import "../../variables";
 
-.paging{
+  .paging {
 
-  //margin-top: -20px;
+    //margin-top: -20px;
 
-  .pagination>.active>a,
-  .pagination>.active>a:focus,
-  .pagination>.active>a:hover,
-  .pagination>.active>span,
-  .pagination>.active>span:focus,
-  .pagination>.active>span:hover{
-    background-color: $red_znk;
-    border-color: $red_znk;
-    cursor: pointer;
-  }
+    .pagination > .active > a,
+    .pagination > .active > a:focus,
+    .pagination > .active > a:hover,
+    .pagination > .active > span,
+    .pagination > .active > span:focus,
+    .pagination > .active > span:hover {
+      background-color: $red_znk;
+      border-color: $red_znk;
+      cursor: pointer;
+    }
 
-  .pagination>li>a,
-  .pagination>li>span{
-    color: $red_znk;
-    cursor: pointer;
-  }
+    .pagination > li > a,
+    .pagination > li > span {
+      color: $red_znk;
+      cursor: pointer;
+    }
 
-  .disabled span{
-    cursor: not-allowed!important;
-  }
+    .disabled span {
+      cursor: not-allowed !important;
+    }
 
-  .pagination>li.active>a{
-    color: white;
-  }
+    .pagination > li.active > a {
+      color: white;
+    }
 
-  .pagination{
-    border-radius: 0px;
-    width: auto;
-    display: flex;
-    justify-content: center;
-    padding: 0px;
-    margin-bottom: 20px;
-    background: white;
+    .pagination {
+      border-radius: 0;
+      width: auto;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      margin-bottom: 20px;
+      background: white;
 
-    li{
-      margin: 0px;
-      font-weight: 700;
+      li {
+        margin: 0;
+        font-weight: 700;
+      }
     }
   }
-}
 
 </style>
