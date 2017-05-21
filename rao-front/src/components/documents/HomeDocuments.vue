@@ -14,7 +14,13 @@
 
     <div class="row" v-if="ready">
 
-      Todo : list of documents to download
+      Todo : list of documents to download :
+      <ul>
+        <li> Qualification listing </li>
+        <li> Response templates (by type) </li>
+        <li> Response examples </li>
+        <li> Architectural schemes </li>
+      </ul>
 
     </div>
 
@@ -23,84 +29,83 @@
 
 <script>
 
-export default {
-  name: 'home',
-  data () {
-    return {
-      loading: false,
-      documents: [],
-      url: process.env.API_URL + 'bdc/search',
-      start: false,
-      ready: true
-    }
-  },
-  components: {},
-  created () {
-  },
-  methods: {
+  export default {
+    name      : 'home',
+    data () {
+      return {
+        loading  : false,
+        documents: [],
+        url      : process.env.API_URL + 'bdc/search',
+        start    : false,
+        ready    : true
+      }
+    },
+    components: {},
+    created () {
+    },
+    methods   : {}
   }
-}
 </script>
 
 <style scoped lang="scss">
 
-@import "../../_variables.scss";
+  @import "../../_variables.scss";
 
-h1{
-  margin: 20px auto;
-  font-size: $title_high_font_size;
-  span{
-    font-size: $title_low_font_size;
-  }
-}
-
-.row-actions{
-  width: 100%;
-  background: $red_znk;
-  padding: 10px;
-  text-align: left;
-  margin-top: 15px;
-  .btn-default{
-    i{
-      margin-right: 10px;
+  h1 {
+    margin: 20px auto;
+    font-size: $title_high_font_size;
+    span {
+      font-size: $title_low_font_size;
     }
   }
-}
 
-.loading{
-  margin-top: 80px;
-  img{
-    height: 100px;
+  .row-actions {
+    width: 100%;
+    background: $red_znk;
+    padding: 10px;
+    text-align: left;
+    margin-top: 15px;
+    .btn-default {
+      i {
+        margin-right: 10px;
+      }
+    }
   }
-  span{
-    display: block;
-    margin-top: 20px;
-    font-weight: 600;
-    font-size: 1em;
-  }
-}
 
-.not_ready{
-  margin-top: 80px;
-  img{
-    height: 150px;
+  .loading {
+    margin-top: 80px;
+    img {
+      height: 100px;
+    }
+    span {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      font-size: 1em;
+    }
   }
-  span{
-    display: block;
-    margin-top: 20px;
-    font-weight: 600;
-    font-size: 1em;
-  }
-}
 
-.no_result{
-  padding: 20px;
-  font-size: 2em;
-  background: #F5F6F8;
-  text-align: center;
-  p{
-    margin-top: 20px;
+  .not_ready {
+    margin-top: 80px;
+    img {
+      height: 150px;
+    }
+    span {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      font-size: 1em;
+    }
   }
-}
+
+  .no_result {
+    padding: 20px;
+    font-size: 2em;
+    background: #F5F6F8;
+    text-align: center;
+    p {
+      margin-top: 20px;
+    }
+  }
 
 </style>
