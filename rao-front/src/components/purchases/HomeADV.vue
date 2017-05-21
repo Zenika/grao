@@ -3,7 +3,7 @@
 
     <h1>
       P<span>urchase Order</span>
-      R<span>esearch</span>
+      S<span>earch</span>
       E<span>ngine</span>
     </h1>
 
