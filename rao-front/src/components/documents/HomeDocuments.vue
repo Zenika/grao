@@ -13,19 +13,17 @@
     </div>
 
     <div class="row" v-if="ready">
-
-      <h2>Todo : list of documents to download :</h2>
-      <div> - Qualification listing </div>
-      <div> - Response templates (by type)</div>
-      <div> - Response examples </div>
-      <div> - Architectural schemes </div>
-
+      <v-qualifDocs></v-qualifDocs>
+      <v-templatesList></v-templatesList>
     </div>
 
   </div>
 </template>
 
 <script>
+
+  import TemplatesList from './TemplatesList'
+  import QualifDocs from './QualifDocs'
 
   export default {
     name: 'home',
@@ -38,7 +36,10 @@
         ready: true
       }
     },
-    components: {},
+    components: {
+      'v-templatesList': TemplatesList,
+      'v-qualifDocs': QualifDocs
+    },
     created () {
     },
     methods: {}
