@@ -2,10 +2,9 @@
   <div class="home largeur">
 
     <h1>
-      G<span>énérateur</span>
-      R<span>éponse</span>
-      A<span>ppel</span>
-      O<span>ffre</span>
+      R<span>esponses</span>
+      S<span>earch</span>
+      E<span>ngine</span>
     </h1>
 
     <div v-if="!ready" class="not_ready">
