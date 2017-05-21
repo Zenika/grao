@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HomeQualif from '@/components/qualification/HomeQualif'
+import HomeDoc from '@/components/documents/HomeDocuments'
 import HomeGRAO from '@/components/responses/HomeGRAO'
 import HomeADV from '@/components/purchases/HomeADV'
 import Settings from '@/components/settings/Settings'
@@ -14,9 +14,9 @@ export default new Router({
       redirect: '/rao'
     },
     {
-      path: '/qualif',
-      name: 'qualif',
-      component: HomeQualif
+      path: '/docs',
+      name: 'docs',
+      component: HomeDoc
     },
     {
       path: '/rao',

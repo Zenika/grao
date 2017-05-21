@@ -5,19 +5,19 @@
         <router-link class="navbar-brand" to="/">
           <img alt="Brand" src="../assets/znk.png">
         </router-link>
-        <router-link class="navbar-link" to="qualif">
+        <router-link class="navbar-link" to="documents">
           <div>
-            1. Qualification
+            Documents & Templates
           </div>
         </router-link>
         <router-link class="navbar-link" to="rao">
           <div>
-            2. Response
+            Responses
           </div>
         </router-link>
         <router-link class="navbar-link" to="adv">
           <div>
-            Purchase Order
+            Purchase Orders
           </div>
         </router-link>
         <!-- router-link class="navbar-link settings" to="settings">
