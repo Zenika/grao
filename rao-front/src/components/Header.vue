@@ -7,12 +7,12 @@
         </router-link>
         <router-link class="navbar-link" to="qualif">
           <div>
-            Qualification
+            1. Qualification
           </div>
         </router-link>
         <router-link class="navbar-link" to="rao">
           <div>
-            Response
+            2. Response
           </div>
         </router-link>
         <router-link class="navbar-link" to="adv">
