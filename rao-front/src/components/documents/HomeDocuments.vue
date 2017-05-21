@@ -14,13 +14,11 @@
 
     <div class="row" v-if="ready">
 
-      Todo : list of documents to download :
-      <ul>
-        <li> Qualification listing </li>
-        <li> Response templates (by type) </li>
-        <li> Response examples </li>
-        <li> Architectural schemes </li>
-      </ul>
+      <h2>Todo : list of documents to download :</h2>
+      <div> - Qualification listing </div>
+      <div> - Response templates (by type)</div>
+      <div> - Response examples </div>
+      <div> - Architectural schemes </div>
 
     </div>
 
