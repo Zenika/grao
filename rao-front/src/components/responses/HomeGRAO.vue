@@ -164,11 +164,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 
+@import "../../variables";
+
 h1{
   margin: 20px auto;
-  font-size: 3em;
+  font-size: $title_high_font_size;
   span{
-    font-size: 12px;
+    font-size: $title_low_font_size;
   }
 }
 
