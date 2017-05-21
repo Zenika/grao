@@ -3,9 +3,9 @@
     <div class="container-fluid">
       <div class="navbar-header">
         <router-link class="navbar-brand" to="/">
-          <img alt="Brand" src="../assets/znk.png">
+          <img alt="Brand" src="../assets/znk.png"> <span class="nav-title">G.R.A.O.</span>
         </router-link>
-        <router-link class="navbar-link" to="documents">
+        <router-link class="navbar-link" to="docs">
           <div>
             Documents & Templates
           </div>
@@ -43,6 +43,14 @@
 
   @import "../_variables.scss";
 
+  .nav-title {
+    color: white;
+    font-weight: bolder;
+    font-family: monospace;
+    font-size: 1.2em;
+    padding-left: 5px;
+  }
+
   nav {
     text-align: left;
     border-radius: 0 !important;
@@ -51,6 +59,7 @@
       padding: 10px;
       img {
         max-height: 100%;
+        display: inline;
       }
     }
   }
