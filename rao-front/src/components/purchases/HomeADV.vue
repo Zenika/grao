@@ -2,9 +2,9 @@
   <div class="home largeur">
 
     <h1>
-      A<span>dministration</span>
-      D<span>es</span>
-      V<span>entes</span>
+      P<span>urchase Order</span>
+      R<span>esearch</span>
+      E<span>ngine</span>
     </h1>
 
     <div v-if="!ready" class="not_ready">
