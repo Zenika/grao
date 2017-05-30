@@ -6,6 +6,7 @@
     </div>
     <div class="panel-body">
       <v-item v-for="item in documents" :item="item"></v-item>
+      <p v-if="!documents.length" class="nodoc">No Document...</p>
     </div>
   </div>
 
@@ -42,6 +43,12 @@
     display: flex;
     justify-content: space-between;
     flex-flow: row wrap;
+
+    .nodoc{
+      color: black;
+      font-weight: bold;
+      padding: 20px;
+    }
   }
 
 </style>

@@ -1,9 +1,12 @@
 <template>
   <div class="document">
     <h3>{{item.title}}</h3>
-    <img v-if="item.url_preview" :src="item.preview_url" class="zoom">
+    <img v-if="item.url_preview" :src="item.url_preview" class="">
     <img v-if="!item.url_preview" src="http://www.nextflowers.co.uk/assets/images/md/no-image.png" class="default">
-    <a :href="item.url"></a>
+    <p class="description" v-if="item.description">{{item.description}}</p>
+    <p class="description" v-if="!item.description">no description...</p>
+    <a v-if="item.url_template" :href="item.url_template" target="_blank" class="btn btn-default btn-znk">Template</a>
+    <a v-if="item.url_exemple" :href="item.url_exemple" target="_blank" class="btn btn-default">Exemple</a>
   </div>
 </template>
 
@@ -36,8 +39,29 @@ export default {
   img{
     max-height: 200px;
     transition: all 0.2s;
-    &.zoom:hover{
-      transform: scale(2.5);
+  }
+  .description{
+    max-width: 200px;
+    text-align: justify;
+    margin: 20px auto;
+    height: 100px;
+    overflow-y: scroll;
+  }
+
+  .btn{
+    border-radius: 0px;
+    border-radius: 0px;
+    font-weight: 600;
+    border: solid 2px;
+  }
+
+  .btn-znk{
+    background: $red_znk;
+    border-color: $red_znk;
+    color: white;
+    &:hover{
+      background: $red_znk;
+      opacity: 0.9;
     }
   }
 }

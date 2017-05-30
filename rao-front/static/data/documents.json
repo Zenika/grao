@@ -7,31 +7,40 @@
         "description": "Estimates per task, use of ratio",
         "url_template": "http://dropbox.com/toto",
         "url_exemple": "http://dropbox.com/toto_exemple",
-        "url_preview": "https://cdn.ghacks.net/wp-content/uploads/2009/09/pdf_file_viewer-376x499.jpg"
+        "url_preview": "/static/img/qualif.png"
+      },
+      {
+        "title": "Qualification check list",
+        "description": "Estimates per task, use of ratio",
+        "url_exemple": "http://dropbox.com/toto_exemple"
+      },
+      {
+        "title": "Qualification check list",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sapien tellus, suscipit varius euismod a, sodales efficitur dolor. Quisque ullamcorper auctor justo vitae tincidunt.",
+        "url_template": "http://dropbox.com/toto_exemple"
       }
     ]
   },
   {
     "categorie": "Response templates",
     "documents": [
-      {
-        "title": "Qualification check list",
-        "description": "Estimates per task, use of ratio",
-        "url_template": "http://dropbox.com/toto",
-        "url_exemple": "http://dropbox.com/toto_exemple",
-        "url_preview": "https://cdn.ghacks.net/wp-content/uploads/2009/09/pdf_file_viewer-376x499.jpg"
-      }
+
     ]
   },
   {
     "categorie": "Estimates spreadsheets",
     "documents": [
       {
-        "title": "Qualification check list",
-        "description": "Estimates per task, use of ratio",
+        "title": "Fixed Price",
+        "description": "Ut sed eleifend nulla. Donec et rutrum enim. Praesent justo felis, ultricies non tempor sed, euismod id nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat volutpat. Maecenas lacus nibh.",
         "url_template": "http://dropbox.com/toto",
         "url_exemple": "http://dropbox.com/toto_exemple",
-        "url_preview": "https://cdn.ghacks.net/wp-content/uploads/2009/09/pdf_file_viewer-376x499.jpg"
+        "url_preview": "/static/img/estimate_fp.png"
+      },
+      {
+        "title": "Inut of Work",
+        "description": "Ut sed eleifend nulla. Donec et rutrum enim. Praesent justo felis, ultricies non tempor sed, euismod id nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat volutpat. Maecenas lacus nibh.",
+        "url_template": "http://dropbox.com/toto"
       }
     ]
   }

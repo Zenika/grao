@@ -39,7 +39,6 @@
     },
     created () {
       this.$http.get(this.url).then(response => {
-        console.log(response.data)
         this.documents = response.data
       })
     },
