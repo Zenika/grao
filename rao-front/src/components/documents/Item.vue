@@ -1,12 +1,12 @@
 <template>
   <div class="document">
     <h3>{{item.title}}</h3>
-    <img v-if="item.url_preview" :src="item.url_preview" class="">
+    <img v-if="item.url_preview" :src="item.url_preview" class="preview">
     <img v-if="!item.url_preview" src="http://www.nextflowers.co.uk/assets/images/md/no-image.png" class="default">
     <p class="description" v-if="item.description">{{item.description}}</p>
     <p class="description" v-if="!item.description">no description...</p>
     <a v-if="item.url_template" :href="item.url_template" target="_blank" class="btn btn-default btn-znk">Template</a>
-    <a v-if="item.url_exemple" :href="item.url_exemple" target="_blank" class="btn btn-default">Exemple</a>
+    <a v-if="item.url_exemple" :href="item.url_exemple" target="_blank" class="btn btn-default">Example</a>
   </div>
 </template>
 
@@ -39,6 +39,9 @@ export default {
   img{
     max-height: 200px;
     transition: all 0.2s;
+    &.preview{
+      border: 2px dashed #c7c7c7;
+    }
   }
   .description{
     max-width: 200px;
