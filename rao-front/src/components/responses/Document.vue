@@ -1,5 +1,5 @@
 <template>
-  <div class="document">
+  <div class="document" :class="{'hidden':ishidden}">
     <div class="title">
       <strong>{{item.Title}}</strong>
     </div>
@@ -31,7 +31,9 @@
       'v-contents': Contents
     },
     data () {
-      return {}
+      return {
+        ishidden: false
+      }
     },
     props: [
       'item',
@@ -47,6 +49,7 @@
         } else if (type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
           return 'fa-file-word-o'
         } else {
+          console.log(type)
           return 'fa-file-o'
         }
       }
@@ -56,42 +59,12 @@
 
 <style scoped lang="scss">
 
-  @import "../../_variables.scss";
+  @import "../../variables";
 
   .document {
     display: block;
-    border: solid 1px #cacaca;
+    border: solid 3px $red_znk;
     overflow: hidden;
-    position: relative;
-    width: 100%;
-
-    &.hidden_item {
-      font-size: 10px;
-      border: 0;
-      background: #dfe0dc;
-      .flex {
-        display: none;
-      }
-      .path {
-        display: none;
-      }
-    }
-
-    &:hover {
-      .hideme {
-        top: 5px;
-      }
-    }
-
-    .hideme {
-      cursor: pointer;
-      position: absolute;
-      transition: all 0.2s;
-      float: right;
-      font-size: 25px;
-      top: -50px;
-      right: 5px;
-    }
 
     .title {
       font-size: 1.1em;
@@ -99,7 +72,6 @@
     }
 
     .flex {
-      transition: 0.2s all;
       display: flex;
       align-items: center;
 
@@ -123,7 +95,7 @@
       }
 
       margin-top: 10px;
-      background: #E6E6E6;
+      background: #dfe0dc;
       padding: 10px;
       cursor: pointer;
       transition: all 0.2s;

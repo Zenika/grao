@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HomeGRAO from '@/components/HomeGRAO'
-import HomeADV from '@/components/HomeADV'
-import Settings from '@/components/Settings'
+import HomeDoc from '@/components/documents/HomeDocuments'
+import HomeGRAO from '@/components/responses/HomeGRAO'
+import HomeADV from '@/components/purchases/HomeADV'
+import Settings from '@/components/settings/Settings'
 
 Vue.use(Router)
 
@@ -11,6 +12,11 @@ export default new Router({
     {
       path: '/',
       redirect: '/rao'
+    },
+    {
+      path: '/docs',
+      name: 'docs',
+      component: HomeDoc
     },
     {
       path: '/rao',
