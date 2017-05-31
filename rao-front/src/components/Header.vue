@@ -46,9 +46,10 @@
   .nav-title {
     color: white;
     font-weight: bolder;
-    font-family: monospace;
+    font-family: inherit;
     font-size: 1.2em;
     padding-left: 5px;
+    font-weight: 500;
   }
 
   nav {
@@ -57,6 +58,8 @@
     background-color: $red_znk;
     .navbar-brand {
       padding: 10px;
+      display: flex;
+      align-items: center;
       img {
         max-height: 100%;
         display: inline;

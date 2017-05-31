@@ -1,79 +1,47 @@
 [
   {
-    "Bytes": 104710,
-    "Client": "CLAUGER",
-    "Content": "HSBC - ELYS PC\n\nHSBC Elys PC\n\nPage 1 sur 1\n\nServices pratiques\n\nEditer un RIB\n\nActions Services pratiques\n\nZENIKA\n\nCompte 09200000484 EUR\n\nEdition de RIB\nCe relevé est destiné à être remis, sur leur demande, à vos créanciers ou débiteurs appelés à faire inscrire des opérations à votre compte (virements, paiements de quittance,\netc.).\nSon utilisation vous garantit le bon enregistrement des opérations en cause et vous évite ainsi des réclamations pour erreurs ou retards d’imputation.\n\nCode Banque\n30056\n\nCode Guichet\n00920\n\nIBAN (Identifiant International)\nFR76 3005 6009 2009 2000 0048 413\n\nNuméro de compte\n09200000484\n\nClé RIB\n13\n\nCadre réservé\nau destinataire\ndu relevé\n\nCode BIC\nCCFRFRPP\n\nDomiciliation\nHSBC FR CAE LAFAYETTE\nZENIKA\n\nhttps://client.hsbc.fr/cgi-bin/emepc?sessionid=F09D1505BDE7988972E23C75A915FA50A74... 02/05/2013\n\n",
-    "Mime": "application/pdf",
-    "Mtime": "Tue, 21 Feb 2017 15:29:45 +0000",
-    "Path": "/Zenika - Clients/_CLIENTS LYON/CLAUGER/RIB hsbc Zenika.pdf",
-    "Region": "Marseille",
-    "Title": "RIB hsbc Zenika.pdf",
-    "objectID": "375407791"
+    "categorie": "Qualification documents",
+    "documents": [
+      {
+        "title": "Qualification check list",
+        "description": "Estimates per task, use of ratio",
+        "url_template": "http://dropbox.com/toto",
+        "url_exemple": "http://dropbox.com/toto_exemple",
+        "url_preview": "/static/img/qualif.png"
+      },
+      {
+        "title": "Qualification check list",
+        "description": "Estimates per task, use of ratio",
+        "url_exemple": "http://dropbox.com/toto_exemple"
+      },
+      {
+        "title": "Qualification check list",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sapien tellus, suscipit varius euismod a, sodales efficitur dolor. Quisque ullamcorper auctor justo vitae tincidunt.",
+        "url_template": "http://dropbox.com/toto_exemple"
+      }
+    ]
   },
   {
-    "Bytes": 104710,
-    "Client": "CLAUGER",
-    "Content": "HSBC - ELYS PC\n\nHSBC Elys PC\n\nPage 1 sur 1\n\nServices pratiques\n\nEditer un RIB\n\nActions Services pratiques\n\nZENIKA\n\nCompte 09200000484 EUR\n\nEdition de RIB\nCe relevé est destiné à être remis, sur leur demande, à vos créanciers ou débiteurs appelés à faire inscrire des opérations à votre compte (virements, paiements de quittance,\netc.).\nSon utilisation vous garantit le bon enregistrement des opérations en cause et vous évite ainsi des réclamations pour erreurs ou retards d’imputation.\n\nCode Banque\n30056\n\nCode Guichet\n00920\n\nIBAN (Identifiant International)\nFR76 3005 6009 2009 2000 0048 413\n\nNuméro de compte\n09200000484\n\nClé RIB\n13\n\nCadre réservé\nau destinataire\ndu relevé\n\nCode BIC\nCCFRFRPP\n\nDomiciliation\nHSBC FR CAE LAFAYETTE\nZENIKA\n\nhttps://client.hsbc.fr/cgi-bin/emepc?sessionid=F09D1505BDE7988972E23C75A915FA50A74... 02/05/2013\n\n",
-    "Mime": "application/pdf",
-    "Mtime": "Tue, 21 Feb 2017 15:29:45 +0000",
-    "Path": "/Zenika - Clients/_CLIENTS LYON/CLAUGER/RIB hsbc Zenika.pdf",
-    "Region": "LYON",
-    "Title": "RIB hsbc Zenika.pdf",
-    "objectID": "375407791"
+    "categorie": "Response templates",
+    "documents": [
+
+    ]
   },
   {
-    "Bytes": 104710,
-    "Client": "AXA",
-    "Content": "HSBC - ELYS PC\n\nHSBC Elys PC\n\nPage 1 sur 1\n\nServices pratiques\n\nEditer un RIB\n\nActions Services pratiques\n\nZENIKA\n\nCompte 09200000484 EUR\n\nEdition de RIB\nCe relevé est destiné à être remis, sur leur demande, à vos créanciers ou débiteurs appelés à faire inscrire des opérations à votre compte (virements, paiements de quittance,\netc.).\nSon utilisation vous garantit le bon enregistrement des opérations en cause et vous évite ainsi des réclamations pour erreurs ou retards d’imputation.\n\nCode Banque\n30056\n\nCode Guichet\n00920\n\nIBAN (Identifiant International)\nFR76 3005 6009 2009 2000 0048 413\n\nNuméro de compte\n09200000484\n\nClé RIB\n13\n\nCadre réservé\nau destinataire\ndu relevé\n\nCode BIC\nCCFRFRPP\n\nDomiciliation\nHSBC FR CAE LAFAYETTE\nZENIKA\n\nhttps://client.hsbc.fr/cgi-bin/emepc?sessionid=F09D1505BDE7988972E23C75A915FA50A74... 02/05/2013\n\n",
-    "Mime": "application/pdf",
-    "Mtime": "Tue, 21 Feb 2017 15:29:45 +0000",
-    "Path": "/Zenika - Clients/_CLIENTS LYON/CLAUGER/RIB hsbc Zenika.pdf",
-    "Region": "Lille",
-    "Title": "RIB hsbc Zenika.pdf",
-    "objectID": "375407791"
-  },
-  {
-    "Bytes": 104710,
-    "Client": "CLAUGER",
-    "Content": "HSBC - ELYS PC\n\nHSBC Elys PC\n\nPage 1 sur 1\n\nServices pratiques\n\nEditer un RIB\n\nActions Services pratiques\n\nZENIKA\n\nCompte 09200000484 EUR\n\nEdition de RIB\nCe relevé est destiné à être remis, sur leur demande, à vos créanciers ou débiteurs appelés à faire inscrire des opérations à votre compte (virements, paiements de quittance,\netc.).\nSon utilisation vous garantit le bon enregistrement des opérations en cause et vous évite ainsi des réclamations pour erreurs ou retards d’imputation.\n\nCode Banque\n30056\n\nCode Guichet\n00920\n\nIBAN (Identifiant International)\nFR76 3005 6009 2009 2000 0048 413\n\nNuméro de compte\n09200000484\n\nClé RIB\n13\n\nCadre réservé\nau destinataire\ndu relevé\n\nCode BIC\nCCFRFRPP\n\nDomiciliation\nHSBC FR CAE LAFAYETTE\nZENIKA\n\nhttps://client.hsbc.fr/cgi-bin/emepc?sessionid=F09D1505BDE7988972E23C75A915FA50A74... 02/05/2013\n\n",
-    "Mime": "application/pdf",
-    "Mtime": "Tue, 21 Feb 2017 15:29:45 +0000",
-    "Path": "/Zenika - Clients/_CLIENTS LYON/CLAUGER/RIB hsbc Zenika.pdf",
-    "Region": "LYON",
-    "Title": "RIB hsbc Zenika.pdf",
-    "objectID": "375407791"
-  },
-  {
-    "Bytes": 104710,
-    "Client": "CLAUGER",
-    "Content": "HSBC - ELYS PC\n\nHSBC Elys PC\n\nPage 1 sur 1\n\nServices pratiques\n\nEditer un RIB\n\nActions Services pratiques\n\nZENIKA\n\nCompte 09200000484 EUR\n\nEdition de RIB\nCe relevé est destiné à être remis, sur leur demande, à vos créanciers ou débiteurs appelés à faire inscrire des opérations à votre compte (virements, paiements de quittance,\netc.).\nSon utilisation vous garantit le bon enregistrement des opérations en cause et vous évite ainsi des réclamations pour erreurs ou retards d’imputation.\n\nCode Banque\n30056\n\nCode Guichet\n00920\n\nIBAN (Identifiant International)\nFR76 3005 6009 2009 2000 0048 413\n\nNuméro de compte\n09200000484\n\nClé RIB\n13\n\nCadre réservé\nau destinataire\ndu relevé\n\nCode BIC\nCCFRFRPP\n\nDomiciliation\nHSBC FR CAE LAFAYETTE\nZENIKA\n\nhttps://client.hsbc.fr/cgi-bin/emepc?sessionid=F09D1505BDE7988972E23C75A915FA50A74... 02/05/2013\n\n",
-    "Mime": "application/pdf",
-    "Mtime": "Tue, 21 Feb 2017 15:29:45 +0000",
-    "Path": "/Zenika - Clients/_CLIENTS LYON/CLAUGER/RIB hsbc Zenika.pdf",
-    "Region": "Paris",
-    "Title": "RIB hsbc Zenika.pdf",
-    "objectID": "375407791"
-  },
-  {
-    "Bytes": 104710,
-    "Client": "PICTIME",
-    "Content": "HSBC - ELYS PC\n\nHSBC Elys PC\n\nPage 1 sur 1\n\nServices pratiques\n\nEditer un RIB\n\nActions Services pratiques\n\nZENIKA\n\nCompte 09200000484 EUR\n\nEdition de RIB\nCe relevé est destiné à être remis, sur leur demande, à vos créanciers ou débiteurs appelés à faire inscrire des opérations à votre compte (virements, paiements de quittance,\netc.).\nSon utilisation vous garantit le bon enregistrement des opérations en cause et vous évite ainsi des réclamations pour erreurs ou retards d’imputation.\n\nCode Banque\n30056\n\nCode Guichet\n00920\n\nIBAN (Identifiant International)\nFR76 3005 6009 2009 2000 0048 413\n\nNuméro de compte\n09200000484\n\nClé RIB\n13\n\nCadre réservé\nau destinataire\ndu relevé\n\nCode BIC\nCCFRFRPP\n\nDomiciliation\nHSBC FR CAE LAFAYETTE\nZENIKA\n\nhttps://client.hsbc.fr/cgi-bin/emepc?sessionid=F09D1505BDE7988972E23C75A915FA50A74... 02/05/2013\n\n",
-    "Mime": "application/pdf",
-    "Mtime": "Tue, 21 Feb 2017 15:29:45 +0000",
-    "Path": "/Zenika - Clients/_CLIENTS LYON/CLAUGER/RIB hsbc Zenika.pdf",
-    "Region": "Lille",
-    "Title": "RIB hsbc Zenika.pdf",
-    "objectID": "375407791"
-  },
-  {
-    "Bytes": 104710,
-    "Client": "CLAUGER",
-    "Content": "HSBC - ELYS PC\n\nHSBC Elys PC\n\nPage 1 sur 1\n\nServices pratiques\n\nEditer un RIB\n\nActions Services pratiques\n\nZENIKA\n\nCompte 09200000484 EUR\n\nEdition de RIB\nCe relevé est destiné à être remis, sur leur demande, à vos créanciers ou débiteurs appelés à faire inscrire des opérations à votre compte (virements, paiements de quittance,\netc.).\nSon utilisation vous garantit le bon enregistrement des opérations en cause et vous évite ainsi des réclamations pour erreurs ou retards d’imputation.\n\nCode Banque\n30056\n\nCode Guichet\n00920\n\nIBAN (Identifiant International)\nFR76 3005 6009 2009 2000 0048 413\n\nNuméro de compte\n09200000484\n\nClé RIB\n13\n\nCadre réservé\nau destinataire\ndu relevé\n\nCode BIC\nCCFRFRPP\n\nDomiciliation\nHSBC FR CAE LAFAYETTE\nZENIKA\n\nhttps://client.hsbc.fr/cgi-bin/emepc?sessionid=F09D1505BDE7988972E23C75A915FA50A74... 02/05/2013\n\n",
-    "Mime": "application/pdf",
-    "Mtime": "Tue, 21 Feb 2017 15:29:45 +0000",
-    "Path": "/Zenika - Clients/_CLIENTS LYON/CLAUGER/RIB hsbc Zenika.pdf",
-    "Region": "LYON",
-    "Title": "RIB hsbc Zenika.pdf",
-    "objectID": "375407791"
+    "categorie": "Estimates spreadsheets",
+    "documents": [
+      {
+        "title": "Fixed Price",
+        "description": "Ut sed eleifend nulla. Donec et rutrum enim. Praesent justo felis, ultricies non tempor sed, euismod id nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat volutpat. Maecenas lacus nibh.",
+        "url_template": "http://dropbox.com/toto",
+        "url_exemple": "http://dropbox.com/toto_exemple",
+        "url_preview": "/static/img/estimate_fp.png"
+      },
+      {
+        "title": "Unit of Work",
+        "description": "Ut sed eleifend nulla. Donec et rutrum enim. Praesent justo felis, ultricies non tempor sed, euismod id nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat volutpat. Maecenas lacus nibh.",
+        "url_template": "http://dropbox.com/toto"
+      }
+    ]
   }
 ]

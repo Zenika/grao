@@ -2,6 +2,7 @@
   <div id="app">
     <v-header></v-header>
     <router-view></router-view>
+    <v-gotop></v-gotop>
     <v-footer></v-footer>
   </div>
 </template>
@@ -13,12 +14,14 @@
 
   import Header from './components/Header'
   import Footer from './components/Footer'
+  import Gotop from './components/Gotop'
 
   export default {
     name: 'app',
     components: {
       'v-header': Header,
-      'v-footer': Footer
+      'v-footer': Footer,
+      'v-gotop': Gotop
     }
   }
 </script>

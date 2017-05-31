@@ -13,8 +13,7 @@
     </div>
 
     <div class="row" v-if="ready">
-      <v-qualifDocs></v-qualifDocs>
-      <v-templatesList></v-templatesList>
+      <v-panel v-for="panel in documents" :documents="panel.documents" :title="panel.categorie"></v-panel>
     </div>
 
   </div>
@@ -22,8 +21,7 @@
 
 <script>
 
-  import TemplatesList from './TemplatesList'
-  import QualifDocs from './QualifDocs'
+  import Panel from './Panel'
 
   export default {
     name: 'home',
@@ -31,18 +29,21 @@
       return {
         loading: false,
         documents: [],
-        url: process.env.API_URL + 'bdc/search',
+        url: '/static/data/documents.json',
         start: false,
         ready: true
       }
     },
     components: {
-      'v-templatesList': TemplatesList,
-      'v-qualifDocs': QualifDocs
+      'v-panel': Panel
     },
     created () {
+      this.$http.get(this.url).then(response => {
+        this.documents = response.data
+      })
     },
-    methods: {}
+    methods: {
+    }
   }
 </script>
 
