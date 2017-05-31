@@ -5,8 +5,10 @@
     <img v-if="!item.url_preview" src="http://www.nextflowers.co.uk/assets/images/md/no-image.png" class="default">
     <p class="description" v-if="item.description">{{item.description}}</p>
     <p class="description" v-if="!item.description">no description...</p>
-    <a v-if="item.url_template" :href="item.url_template" target="_blank" class="btn btn-default btn-znk">Template</a>
-    <a v-if="item.url_exemple" :href="item.url_exemple" target="_blank" class="btn btn-default">Example</a>
+    <div class="">
+      <a v-if="item.url_template" :href="item.url_template" target="_blank" class="btn btn-default btn-znk">Template</a>
+      <a v-if="item.url_exemple" :href="item.url_exemple" target="_blank" class="btn btn-default">Example</a>
+    </div>
   </div>
 </template>
 
@@ -32,23 +34,28 @@ export default {
 
 .document{
   flex-basis: 20%;
+  border: 2px dashed #c7c7c7;
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 
   h3{
     font-size: 16px;
   }
+  
   img{
     max-height: 200px;
     transition: all 0.2s;
     &.preview{
-      border: 2px dashed #c7c7c7;
     }
   }
+
   .description{
-    max-width: 200px;
+    max-width: 85%;
     text-align: justify;
     margin: 20px auto;
-    height: 100px;
-    overflow-y: scroll;
   }
 
   .btn{
