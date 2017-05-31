@@ -52,10 +52,10 @@
     .description {
       max-width: 200px;
       text-align: justify;
-      margin: 20px auto;
-      height: 100px;
+      margin: 10px auto;
+      height: 50px;
       overflow-y: auto;
-      margin: 10px;
+      font-size: 1.1em;
     }
 
     .btn {
