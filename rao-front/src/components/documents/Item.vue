@@ -44,7 +44,7 @@ export default {
   h3{
     font-size: 16px;
   }
-  
+
   img{
     max-height: 200px;
     transition: all 0.2s;
@@ -58,18 +58,17 @@ export default {
     margin: 20px auto;
   }
 
-  .btn{
-    border-radius: 0px;
-    border-radius: 0px;
+  .btn {
+    border-radius: 0;
     font-weight: 600;
     border: solid 2px;
   }
 
-  .btn-znk{
+  .btn-znk {
     background: $red_znk;
     border-color: $red_znk;
     color: white;
-    &:hover{
+    &:hover {
       background: $red_znk;
       opacity: 0.9;
     }

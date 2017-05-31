@@ -5,19 +5,8 @@
       {
         "title": "Qualification check list",
         "description": "Estimates per task, use of ratio",
-        "url_template": "http://dropbox.com/toto",
-        "url_exemple": "http://dropbox.com/toto_exemple",
+        "url_template": "https://www.dropbox.com/work/Zenika%20-%20Clients/process%20commercial/RAO%20TYPE/QUALIFICATION?preview=Fichier+qualification+projet+dossier+pour+go-nogo.xlsx",
         "url_preview": "/static/img/qualif.png"
-      },
-      {
-        "title": "Qualification check list",
-        "description": "Estimates per task, use of ratio",
-        "url_exemple": "http://dropbox.com/toto_exemple"
-      },
-      {
-        "title": "Qualification check list",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sapien tellus, suscipit varius euismod a, sodales efficitur dolor. Quisque ullamcorper auctor justo vitae tincidunt.",
-        "url_template": "http://dropbox.com/toto_exemple"
       }
     ]
   },
@@ -32,15 +21,13 @@
     "documents": [
       {
         "title": "Fixed Price",
-        "description": "Ut sed eleifend nulla. Donec et rutrum enim. Praesent justo felis, ultricies non tempor sed, euismod id nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat volutpat. Maecenas lacus nibh.",
-        "url_template": "http://dropbox.com/toto",
-        "url_exemple": "http://dropbox.com/toto_exemple",
+        "description": "Estimate's template for Fixed price project.",
+        "url_template": "https://www.dropbox.com/work/Zenika%20-%20Clients/process%20commercial/RAO%20TYPE/CHIFFRAGES?preview=NomClient+-+NomProjet_chiffrage-Forfait+-+v1.xls",
         "url_preview": "/static/img/estimate_fp.png"
       },
       {
         "title": "Unit of Work",
-        "description": "Ut sed eleifend nulla. Donec et rutrum enim. Praesent justo felis, ultricies non tempor sed, euismod id nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat volutpat. Maecenas lacus nibh.",
-        "url_template": "http://dropbox.com/toto"
+        "description": "Template for Unit of Work estimate."
       }
     ]
   }
