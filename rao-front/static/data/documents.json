@@ -13,7 +13,13 @@
   {
     "categorie": "Response templates",
     "documents": [
-
+      {
+        "title": "Standard Project",
+        "description": "Response template for standard project.",
+        "url_template": "https://www.dropbox.com/work/Zenika%20-%20Clients/process%20commercial/RAO%20TYPE/TEMPLATES_RAO?preview=Proposition+CDS.docx",
+        "url_exemple": "",
+        "url_preview": "/static/img/project.png"
+      }
     ]
   },
   {
