@@ -42,13 +42,14 @@ export default {
   justify-content: space-between;
 
   h3{
-    font-size: 16px;
+    font-size: 1.6em;
   }
 
   img{
     max-height: 200px;
     transition: all 0.2s;
     &.preview{
+      border: 1px solid #e2e2e2;
     }
   }
 
@@ -56,6 +57,7 @@ export default {
     max-width: 85%;
     text-align: justify;
     margin: 20px auto;
+    font-size: 1.1em;
   }
 
   .btn {
