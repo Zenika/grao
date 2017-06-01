@@ -19,6 +19,27 @@
         "url_template": "https://www.dropbox.com/work/Zenika%20-%20Clients/process%20commercial/RAO%20TYPE/TEMPLATES_RAO?preview=Proposition+CDS.docx",
         "url_exemple": "",
         "url_preview": "/static/img/project.png"
+      },
+      {
+        "title": "Audit and consulting",
+        "description": "",
+        "url_template": "https://www.dropbox.com/work/Zenika%20-%20Clients/process%20commercial/RAO%20TYPE/TEMPLATES_RAO?preview=Proposition-audit+et+conseil.docx",
+        "url_exemple": "",
+        "url_preview": "/static/img/project.png"
+      },
+      {
+        "title": "Agile Transfo: coaching & Training",
+        "description": "",
+        "url_template": "https://www.dropbox.com/work/Zenika%20-%20Clients/process%20commercial/RAO%20TYPE/TEMPLATES_RAO?preview=Proposition+Transfo+Agile+en+coaching+et+en+formation.docx",
+        "url_exemple": "",
+        "url_preview": "/static/img/agile.png"
+      },
+      {
+        "title": "Agile Audit",
+        "description": "... and recommendations",
+        "url_template": "https://www.dropbox.com/work/Zenika%20-%20Clients/process%20commercial/RAO%20TYPE/TEMPLATES_RAO?preview=Proposition-audit+agile+et+pr%C3%A9conisation.docx",
+        "url_exemple": "",
+        "url_preview": "/static/img/agile.png"
       }
     ]
   },
