@@ -3,6 +3,12 @@
     "categorie": "Qualification documents",
     "documents": [
       {
+        "title": "Steps for a Fixed Price project",
+        "description": "Defines all steps to be done when dealing with a fixed price project.",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/QUALIFICATION/Les%20%C3%A9tapes%20d%27un%20Forfait.pptx?_subject_uid=412112727&w=AAC4drybh_tbudU65XruqH-Cvs3qmZdbG8ANJvgXbY25Mw",
+        "url_preview": "/static/img/etapes_forfait.png"
+      },
+      {
         "title": "Qualification check list",
         "description": "Estimates per task, use of ratio",
         "url_template": "https://www.dropbox.com/work/Zenika%20-%20Clients/process%20commercial/RAO%20TYPE/QUALIFICATION?preview=Fichier+qualification+projet+dossier+pour+go-nogo.xlsx",
