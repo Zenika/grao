@@ -20,6 +20,12 @@
             Purchase Orders
           </div>
         </router-link>
+        <div class="navbar-link">
+          <button @click="logout()">
+            Logout
+          </button>
+        </div>
+
         <!-- router-link class="navbar-link settings" to="settings">
           <div>
             <i class="fa fa-cog" aria-hidden="true"></i>
@@ -31,10 +37,18 @@
 </template>
 
 <script>
+  import {logout} from '../login'
+
   export default {
     name: 'header',
     data () {
       return {}
+    },
+    methods: {
+      logout () {
+        logout()
+        this.$router.push('/login')
+      }
     }
   }
 </script>
@@ -90,12 +104,16 @@
       &:hover {
         background-color: black;
       }
-      div {
+      div, button {
         display: inline-block;
         font-weight: 700;
         margin: 15px 10px;
         text-decoration: none;
         color: white;
+      }
+      button {
+        border: none;
+        background-color: rgba(0, 0, 0, 0);
       }
     }
   }
