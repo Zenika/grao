@@ -10,6 +10,7 @@ import (
 	bdcService "github.com/Zenika/RAO/document/bdc/service"
 	raoService "github.com/Zenika/RAO/document/rao/service"
 	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/RAO/auth"
 	"github.com/Zenika/RAO/search"
 	"github.com/Zenika/RAO/search/algolia"
 	searchController "github.com/Zenika/RAO/search/controller"
@@ -55,6 +56,12 @@ func main() {
 		Methods("POST")
 	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).
 		Methods("POST")
-	handler := c.Handler(r)
+	auth := auth.New(
+		os.Getenv("AUTH0_SECRET"),
+		os.Getenv("AUTH0_AUDIENCE"),
+		os.Getenv("AUTH0_DOMAIN"),
+	)
+	auth0 := auth.UserAuthenticatedMiddleware
+	handler := auth0(c.Handler(r))
 	http.ListenAndServe(":8090", handler)
 }

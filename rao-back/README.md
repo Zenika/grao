@@ -44,6 +44,10 @@ export GRAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
 export GRAO_POLL_EVERY="@daily"
 export RAO_POLL_FROM="rao_filter_regexp_string"
 export BDC_POLL_FROM="bdc_filter_regexp_string"
+export AUTH0_AUDIENCE="auth0_audience"
+export AUTH0_SECRET="auth0_client_secret"
+export AUTH0_DOMAIN="auth0_domain"
+
 ```
 
 ## Indexes
