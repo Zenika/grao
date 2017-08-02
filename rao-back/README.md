@@ -21,6 +21,10 @@ go get -u github.com/sajari/docconv
 go get github.com/JalfResi/justext
 go get github.com/algolia/algoliasearch-client-go/algoliasearch
 go get github.com/robfig/cron
+go get gopkg.in/square/go-jose.v2
+go get github.com/auth0-community/go-auth0
+go get github.com/rs/cors
+go get -u github.com/gorilla/mux
 ```
 
 ## Build
@@ -44,9 +48,9 @@ export GRAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
 export GRAO_POLL_EVERY="@daily"
 export RAO_POLL_FROM="rao_filter_regexp_string"
 export BDC_POLL_FROM="bdc_filter_regexp_string"
-export AUTH0_AUDIENCE="auth0_audience"
-export AUTH0_SECRET="auth0_client_secret"
-export AUTH0_DOMAIN="auth0_domain"
+export AUTH0_AUDIENCE="your_auth0_audience"
+export AUTH0_JWKS_URI="{AUTH0_DOMAIN}.well-known/jwks.json"
+export AUTH0_ISSUER="https://{AUTH0_DOMAIN}"
 
 ```
 
