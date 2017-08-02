@@ -10,7 +10,7 @@ import (
 	bdcService "github.com/Zenika/RAO/document/bdc/service"
 	raoService "github.com/Zenika/RAO/document/rao/service"
 	"github.com/Zenika/RAO/log"
-	"github.com/Zenika/RAO/auth"
+	"github.com/Zenika/RAO/auth/auth0"
 	"github.com/Zenika/RAO/search"
 	"github.com/Zenika/RAO/search/algolia"
 	searchController "github.com/Zenika/RAO/search/controller"
@@ -49,6 +49,7 @@ func main() {
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
+		AllowedHeaders: []string{"authorization", "content-type"},
 		AllowCredentials: true,
 	})
 	r := mux.NewRouter()
@@ -56,12 +57,16 @@ func main() {
 		Methods("POST")
 	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).
 		Methods("POST")
-	auth := auth.New(
-		os.Getenv("AUTH0_SECRET"),
+	test := os.Getenv("AUTH0_JWKS_URI")
+	fmt.Println(test)
+	fmt.Println(os.Getenv("AUTH0_ISSUER"))
+	fmt.Println(os.Getenv("AUTH0_AUDIENCE"))
+	auth := auth0.New(
+		os.Getenv("AUTH0_JWKS_URI"),
+		os.Getenv("AUTH0_ISSUER"),
 		os.Getenv("AUTH0_AUDIENCE"),
-		os.Getenv("AUTH0_DOMAIN"),
 	)
-	auth0 := auth.UserAuthenticatedMiddleware
-	handler := auth0(c.Handler(r))
+	auth0Middleware := auth.UserAuthenticatedMiddleware
+	handler := auth0Middleware(c.Handler(r))
 	http.ListenAndServe(":8090", handler)
 }
