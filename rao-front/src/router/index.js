@@ -45,7 +45,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.name === 'login' || isConnected()) {
-    next()
+    return next()
   }
   next('/login')
 })

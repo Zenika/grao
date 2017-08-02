@@ -7,9 +7,20 @@ import axios from 'axios'
 import VeeValidate from 'vee-validate'
 import VTooltip from 'v-tooltip'
 import { ClientTable } from 'vue-tables-2'
+import { bootstrapAuth0, getAuthHeader } from './login'
+
 // import {ClientTable} from './../../../vue-tables-2/compiled'
 
 import './directives/'
+
+bootstrapAuth0()
+
+axios.interceptors.request.use((config) => {
+  Object.assign(config.headers, getAuthHeader())
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+})
 
 Vue.prototype.$http = axios
 Vue.use(VeeValidate)
@@ -32,5 +43,5 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: {App}
+  components: { App }
 })
