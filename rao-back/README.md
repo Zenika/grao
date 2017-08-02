@@ -21,10 +21,6 @@ go get -u github.com/sajari/docconv
 go get github.com/JalfResi/justext
 go get github.com/algolia/algoliasearch-client-go/algoliasearch
 go get github.com/robfig/cron
-go get gopkg.in/square/go-jose.v2
-go get github.com/auth0-community/go-auth0
-go get github.com/rs/cors
-go get -u github.com/gorilla/mux
 ```
 
 ## Build
@@ -48,10 +44,6 @@ export GRAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
 export GRAO_POLL_EVERY="@daily"
 export RAO_POLL_FROM="rao_filter_regexp_string"
 export BDC_POLL_FROM="bdc_filter_regexp_string"
-export AUTH0_AUDIENCE="your_auth0_audience"
-export AUTH0_JWKS_URI="{AUTH0_DOMAIN}.well-known/jwks.json"
-export AUTH0_ISSUER="https://{AUTH0_DOMAIN}"
-
 ```
 
 ## Indexes
@@ -89,26 +81,3 @@ docdown.sh script available [in this repository](_tools/docdown.sh)
 [dropbox/dropbox.go](https://github.com/stacktic/dropbox/blob/master/dropbox.go) by Arnaud Ysmal
 
 [algoliasearch-client-go](https://github.com/algolia/algoliasearch-client-go) by Algolia
-
-## Configure Auth0 login flow
-
- - [Create your auth0 api](https://manage.auth0.com/#/apis)
- 
-   - Name it 
-   - Use identifier https://grao.zenika.com/api/v1
-   - Keep RS256 algorithm for signing
-   
- - Configure environment variables
- 
-   - AUTH0_AUDIENCE will be https://grao.zenika.com/api/v1
-   - AUTHO_DOMAIN will be our auth0 domain
-   - AUTH0_JWKS_URI will be {AUTH0_DOMAIN}.well-known/jwks.json
-
-*As we use RS256 AUTH0_JWKS_URI is where we get the public key used to sign the token*
-
- - Use a client on the same domain to access the API
- 
- - Filter client from ou domain
- 
-   - [Add a rule to Auth0](https://manage.auth0.com/#/rules)
-    - Chose Email domain whitelist and restrict the list to our domain
