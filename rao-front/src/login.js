@@ -10,9 +10,9 @@ export const webAuth = new auth0.WebAuth({
   domain,
   clientID,
   redirectUri: window.location.href,
-  audience: 'https://zenika.grao.com/test/v1',
+  audience: 'https://grao.zenika.com/api/v1',
   responseType: 'token id_token',
-  scope: 'openid write:all',
+  scope: 'openid',
   leeway: 60
 })
 
