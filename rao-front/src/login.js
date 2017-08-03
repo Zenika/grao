@@ -1,13 +1,44 @@
 import Auth0Lock from 'auth0-lock'
+import auth0 from 'auth0-js'
 import Vue from 'vue'
+import axios from 'axios'
 
 const clientID = 'BalIDVTaK374gSwltgrsIQFWakihPSI9'
-const clientDomain = 'zenika.eu.auth0.com'
+const domain = 'zenika.eu.auth0.com'
 
-export const lock = new Auth0Lock(clientID, clientDomain)
+export const webAuth = new auth0.WebAuth({
+  domain,
+  clientID,
+  redirectUri: window.location.href,
+  audience: 'https://grao.zenika.com/api/v1',
+  responseType: 'token id_token',
+  scope: 'openid',
+  leeway: 60
+})
+
+export const bootstrapAuth0 = () => {
+  webAuth.parseHash((err, authResult) => {
+    if (authResult && authResult.accessToken && authResult.idToken) {
+      window.location.hash = '';
+      setSession(authResult);
+    } else if (err) {
+      console.log(err);
+    }
+  })
+}
+
+export const setSession = (authResult) => {
+  var expiresAt = JSON.stringify(
+    authResult.expiresIn * 1000 + new Date().getTime()
+  );
+  localStorage.setItem('access_token', authResult.accessToken);
+  localStorage.setItem('id_token', authResult.idToken);
+  localStorage.setItem('expires_at', expiresAt);
+}
 
 export const isConnected = () => {
-  return !!localStorage.getItem('id_token')
+  const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+  return new Date().getTime() < expiresAt;
 }
 
 export const getAuthHeader = () => {
@@ -17,17 +48,7 @@ export const getAuthHeader = () => {
 }
 
 export const login = () => {
-  // Show the Lock Widget and save the user's JWT on a successful login
-  lock.show((err, profile, idToken) => {
-    if (err) {
-      console.error(err)
-      login()
-      return
-    }
-    localStorage.setItem('profile', JSON.stringify(profile))
-    localStorage.setItem('id_token', idToken)
-    Vue.http.headers.common['Authorization'] = getAuthHeader()
-  })
+  webAuth.authorize();
 }
 
 export const logout = () => {
