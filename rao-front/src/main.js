@@ -7,7 +7,7 @@ import axios from 'axios'
 import VeeValidate from 'vee-validate'
 import VTooltip from 'v-tooltip'
 import { ClientTable } from 'vue-tables-2'
-import { bootstrapAuth0, getAuthHeader } from './login'
+import { bootstrapAuth0, getAuthHeader, logout } from './login'
 
 // import {ClientTable} from './../../../vue-tables-2/compiled'
 
@@ -21,6 +21,14 @@ axios.interceptors.request.use((config) => {
 }, (error) => {
   return Promise.reject(error);
 })
+
+axios.interceptors.response.use((response) => response,
+  (error) => {
+    if ([401, 403].includes(error.response.status)) {
+      logout()
+      router.go('/')
+    }
+  })
 
 Vue.prototype.$http = axios
 Vue.use(VeeValidate)
