@@ -57,10 +57,10 @@ func main() {
 		Methods("POST")
 	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).
 		Methods("POST")
-	test := os.Getenv("AUTH0_JWKS_URI")
-	fmt.Println(test)
-	fmt.Println(os.Getenv("AUTH0_ISSUER"))
-	fmt.Println(os.Getenv("AUTH0_AUDIENCE"))
+	log.Debug("JWKS_URI = " + os.Getenv("AUTH0_JWKS_URI"))
+	log.Debug("AUTH0_ISSUER = " + os.Getenv("AUTH0_ISSUER"))
+	log.Debug("AUTH0_AUDIENCE = " + os.Getenv("AUTH0_AUDIENCE"))
+	log.Debug("APP_PORT = " + os.Getenv("GRAO_APP_PORT"))
 	auth := auth0.New(
 		os.Getenv("AUTH0_JWKS_URI"),
 		os.Getenv("AUTH0_ISSUER"),
@@ -68,5 +68,5 @@ func main() {
 	)
 	auth0Middleware := auth.UserAuthenticatedMiddleware
 	handler := auth0Middleware(c.Handler(r))
-	http.ListenAndServe(":8090", handler)
+	http.ListenAndServe(":" + os.Getenv("GRAO_APP_PORT"), handler)
 }

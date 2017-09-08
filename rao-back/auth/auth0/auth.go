@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"github.com/auth0-community/go-auth0"
+	"github.com/Zenika/RAO/log"
 	"gopkg.in/square/go-jose.v2"
 	"fmt"
 )
@@ -20,7 +21,6 @@ type Auth0 struct {
 
 func (auth Auth0) UserAuthenticatedMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println(r.Method)
 		if "OPTIONS" == r.Method {
 			next.ServeHTTP(w, r)
 		}
@@ -30,8 +30,8 @@ func (auth Auth0) UserAuthenticatedMiddleware(next http.Handler) http.Handler {
 		validator := auth0.NewValidator(configuration)
 		_, err := validator.ValidateRequest(r)
 		if err != nil {
-			fmt.Println(err)
-			fmt.Println(r.Method + ": Token is not valid or missing token")
+			log.Error(err, log.ERROR)
+			log.Debug(r.Method + ": Token is not valid or missing token")
 			response := Response{
 				Message: "Missing or invalid token.",
 			}

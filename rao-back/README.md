@@ -36,6 +36,7 @@ go build -o bin/rao
 ## Env
 
 ```shell
+export GRAO_APP_PORT="8090"
 export GRAO_DBX_KEY="dropbox_key"
 export GRAO_DBX_SECRET="dropbox_secret"
 export GRAO_DBX_TOKEN="dropbox_token"
@@ -48,9 +49,10 @@ export GRAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
 export GRAO_POLL_EVERY="@daily"
 export RAO_POLL_FROM="rao_filter_regexp_string"
 export BDC_POLL_FROM="bdc_filter_regexp_string"
-export AUTH0_AUDIENCE="your_auth0_audience"
-export AUTH0_JWKS_URI="{AUTH0_DOMAIN}.well-known/jwks.json"
-export AUTH0_ISSUER="https://{AUTH0_DOMAIN}"
+export AUTH0_AUDIENCE="https://grao.zenika.com/api/v1"
+export AUTH0_DOMAIN="zenika.eu.auth0.com"
+export AUTH0_JWKS_URI="https://zenika.eu.auth0.com/.well-known/jwks.json"
+export AUTH0_ISSUER="https://zenika.eu.auth0.com/"
 
 ```
 
@@ -98,7 +100,7 @@ docdown.sh script available [in this repository](_tools/docdown.sh)
    - Use identifier https://grao.zenika.com/api/v1
    - Keep RS256 algorithm for signing
    
- - Configure environment variables
+ - Configure environment variables for your backend server
  
    - AUTH0_AUDIENCE will be https://grao.zenika.com/api/v1
    - AUTHO_DOMAIN will be our auth0 domain
@@ -108,7 +110,7 @@ docdown.sh script available [in this repository](_tools/docdown.sh)
 
  - Use a client on the same domain to access the API
  
- - Filter client from ou domain
+ - Filter client from your domain
  
    - [Add a rule to Auth0](https://manage.auth0.com/#/rules)
     - Chose Email domain whitelist and restrict the list to our domain
