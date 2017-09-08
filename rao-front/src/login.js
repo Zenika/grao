@@ -1,4 +1,3 @@
-import Auth0Lock from 'auth0-lock'
 import auth0 from 'auth0-js'
 import Vue from 'vue'
 import axios from 'axios'
@@ -52,6 +51,7 @@ export const login = () => {
 }
 
 export const logout = () => {
-  localStorage.removeItem('profile')
   localStorage.removeItem('id_token')
+  localStorage.removeItem('expires_at')
+  localStorage.removeItem('profile')
 }
