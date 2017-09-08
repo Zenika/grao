@@ -51,6 +51,7 @@ export const login = () => {
 }
 
 export const logout = () => {
-  localStorage.removeItem('profile')
   localStorage.removeItem('id_token')
+  localStorage.removeItem('expires_at')
+  localStorage.removeItem('profile')
 }
