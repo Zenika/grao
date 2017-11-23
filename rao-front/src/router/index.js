@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import HomeDoc from '@/components/documents/HomeDocuments'
 import HomeGRAO from '@/components/responses/HomeGRAO'
 import HomeADV from '@/components/purchases/HomeADV'
+import HomeRefs from '@/components/references/HomeRefs'
+import UploadRefs from '@/components/references/upload/UploadRefs'
 import Settings from '@/components/settings/Settings'
 import Login from '@/components/login/login'
 import {isConnected} from '../login'
@@ -19,6 +21,16 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/refs',
+      name: 'refs',
+      component: HomeRefs
+    },
+    {
+      path: '/refsupload',
+      name: 'refs-upload',
+      component: UploadRefs
     },
     {
       path: '/docs',

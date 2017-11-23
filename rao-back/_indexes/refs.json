@@ -1,0 +1,17 @@
+{
+  "searchableAttributes": [
+    "Client",
+    "Tags"
+  ],
+  "attributesToRetrieve" : [
+    "Client",
+		"Tags",
+		"Path"
+  ],
+  "attributesForFaceting": [
+		"Client",
+		"Tags"
+	],
+	"highlightPreTag":  "<em class=\"snippet\">",
+	"highlightPostTag": "</em>"
+}

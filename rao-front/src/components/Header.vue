@@ -5,6 +5,11 @@
         <router-link class="navbar-brand" to="/">
           <img alt="Brand" src="../assets/znk.png"> <span class="nav-title">G.R.A.O.</span>
         </router-link>
+         <router-link class="navbar-link" to="refs">
+          <div>
+            References
+          </div>
+        </router-link>
         <router-link class="navbar-link" to="docs">
           <div>
             Documents & Templates

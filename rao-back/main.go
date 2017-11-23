@@ -9,6 +9,7 @@ import (
 	"github.com/Zenika/RAO/conv/docd"
 	bdcService "github.com/Zenika/RAO/document/bdc/service"
 	raoService "github.com/Zenika/RAO/document/rao/service"
+	refsService "github.com/Zenika/RAO/document/refs/service"
 	"github.com/Zenika/RAO/log"
 	"github.com/Zenika/RAO/auth/auth0"
 	"github.com/Zenika/RAO/search"
@@ -41,7 +42,8 @@ func main() {
 		root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
 		bdcService := bdcService.New(*searchService, *treeService)
 		raoService := raoService.New(*searchService, *convService, *treeService)
-		pairs := [][]interface{}{{bdcService.DocFilter, bdcService.DocHandler}, {raoService.DocFilter, raoService.DocHandler}}
+		refsService := refsService.New(*searchService, *convService, *treeService)
+		pairs := [][]interface{}{{bdcService.DocFilter, bdcService.DocHandler}, {raoService.DocFilter, raoService.DocHandler},{refsService.DocFilter, refsService.DocHandler}}
 		treeService.Poll(root, pairs)
 	})
 	cron.Start()

@@ -2,14 +2,16 @@ import auth0 from 'auth0-js'
 import Vue from 'vue'
 import axios from 'axios'
 
-const clientID = 'BalIDVTaK374gSwltgrsIQFWakihPSI9'
-const domain = 'zenika.eu.auth0.com'
+//const clientID = 'BalIDVTaK374gSwltgrsIQFWakihPSI9'
+//const domain = 'zenika.eu.auth0.com'
+const clientID = '6BjaxiRj8tBe6MjEwkxIJoD3OoxBJ0Tm'
+const domain = 'yumzax.eu.auth0.com'
 
 export const webAuth = new auth0.WebAuth({
   domain,
   clientID,
   redirectUri: window.location.href,
-  audience: 'https://grao.zenika.com/api/v1',
+  audience: 'https://zenika.grao.com/test/v1',
   responseType: 'token id_token',
   scope: 'openid',
   leeway: 60
