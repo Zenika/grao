@@ -33,7 +33,6 @@
   /* eslint no-undef: "error" */
  
   import Item from './Item'
-  import google from 'googleapis'
   import consts from '../../../constants'
   const REF_MODEL = {client: "", project: "", date: "", keywords: []}
 
