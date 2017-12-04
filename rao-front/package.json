@@ -25,6 +25,7 @@
     "vue": "^2.2.1",
     "vue-resource": "^1.2.1",
     "vue-router": "^2.5.3",
+    "vue-script2": "^2.0.1",
     "vue-tables-2": "git+https://github.com/T3kstiil3/vue-tables-2.git",
     "vue-toast": "^3.0.0"
   },

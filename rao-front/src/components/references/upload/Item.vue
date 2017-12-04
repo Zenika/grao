@@ -1,7 +1,7 @@
 <template>
   <div class="ref">
-    <div class="idNumber">Reference #{{id+1}}
-      <i @click="notifyDeleteToParent" title="Delete this reference" class="hideme fa fa-close" aria-hidden="true"></i>
+    <div class="idNumber">Reference #{{id + 1}}
+      <i @click="notifyDeleteToParent" title="Delete this reference" class="deleteRef fa fa-close" aria-hidden="true"></i>
     </div>
     <form>
       <ul>
@@ -48,7 +48,7 @@
     name: 'item-ref',
     data () {
       return {
-        refDataDisplay: {client: "", project: "", date: "", keywords: []},
+        refDataDisplay: {id : -1, client: "", project: "", date: "", keywords: []},
         currentKeyword: "",
       }
     },
@@ -56,9 +56,10 @@
     watch: {
       refData: function(newVal, oldVal){
         this.refDataDisplay = newVal
-      }
+      },
     },
     created () {
+      this.refDataDisplay = this.refData
     },
     methods: {
       addKeyword(){
@@ -70,10 +71,10 @@
         }
       },
       notifyChangeToParent(){
-        this.$emit("data-change", this.id, this.refDataDisplay)
+        this.$emit("data-change", this.refDataDisplay)
       },
-      notifyDeleteToParent(index){
-        this.$emit("ask-delete", this.id)
+      notifyDeleteToParent(){
+        this.$emit("ask-delete", this.refDataDisplay['id'])
       },
       sendFilesToParent(event){
         this.$emit("file-change", this.id, event.target.files)
@@ -93,6 +94,17 @@
     padding: 15px;
     margin-top: 15px;
 
+    .deleteRef{
+      transition: 0.3s;
+      opacity: 0;
+    }
+
+    &:hover {
+      .deleteRef{
+        transition: 0.3s;
+        opacity: 1;
+      }
+    }
 
     .idNumber{
       font-size: 24px;
