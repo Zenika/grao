@@ -1,7 +1,7 @@
 <template>
     <div>
-        <button v-if="!connected" @click="signin()">Connect to Google Drive</button>
-        <button v-if="connected" @click="signout()">Disconnect from Google Drive</button>
+        <button v-if="!connected" @click="signInToGoogleDrive()">Connect to Google Drive</button>
+        <button v-if="connected" @click="signOutFromGoogleDrive()">Disconnect from Google Drive</button>
     </div>
 </template>
 
@@ -17,7 +17,8 @@ export default {
     name: 'google-drive',
     data () {
       return {
-        connected: false
+        connected: false,
+        graoDriveFolderId: "-1"
       }
     },
     components: {
@@ -34,28 +35,33 @@ export default {
           apiKey: DRIVE_API_KEY,
           clientId: OAUTH_CLIENT_ID,
           scope: SCOPES
-        }).then( () => {
-          this.connected = gapi.auth2.getAuthInstance().isSignedIn.get()
-          gapi.client.load('drive', 'v2', () => {
-            var files = gapi.client.drive.files.list(
-              {q: "mimeType='application/vnd.google-apps.folder' and title='GRAO-References'"} 
-            ).then((response) => {
-                var graoDriveFolderId = response.result.items[0].id
-                files = gapi.client.drive.files.list({
-                  q: "'"+graoDriveFolderId+"' in parents"
-                }).then((response) => {
-                  response.result.items.forEach((item)=>console.log(item.title))
-                })
-            })
-          });  
+        }).then(() => {
+            this.connected = gapi.auth2.getAuthInstance().isSignedIn.get()
+            this.fetchGraoFolderId()
         })
       },
-      signin(){
+      fetchGraoFolderId(){
+          gapi.client.load('drive', 'v2', () => {
+            gapi.client.drive.files.list(
+              {q: "mimeType='application/vnd.google-apps.folder' and title='GRAO-References'"} 
+            ).then((response) => {
+                this.graoDriveFolderId = response.result.items[0].id
+            })
+          });  
+      },
+      getAllFilesFromGraoFolder(){
+          gapi.client.drive.files.list({
+            q: "'"+graoDriveFolderId+"' in parents"
+          }).then((response) => {
+            response.result.items.forEach((item)=>console.log(item.title))
+          })
+      },
+      signInToGoogleDrive(){
         gapi.auth2.getAuthInstance().signIn().then( () => {
           this.connected = gapi.auth2.getAuthInstance().isSignedIn.get()
         })
       },
-      signout(){
+      signOutFromGoogleDrive(){
         gapi.auth2.getAuthInstance().signOut().then( () => {
           this.connected = gapi.auth2.getAuthInstance().isSignedIn.get()
         })
