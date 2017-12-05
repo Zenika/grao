@@ -1,0 +1,67 @@
+<template>
+    <div>
+        <button v-if="!connected" @click="signin()">Connect to Google Drive</button>
+        <button v-if="connected" @click="signout()">Disconnect from Google Drive</button>
+    </div>
+</template>
+
+<script>
+
+  import consts from '../../../constants'
+  import Script2 from 'vue-script2' 
+  const OAUTH_CLIENT_ID = "404476430683-b5e3agvralurokmvduaidae29131o8tc.apps.googleusercontent.com"
+  const DRIVE_API_KEY = 'AIzaSyCSF7d53JN4xETyownTOsVfavbe3jXW984'
+  const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+
+export default {
+    name: 'google-drive',
+    data () {
+      return {
+        connected: false
+      }
+    },
+    components: {
+        'script2': Script2
+    },
+    created () {
+      Script2.load('https://apis.google.com/js/api.js').then(() => {
+        gapi.load('client:auth2', this.setupGoogleDriveAPI)
+      })
+    },
+    methods: {
+      setupGoogleDriveAPI(){
+        gapi.client.init({
+          apiKey: DRIVE_API_KEY,
+          clientId: OAUTH_CLIENT_ID,
+          scope: SCOPES
+        }).then( () => {
+          this.connected = gapi.auth2.getAuthInstance().isSignedIn.get()
+          gapi.client.load('drive', 'v2', () => {
+            var files = gapi.client.drive.files.list(
+              {q: "mimeType='application/vnd.google-apps.folder' and title='GRAO-References'"} 
+            ).then((response) => {
+                var graoDriveFolderId = response.result.items[0].id
+                files = gapi.client.drive.files.list({
+                  q: "'"+graoDriveFolderId+"' in parents"
+                }).then((response) => {
+                  response.result.items.forEach((item)=>console.log(item.title))
+                })
+            })
+          });  
+        })
+      },
+      signin(){
+        gapi.auth2.getAuthInstance().signIn().then( () => {
+          this.connected = gapi.auth2.getAuthInstance().isSignedIn.get()
+        })
+      },
+      signout(){
+        gapi.auth2.getAuthInstance().signOut().then( () => {
+          this.connected = gapi.auth2.getAuthInstance().isSignedIn.get()
+        })
+      }
+  }}
+</script>
+
+<style>
+</style>

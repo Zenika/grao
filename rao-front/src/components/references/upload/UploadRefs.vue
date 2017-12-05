@@ -6,9 +6,16 @@
     <h1>
       R<span>eferences (WIP)</span>
     </h1>
-    <button v-if="!connected" @click="signin()">Connexion</button>
-    <button v-if="connected" @click="signout()">Déconnexion</button>
-    <button @click="debug()">debug</button>
+    <div>
+    <button v-if="!connected" @click="signin()">Connect to Google Drive</button>
+    <button v-if="connected" @click="signout()">Disconnect from Google Drive</button>
+    </div>
+    <router-link class="navbar-link" to="refs">
+      <a class="btn-danger btn"><i class="fa fa-long-arrow-left " aria-hidden="true"></i>
+        Back to references list
+      </a>
+    </router-link>
+
     <h3>
       Add references
     </h3>
@@ -41,11 +48,8 @@
   
 
   const OAUTH_CLIENT_ID = "404476430683-b5e3agvralurokmvduaidae29131o8tc.apps.googleusercontent.com"
-  //const DRIVE_CLIENT_ID = consts.DRIVE_CLIENT_ID
   const DRIVE_API_KEY = 'AIzaSyCSF7d53JN4xETyownTOsVfavbe3jXW984'
-  //const DRIVE_API_URL = consts.DRIVE_API_URL
-  //var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
-  var SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+  const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
 
   export default {
     name: 'refs-upload',
@@ -61,9 +65,8 @@
       'script2': Script2
     },
     created () {
-     // this.setupGoogleDriveAPI()
-     Script2.load('https://apis.google.com/js/api.js').then(() => {
-       gapi.load('client:auth2', this.setupGoogleDriveAPI)
+      Script2.load('https://apis.google.com/js/api.js').then(() => {
+        gapi.load('client:auth2', this.setupGoogleDriveAPI)
       })
       
       this.refs.push({id: this.currentMaxID, client: "", project: "", date: "", keywords: [], attachments: []})
@@ -76,7 +79,18 @@
           scope: SCOPES
         }).then( () => {
           this.connected = gapi.auth2.getAuthInstance().isSignedIn.get()
-          gapi.client.load('drive', 'v2', () => {});
+          gapi.client.load('drive', 'v2', () => {
+            var files = gapi.client.drive.files.list(
+              {q: "mimeType='application/vnd.google-apps.folder' and title='GRAO-References'"} 
+            ).then((response) => {
+                var graoDriveFolderId = response.result.items[0].id
+                files = gapi.client.drive.files.list({
+                  q: "'"+graoDriveFolderId+"' in parents"
+                }).then((response) => {
+                  response.result.items.forEach((item)=>console.log(item.title))
+                })
+            })
+          });  
         })
       },
       signin(){
@@ -102,18 +116,12 @@
       },
       sendNewRefs(){  
           console.log("envoi serveur")
+          if (this.refs.length < 1)
+            console.log("c'est vide")
       },  
       deleteReference(refId){
         let indexOfRefToDelete = this.refs.findIndex(ref => ref.id === refId)
         this.refs.splice(indexOfRefToDelete, 1)
-      },
-      debug(){
-         gapi.client.drive.files.list({
-          'pageSize': 10,
-         }).then(function(response) {
-          var files = response.result.files;
-          console.log(response)
-         })
       }
   }}
 </script>
@@ -128,6 +136,13 @@
     margin-bottom: 100px;
     display: block;
     
+    h1 {
+      margin: 20px auto;
+      font-size: $title_high_font_size;
+      span {
+        font-size: $title_low_font_size;
+      }
+    }
     h3 {
       background-color: $red_znk;
       color: white;
@@ -155,6 +170,12 @@
       transition: all 0.5s;
     }
 
+    .btn-danger{
+      background-color: $red-znk;
+      width: 200px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
   }
 
 

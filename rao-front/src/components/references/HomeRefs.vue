@@ -6,9 +6,9 @@
     </h1>
 
     <router-link class="navbar-link" to="refsupload">
-      <div>
+      <a class="btn btn-danger"><i class="fa fa-plus-square" aria-hidden="true"></i>
         Add references
-      </div>
+      </a>
     </router-link>
 
     <v-advanced-search v-if="ready" :fields="fields" @search="searchAction"></v-advanced-search>
@@ -171,5 +171,12 @@
       display: block;
       margin: 0 0 20px;
     }
+  }
+
+  .btn-danger{
+    background-color: $red-znk;
+    width: 200px;
+    font-weight: bold;
+    margin-bottom: 20px;
   }
 </style>
