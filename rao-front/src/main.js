@@ -46,6 +46,10 @@ Vue.use(ClientTable, {
 
 Vue.config.productionTip = false
 
+// This is the event hub we'll use in every
+// component to communicate between them.
+Vue.prototype.$eventHub = new Vue()
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

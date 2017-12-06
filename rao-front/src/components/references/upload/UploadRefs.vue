@@ -8,7 +8,8 @@
     </h1>
     <div>
     
-      <google-drive />
+    <google-drive />
+    
     </div>
     <router-link class="navbar-link" to="refs">
       <a class="btn-danger btn"><i class="fa fa-long-arrow-left " aria-hidden="true"></i>

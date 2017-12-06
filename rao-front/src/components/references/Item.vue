@@ -38,7 +38,7 @@
 
 <script>
   import Contents from './Contents'
-
+  
   export default {
     name: 'document',
     components: {
@@ -52,7 +52,7 @@
       'search'
     ],
     created () {
-      // console.log(this.item)
+      this.$eventHub.$emit("newRefToFetchFilesOf", this.item)
     },
     methods: {
       getDocType (type) {

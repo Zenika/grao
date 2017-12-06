@@ -1,5 +1,6 @@
 <template>
   <div class="home largeur">
+    <google-drive refsToFetchFilesOf="documents" @googleAPIReady="() => this.ready = true"/>
 
     <h1>
       R<span>eferences</span>
@@ -41,11 +42,13 @@
   import AdvancedSearch from './AdvancedSearch'
   import Statistics from './Statistics'
   import List from './List'
+  import GoogleDrive from './drive/GoogleDrive'
+
   export default {
     name: 'home-refs',
     data () {
       return {
-        ready: true,
+        ready: false,
         loading: false,
         documents: [],
         start: false,
@@ -59,10 +62,10 @@
     components: {
       'v-advanced-search': AdvancedSearch,
       'v-statistics': Statistics,
-      'v-responses-list': List
+      'v-responses-list': List,
+      'google-drive': GoogleDrive
     },
     created () {
-      console.log("refs")
     },
     methods: {
       searchAction(search){
