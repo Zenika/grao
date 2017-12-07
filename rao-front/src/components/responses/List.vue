@@ -69,7 +69,6 @@ export default {
       if (this.hidden.length === 0) this.hidden_list = false
     },
     handleScroll () {
-      console.log('plus de page ' + this.page + ' / ' + this.pages)
       if ((this.page + 1) > (this.pages - 1)) { // -1 car la pagination commence à 0 ...
         // console.log('plus de page ' + this.pages + ' <= ' + this.page)
         this.scrollLoader = false

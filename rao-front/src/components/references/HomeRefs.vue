@@ -1,6 +1,7 @@
 <template>
   <div class="home largeur">
-    <google-drive refsToFetchFilesOf="documents" @googleAPIReady="() => this.ready = true"/>
+    <google-drive :refsToFetchFilesOf="documents" @googleAPIReady="() => this.ready = true" 
+    @googleAPIFetchDone="fillRefsFiles"/>
 
     <h1>
       R<span>eferences</span>
@@ -105,8 +106,14 @@
           console.log(error)
           this.ready = false
         })
+      },
+      fillRefsFiles(refs){
+        for (var n in refs){
+          let refID = n.split("-")[0]
+          let indexOfRefToUpdate = this.documents.findIndex(ref => ref.objectID === refID)
+          this.documents[indexOfRefToUpdate]['Path'] = refs[n]['files']
+        }
       }
-
     }
   }
 </script>

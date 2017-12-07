@@ -52,7 +52,7 @@
       'search'
     ],
     created () {
-      this.$eventHub.$emit("newRefToFetchFilesOf", this.item)
+      //this.$eventHub.$emit("newRefToFetchFilesOf", this.item)
     },
     methods: {
       getDocType (type) {

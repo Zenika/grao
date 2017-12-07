@@ -18,18 +18,32 @@ export default {
     data () {
       return {
         connected: false,
-        graoDriveFolderId: "-1"
+        graoDriveFolderId: "-1",
+        refsFilesPaths: []
       }
     },
+    props: ['refsToFetchFilesOf'],
+    watch: {
+      refsToFetchFilesOf: {
+        handler: function(newVal){
+          console.log("watch")
+          console.log(newVal)
+          for (var i in newVal){
+            this.fetchRefFilesPaths(newVal[i]);
+          }
+          this.$emit("googleAPIFetchDone", this.refsFilesPaths)
+        }
+      }
+    }, 
     components: {
         'script2': Script2
     },
     created () {
       Script2.load('https://apis.google.com/js/api.js').then(() => {
         gapi.load('client:auth2', this.setupGoogleDriveAPI)
-      })
+    })
 
-      this.$eventHub.$on("newRefToFetchFilesOf", this.fetchRefFilesPaths)
+      //this.$eventHub.$on("newRefToFetchFilesOf", this.fetchRefFilesPaths)
     },
     methods: {
       setupGoogleDriveAPI(){
@@ -53,7 +67,8 @@ export default {
           });  
       },
       fetchRefFilesPaths(ref){
-          let title = ref.Date + "-" + ref.Client + "-" + ref.Project
+          let title = ref.objectID+"-"+ref.Date + "-" + ref.Client + "-" + ref.Project
+          this.refsFilesPaths[title] = {id: "", files:[]}
 
           if (this.graoDriveFolderId == "-1"){
               console.error("Async error : cannot fetch reference files paths while graoFolderId is unset")
@@ -70,13 +85,14 @@ export default {
                   return
               }
               let refDriveFolderId = response.result.items[0].id
-              
+              this.refsFilesPaths[title].id = refDriveFolderId
+
               gapi.client.drive.files.list({
                   q: "'"+refDriveFolderId+"' in parents"
               })
               .then((resp) => {
                 for (let i in resp.result.items)
-                  console.log(resp.result.items[i].title) // ici
+                  this.refsFilesPaths[title].files.push(resp.result.items[i].title)
               })
           })
       },
