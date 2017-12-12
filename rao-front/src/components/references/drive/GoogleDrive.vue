@@ -67,6 +67,7 @@ export default {
             gapi.client.drive.files.list(
               {q: "mimeType='application/vnd.google-apps.folder' and name='GRAO-References'"} 
             ).then((response) => {
+              console.log(response)
                 if (response.result.files.length < 1){
                   if (!this.uploadRefs){
                     console.error("No GRAO folder was found in specified drive.")
@@ -75,6 +76,7 @@ export default {
                   }
                   //Create GRAO Folder
                   this.graoDriveFolderId = this.createGraoDriveFolder()
+                  console.log("graoDriveFolderId:"+this.graoDriveFolderId)
                 }
                 else {
                   this.graoDriveFolderId = response.result.files[0].id
@@ -111,20 +113,17 @@ export default {
       createGraoDriveReferenceFolder(name){
         var fileMetadata = {
           'name': name,
-          'mimeType': 'application/vnd.google-apps.folder'
+          'mimeType': 'application/vnd.google-apps.folder',
+          'parents': [this.graoDriveFolderId]
         };
         gapi.client.drive.files.create({
           resource: fileMetadata,
           fields: 'id'
-        }, function (err, file) {
-          if (err) {
-            console.error(err);
-          } else {
-            console.log('Folder Id: ', file.id);
-            return file.id
-          }
-        }).execute();
-        console.log("GRAO Folder created")
+        }).then((resp)=>{
+          return resp['result']['id']
+        });
+        console.log("GRAO Reference Folder created")
+
       },
       fetchRefFilesPaths(ref){
           let title = ref.objectID+"-"+ref.Date + "-" + ref.Client + "-" + ref.Project
@@ -158,20 +157,25 @@ export default {
       },
       uploadFiles(){
        for (let i in this.refsToUpload){
-        for (let j = 0 ; j < this.refsToUpload[i]['attachments'].length ; j++){
-          let reader = new FileReader();
-          reader.readAsDataURL(this.refsToUpload[i]['attachments'][j])
-        
-          reader.onload = (event) => {
-            let imageData = event.target.result
+          let ref = this.refsToUpload[i]
+          let title = ref['objectID']+"-"+ref['date'] + "-" + ref['client'] + "-" + ref['project']
+          let refFolderId = this.createGraoDriveReferenceFolder(title)
+          console.log("reffid"+refFolderId)
+          for (let j = 0 ; j < this.refsToUpload[i]['attachments'].length ; j++){
+            let reader = new FileReader();
+            reader.readAsDataURL(this.refsToUpload[i]['attachments'][j])
+          
+            reader.onload = (event) => {
+              let fileData = event.target.result
 
-            this.emitHttpRequestToGoogleApi(
-              this.refsToUpload[i]['attachments'][j].name, 
-              imageData, 
-              this.refsToUpload[i]['attachments'][j].type
-            )
-          };
-        }
+              this.emitHttpRequestToGoogleApi(
+                this.refsToUpload[i]['attachments'][j].name, 
+                fileData, 
+                this.refsToUpload[i]['attachments'][j].type,
+                refFolderId
+              )
+            };
+          }
 
        }
       },
@@ -187,7 +191,7 @@ export default {
         })
         this.$emit("googleAPINotConnected")
       },
-      emitHttpRequestToGoogleApi(name,data,type,callback) {
+      emitHttpRequestToGoogleApi(name, data, type, parentId, callback) {
         const boundary = '-------314159265358979323846';
         const delimiter = "\r\n--" + boundary + "\r\n";
         const close_delim = "\r\n--" + boundary + "--";
@@ -196,7 +200,8 @@ export default {
 
         var metadata = {
             'name': name,
-            'mimeType': contentType
+            'mimeType': contentType,
+            'parents' : [parentId]
           };
 
           var multipartRequestBody =
