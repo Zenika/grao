@@ -67,7 +67,6 @@ export default {
             gapi.client.drive.files.list(
               {q: "mimeType='application/vnd.google-apps.folder' and name='GRAO-References'"} 
             ).then((response) => {
-              console.log(response)
                 if (response.result.files.length < 1){
                   if (!this.uploadRefs){
                     console.error("No GRAO folder was found in specified drive.")
@@ -76,7 +75,6 @@ export default {
                   }
                   //Create GRAO Folder
                   this.graoDriveFolderId = this.createGraoDriveFolder()
-                  console.log("graoDriveFolderId:"+this.graoDriveFolderId)
                 }
                 else {
                   this.graoDriveFolderId = response.result.files[0].id
@@ -99,16 +97,7 @@ export default {
         gapi.client.drive.files.create({
           resource: fileMetadata,
           fields: 'id'
-        }, function (err, file) {
-          if (err) {
-            console.error(err);
-          } else {
-            console.log('Folder Id: ', file.id);
-            return file.id
-          }
         }).execute();
-        console.log("GRAO Folder created")
-        
       },
       fetchRefFilesPaths(ref){
           let title = ref.objectID+"-"+ref.Date + "-" + ref.Client + "-" + ref.Project

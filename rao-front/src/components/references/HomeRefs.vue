@@ -119,7 +119,6 @@
       },
       fillRefsFiles(refs){
         for (var n in refs){
-          console.log(refs[n])
           let refID = n.split("-")[0]
           let indexOfRefToUpdate = this.documents.findIndex(ref => ref.objectID === refID)
           this.documents[indexOfRefToUpdate]['Path'] = refs[n]['files']

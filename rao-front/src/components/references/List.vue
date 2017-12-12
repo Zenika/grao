@@ -70,7 +70,6 @@ export default {
     },
     handleScroll () {
       if ((this.page + 1) > (this.pages - 1)) { // -1 car la pagination commence à 0 ...
-        // console.log('plus de page ' + this.pages + ' <= ' + this.page)
         this.scrollLoader = false
         this.infiniteScroll = false
         return

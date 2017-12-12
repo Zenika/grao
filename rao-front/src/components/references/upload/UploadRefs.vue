@@ -12,7 +12,7 @@
                   :uploadAsked="uploadAsked"
                   :refsToUpload="refs" 
                   @googleAPIReady="() => {this.connected = true}"
-                  @googleAPINotConnected="()=>{this.connected = false}"  
+                  @googleAPINotConnected="() => {this.connected = false}"  
     />
     
     </div>
@@ -83,8 +83,6 @@
       },
       sendNewRefs(){  
           this.uploadAsked = true
-          if (this.refs.length < 1)
-            console.log("c'est vide")
       },  
       deleteReference(refId){
         let indexOfRefToDelete = this.refs.findIndex(ref => ref.id === refId)
