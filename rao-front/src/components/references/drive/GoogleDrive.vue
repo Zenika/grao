@@ -110,21 +110,6 @@ export default {
         console.log("GRAO Folder created")
         
       },
-      createGraoDriveReferenceFolder(name){
-        var fileMetadata = {
-          'name': name,
-          'mimeType': 'application/vnd.google-apps.folder',
-          'parents': [this.graoDriveFolderId]
-        };
-        gapi.client.drive.files.create({
-          resource: fileMetadata,
-          fields: 'id'
-        }).then((resp)=>{
-          return resp['result']['id']
-        });
-        console.log("GRAO Reference Folder created")
-
-      },
       fetchRefFilesPaths(ref){
           let title = ref.objectID+"-"+ref.Date + "-" + ref.Client + "-" + ref.Project
           this.refsFilesPaths[title] = {id: "", files:[]}
@@ -159,24 +144,31 @@ export default {
        for (let i in this.refsToUpload){
           let ref = this.refsToUpload[i]
           let title = ref['objectID']+"-"+ref['date'] + "-" + ref['client'] + "-" + ref['project']
-          let refFolderId = this.createGraoDriveReferenceFolder(title)
-          console.log("reffid"+refFolderId)
-          for (let j = 0 ; j < this.refsToUpload[i]['attachments'].length ; j++){
-            let reader = new FileReader();
-            reader.readAsDataURL(this.refsToUpload[i]['attachments'][j])
-          
-            reader.onload = (event) => {
-              let fileData = event.target.result
+          let fileMetadata = {
+            'name': title,
+            'mimeType': 'application/vnd.google-apps.folder',
+            'parents': [this.graoDriveFolderId]
+          };
 
-              this.emitHttpRequestToGoogleApi(
-                this.refsToUpload[i]['attachments'][j].name, 
-                fileData, 
-                this.refsToUpload[i]['attachments'][j].type,
-                refFolderId
-              )
-            };
-          }
-
+          gapi.client.drive.files.create({
+            resource: fileMetadata,
+            fields: 'id'
+          }).then((resp)=>{
+              let referenceFolderId = resp['result']['id']
+              for (let j = 0 ; j < this.refsToUpload[i]['attachments'].length ; j++){
+                let reader = new FileReader();
+                reader.readAsDataURL(this.refsToUpload[i]['attachments'][j])
+                reader.onload = (event) => {
+                  let fileData = event.target.result
+                  this.emitHttpRequestToGoogleApi(
+                    this.refsToUpload[i]['attachments'][j].name, 
+                    fileData, 
+                    this.refsToUpload[i]['attachments'][j].type,
+                    referenceFolderId
+                  )
+                };
+            }
+          });
        }
       },
       signInToGoogleDrive(){
