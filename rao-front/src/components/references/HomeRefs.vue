@@ -1,7 +1,7 @@
 <template>
   <div class="home largeur">
     <google-drive :refsToFetchFilesOf="documents" @googleAPIReady="() => this.ready = true" 
-    @googleAPIFetchDone="fillRefsFiles"/>
+    @googleAPIFetchDone="fillRefsFiles" @googleAPINoGRAOFolder="()=>{this.errorNoGRAOFolder = true}"/>
 
     <h1>
       R<span>eferences</span>
@@ -35,6 +35,15 @@
       </div>
 
     </div>
+
+    <div class="no_result" v-if="errorNoGRAOFolder">
+        <p>No GRAO folder was found in specified drive.</p>
+        <h4>Upload your first reference to get started.</h4>
+        <img src="../../assets/noresult.jpg" alt="">
+    </div>
+
+
+
   </div>
 </template>
 
@@ -58,6 +67,7 @@
         pages: 0,
         facets: null,
         url: process.env.API_URL + 'refs/search',
+        errorNoGRAOFolder: false
       }
     },
     components: {
@@ -109,6 +119,7 @@
       },
       fillRefsFiles(refs){
         for (var n in refs){
+          console.log(refs[n])
           let refID = n.split("-")[0]
           let indexOfRefToUpdate = this.documents.findIndex(ref => ref.objectID === refID)
           this.documents[indexOfRefToUpdate]['Path'] = refs[n]['files']

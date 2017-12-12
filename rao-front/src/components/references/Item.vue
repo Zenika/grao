@@ -52,7 +52,6 @@
       'search'
     ],
     created () {
-      //this.$eventHub.$emit("newRefToFetchFilesOf", this.item)
     },
     methods: {
       getDocType (type) {

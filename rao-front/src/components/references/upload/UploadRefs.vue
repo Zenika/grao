@@ -8,7 +8,12 @@
     </h1>
     <div>
     
-    <google-drive />
+    <google-drive :uploadRefs="true"
+                  :uploadAsked="uploadAsked"
+                  :refsToUpload="refs" 
+                  @googleAPIReady="() => {this.connected = true}"
+                  @googleAPINotConnected="()=>{this.connected = false}"  
+    />
     
     </div>
     <router-link class="navbar-link" to="refs">
@@ -32,11 +37,12 @@
       Add one more reference
     </a>
 
-    <a @click="sendNewRefs()" class="btn btn-default">
+    <a v-if="connected" @click="sendNewRefs()" class="btn btn-default">
       <i class="fa fa-send" aria-hidden="true"></i>
       Send
     </a>
-
+    
+    <p class="bottom-msg" v-if="!connected">Please connect to Google Drive to upload references.</p>
   </div>
 </template>
 
@@ -52,7 +58,8 @@
       return {
         refs: [],
         currentMaxID : 0,
-        connected: false
+        connected: false,
+        uploadAsked: false
       }
     },
     components: {
@@ -72,10 +79,10 @@
       },
       updateRefFiles(id, files){
         let indexOfRefToUpdate = this.refs.findIndex(ref => ref.id === id)
-        this.refs[indexOfRefToUpdate]['attachments'] = files
+        this.refs[indexOfRefToUpdate]['attachments'] = files              
       },
       sendNewRefs(){  
-          console.log("envoi serveur")
+          this.uploadAsked = true
           if (this.refs.length < 1)
             console.log("c'est vide")
       },  
@@ -96,6 +103,11 @@
     margin-bottom: 100px;
     display: block;
     
+    .bottom-msg{
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
     h1 {
       margin: 20px auto;
       font-size: $title_high_font_size;
