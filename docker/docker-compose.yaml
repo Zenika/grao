@@ -6,10 +6,31 @@ services:
       - rao
   raoback:
     image: zenika/grao-back:v1
-    networks: 
+    networks:
       - rao
+    env_file:
+      - rao.env
+    environment:
+      - DOCCONV_SERVER_ADDRESS=${DOCCONV_SERVER_ADDRESS}
+      - GRAO_APP_PORT=${GRAO_APP_PORT}
+      - GRAO_DBX_KEY=${GRAO_DBX_KEY}
+      - GRAO_DBX_SECRET=${GRAO_DBX_SECRET}
+      - GRAO_DBX_TOKEN=${GRAO_DBX_TOKEN}
+      - GRAO_DBX_ROOT=${GRAO_DBX_ROOT}
+      - GRAO_DBX_CURSOR=${GRAO_DBX_CURSOR}
+      - GRAO_ALGOLIA_ID=${GRAO_ALGOLIA_ID}
+      - GRAO_ALGOLIA_KEY=${GRAO_ALGOLIA_KEY}
+      - GRAO_LOG_FILE=${GRAO_LOG_FILE}
+      - GRAO_LOG_LEVEL=${GRAO_LOG_LEVEL}
+      - GRAO_POLL_EVERY=${GRAO_POLL_EVERY}
+      - RAO_POLL_FROM=${RAO_POLL_FROM}
+      - BDC_POLL_FROM=${BDC_POLL_FROM}
+      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - AUTH0_JWKS_URI=${AUTH0_JWKS_URI}
+      - AUTH0_ISSUER=${AUTH0_ISSUER}
   raofront:
-    image: zenika/rao-front:v1.02
+    image: zenika/rao-front:v1.03
     networks: 
       - rao
     ports:

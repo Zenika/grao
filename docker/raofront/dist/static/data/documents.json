@@ -1,0 +1,97 @@
+[
+  {
+    "categorie": "Qualification documents",
+    "documents": [
+      {
+        "title": "Steps for a Fixed Price project",
+        "description": "Defines all steps to be done when dealing with a fixed price project.",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/QUALIFICATION/Les%20%C3%A9tapes%20d%27un%20Forfait.pptx?_subject_uid=412112727&w=AAC4drybh_tbudU65XruqH-Cvs3qmZdbG8ANJvgXbY25Mw",
+        "url_preview": "/static/img/etapes_forfait.png"
+      },
+      {
+        "title": "Qualification check list",
+        "description": "Estimates per task, use of ratio",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/QUALIFICATION/Fichier%20qualification%20projet%20dossier%20pour%20go-nogo.xlsx?_subject_uid=412112727&w=AAAXOEeD07o0KCRgVhnT_C3NQDoqgMldGKfHovOTQksIVQ",
+        "url_preview": "/static/img/qualif.png"
+      }
+    ]
+  },
+  {
+    "categorie": "Response templates",
+    "documents": [
+      {
+        "title": "Standard Project",
+        "description": "Response template for standard project.",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/TEMPLATES_RAO/Proposition%20Centre%20de%20Service.docx?_subject_uid=412112727&w=AADDEhgbwfM7q-DoZ-JJq9sQBLY5gtI7bcsG2I_ukKmLog",
+        "url_exemple": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/EXEMPLES_RAO/Proposition%20CDS.docx?_subject_uid=412112727&w=AABEiIE60WlZaDAFTyAocs60QxU-eK0aS-hRYLOAlfGoHg",
+        "url_preview": "/static/img/project.png"
+      },
+      {
+        "title": "Audit and consulting",
+        "description": "",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/TEMPLATES_RAO/Proposition-audit%20et%20conseil.docx?_subject_uid=412112727&w=AAD7GGzRQiZnKkQiJSHBHNIPCHfTP6O0lkTImAm64pBH_g",
+        "url_exemple": "",
+        "url_preview": "/static/img/project.png"
+      },
+      {
+        "title": "DataBase Expertise",
+        "description": "",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/TEMPLATES_RAO/Proposition%20accompagnement%20Expertise%20BDD.docx?_subject_uid=412112727&w=AACogk_zLXZRPYJuOEaSAL1f4jq6MU8_C7JykyDxS5XX2g",
+        "url_exemple": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/EXEMPLES_RAO/Proposition%20accompagnement%20expertise%20Expertise%20BDD.docx?_subject_uid=412112727&w=AADsD_gFvL445FjfrmGmw6SrYyIg57ou8GoAb55fxRGyNA",
+        "url_preview": "/static/img/project_db.png"
+      },
+      {
+        "title": "POC",
+        "description": "Proposal to accompany the construction of a POC",
+        "url_template": "",
+        "url_exemple": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/EXEMPLES_RAO/Proposition%20accompagnement%20%C3%A0%20la%20construction%20d%27un%20POC.pptx?_subject_uid=412112727&w=AACRd2HSSTF_D8jP001435lZLeg5OxCGYTrJ9_ZuLI3GRw",
+        "url_preview": "/static/img/project.png"
+      },
+      {
+        "title": "Agile Transfo: coaching & Training",
+        "description": "",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/TEMPLATES_RAO/Proposition%20Transfo%20Agile.docx?_subject_uid=412112727&w=AACsUCNDSP0gpoIQCzq06jD0VyxDmORt4wI2n9lL13Cvjw",
+        "url_exemple": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/EXEMPLES_RAO/Proposition%20Transfo%20Agile%20en%20coaching%20et%20en%20formation.docx?_subject_uid=412112727&w=AABMXS7Jb86ak_6OHkYwIezRq-JesXZii6n6fm7hHn9Vew",
+        "url_preview": "/static/img/agile.png"
+      },
+      {
+        "title": "Agile Transformation",
+        "description": "",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/TEMPLATES_RAO/Proposition%20Transfo%20Agile.docx?_subject_uid=412112727&w=AACsUCNDSP0gpoIQCzq06jD0VyxDmORt4wI2n9lL13Cvjw",
+        "url_exemple": "",
+        "url_preview": "/static/img/agile.png"
+      },
+      {
+        "title": "Agile Audit",
+        "description": "... and recommendations",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/TEMPLATES_RAO/Proposition-audit%20agile%20et%20pr%C3%A9conisation.docx?_subject_uid=412112727&w=AACkoKYaDB5Ftbe9r55RfnIXoax3j4KM3vAZYXxd5kbkYA",
+        "url_exemple": "",
+        "url_preview": "/static/img/agile.png"
+      },
+      {
+        "title": "LEAN coaching",
+        "description": "Proposal - Agile and Lean coaching with steps and table of work to be undertaken",
+        "url_template": "",
+        "url_exemple": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/EXEMPLES_RAO/Proposition-%20Coaching%20Agile%20et%20Lean%20avec%20d%C3%A9marches%20et%20tableau%20des%20travaux%20%C3%A0%20engager.docx?_subject_uid=412112727&w=AAAq7nmB_2xFreivft8bHqfOUUUX5VwfOWxEfVjhEaoX3Q",
+        "url_preview": "/static/img/agile.png"
+      }
+    ]
+  },
+  {
+    "categorie": "Estimates spreadsheets",
+    "documents": [
+      {
+        "title": "Fixed Price",
+        "description": "Estimate's template for Fixed price project.",
+        "url_template": "https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/CHIFFRAGES/NomClient%20-%20NomProjet_chiffrage-Forfait%20-%20v1.xls?_subject_uid=412112727&w=AABKoI0wR4EcP2Ttke95hBGjiIyLdHCeo99XEO5e_ZHyAg",
+        "url_preview": "/static/img/estimate_fp.png"
+      },
+      {
+        "title": "Unit of Work",
+        "description": "Template for Unit of Work estimate.",
+        "url_template":"https://www.dropbox.com/pri/get/Zenika%20-%20Clients/PROCESS%20COMMERCIAL/GRAO/CHIFFRAGES/Calcul%20des%20charges_par%20UOV1%20%28iteration%29.xlsx?_subject_uid=412112727&w=AADis0TbeLLP9kGn9wP2BYVXjV8Qj0tYD2KtD4Cw8zpGkw",
+        "url_preview":"/static/img/uo.png"
+      }
+    ]
+  }
+]

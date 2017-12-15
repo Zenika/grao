@@ -6,6 +6,7 @@
 package docd
 
 import (
+	"os"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -26,7 +27,7 @@ type ConversionResponse struct {
 type Docd struct{}
 
 func (docd Docd) Convert(input []byte, mimeType string) ([]byte, error) {
-	convertUrl := fmt.Sprintf("http://localhost:%v/convert", "8888")
+	convertUrl := fmt.Sprintf("http://%s:%v/convert", os.Getenv("DOCCONV_SERVER_ADDRESS"), "8888")
 	convertParam := "input"
 
 	body := &bytes.Buffer{}
