@@ -1,15 +1,11 @@
 version: "3"
 services:
   docconv:
-    build: ./docconv
-    ports: 
-      - "8888:8888"
+    image: zenika/rao-docconv:v1
     networks: 
       - rao
   raoback:
-    build: ./raoback
-    ports: 
-      - "8080:8080"
+    image: zenika/grao-back:v1
     networks: 
       - rao
     environment:
@@ -31,12 +27,10 @@ services:
       - AUTH0_JWKS_URI=https://zenika.eu.auth0.com/.well-known/jwks.json
       - AUTH0_ISSUER=https://zenika.eu.auth0.com/
   raofront:
-    image: nginx
-    volumes: 
-      - ./dist:/usr/share/nginx/html
+    image: zenika/rao-front:v1.02
     networks: 
       - rao
-    ports: 
-      - "80:80"
+    ports:
+      - 80:80
 networks: 
   rao:
