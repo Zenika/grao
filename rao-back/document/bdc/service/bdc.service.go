@@ -4,12 +4,12 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/Zenika/RAO/document"
-	"github.com/Zenika/RAO/document/bdc"
-	"github.com/Zenika/RAO/log"
-	"github.com/Zenika/RAO/search"
-	"github.com/Zenika/RAO/tree"
-	"github.com/Zenika/RAO/utils"
+	"github.com/Zenika/rao/rao-back/document"
+	"github.com/Zenika/rao/rao-back/document/bdc"
+	"github.com/Zenika/rao/rao-back/log"
+	"github.com/Zenika/rao/rao-back/search"
+	"github.com/Zenika/rao/rao-back/tree"
+	"github.com/Zenika/rao/rao-back/utils"
 )
 
 //var BDC_FILTER_PATTERN = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/BON DE COMMANDE/(?P<Consultant>[^/]+)`

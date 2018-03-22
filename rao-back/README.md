@@ -13,7 +13,7 @@ ln -s $PWD $GOPATH/src/github.com/Zenika/RAO
 ```shell
 apt-get install tidy
 apt-get install wv
-apt-get install popplerutils
+apt-get install poppler-utils
 apt-get install unrtf
 go get golang.org/x/oauth2
 go get github.com/stacktic/dropbox

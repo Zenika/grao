@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Zenika/RAO/document"
+	"github.com/Zenika/rao/rao-back/document"
 )
 
 type Mock struct {

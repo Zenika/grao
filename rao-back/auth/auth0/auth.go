@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"github.com/auth0-community/go-auth0"
-	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/rao/rao-back/log"
 	"gopkg.in/square/go-jose.v2"
-	"fmt"
 )
 
 type Response struct {
@@ -24,10 +23,10 @@ func (auth Auth0) UserAuthenticatedMiddleware(next http.Handler) http.Handler {
 		if "OPTIONS" == r.Method {
 			next.ServeHTTP(w, r)
 		}
-		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: auth.jwksUri})
+		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: auth.jwksUri}, nil)
 		audience := []string{auth.apiAudience}
 		configuration := auth0.NewConfiguration(client, audience, auth.apiIssuer, jose.RS256)
-		validator := auth0.NewValidator(configuration)
+		validator := auth0.NewValidator(configuration, nil)
 		_, err := validator.ValidateRequest(r)
 		if err != nil {
 			log.Error(err, log.ERROR)
@@ -44,7 +43,6 @@ func (auth Auth0) UserAuthenticatedMiddleware(next http.Handler) http.Handler {
 }
 
 func New(jwksUri string, apiIssuer string, apiAudience string) *Auth0 {
-	fmt.Println("jwks uri " + jwksUri)
 	return &Auth0 {
 		jwksUri:   jwksUri,
 		apiIssuer: apiIssuer,

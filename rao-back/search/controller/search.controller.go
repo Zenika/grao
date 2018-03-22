@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Zenika/RAO/log"
-	"github.com/Zenika/RAO/search"
+	"github.com/Zenika/rao/rao-back/log"
+	"github.com/Zenika/rao/rao-back/search"
 	"github.com/gorilla/mux"
 )
 

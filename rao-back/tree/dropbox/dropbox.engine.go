@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Zenika/RAO/auth"
-	"github.com/Zenika/RAO/document"
-	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/rao/rao-back/auth"
+	"github.com/Zenika/rao/rao-back/document"
+	"github.com/Zenika/rao/rao-back/log"
 	"github.com/stacktic/dropbox"
 )
 

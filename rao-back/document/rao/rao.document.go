@@ -1,6 +1,6 @@
 package rao
 
-import "github.com/Zenika/RAO/document"
+import "github.com/Zenika/rao/rao-back/document"
 
 type RaoDocument struct {
 	document.IDocument

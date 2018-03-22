@@ -5,21 +5,22 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Zenika/RAO/conv"
-	"github.com/Zenika/RAO/conv/docd"
-	bdcService "github.com/Zenika/RAO/document/bdc/service"
-	raoService "github.com/Zenika/RAO/document/rao/service"
-	"github.com/Zenika/RAO/log"
-	"github.com/Zenika/RAO/auth/auth0"
-	"github.com/Zenika/RAO/search"
-	"github.com/Zenika/RAO/search/algolia"
-	searchController "github.com/Zenika/RAO/search/controller"
-	"github.com/Zenika/RAO/tree"
-	"github.com/Zenika/RAO/tree/dropbox"
+	"github.com/Zenika/rao/rao-back/conv"
+	"github.com/Zenika/rao/rao-back/conv/docd"
+	bdcService "github.com/Zenika/rao/rao-back/document/bdc/service"
+	raoService "github.com/Zenika/rao/rao-back/document/rao/service"
+	"github.com/Zenika/rao/rao-back/log"
+	"github.com/Zenika/rao/rao-back/auth/auth0"
+	"github.com/Zenika/rao/rao-back/search"
+	"github.com/Zenika/rao/rao-back/search/algolia"
+	searchController "github.com/Zenika/rao/rao-back/search/controller"
+	"github.com/Zenika/rao/rao-back/tree"
+	"github.com/Zenika/rao/rao-back/tree/dropbox"
 	"github.com/gorilla/mux"
 	"github.com/robfig/cron"
 	"github.com/rs/cors"
 )
+
 
 /* INIT SERVICES IMPLEMENTATIONS */
 var treeService = tree.New(dropbox.New())

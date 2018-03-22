@@ -1,0 +1,91 @@
+version: "3"
+
+services:
+  docd:
+    build: ./_docd
+    networks:
+      - intra
+  dev:
+    build: .
+    volumes:
+      - .:/go/src/github.com/Zenika/rao/rao-back
+      - ./tmp/rao.log:/rao.log
+    environment:
+      - EXECUTION_PROFILE=DEV
+      - GRAO_APP_PORT=${GRAO_APP_PORT}
+      - GRAO_DBX_KEY=${GRAO_DBX_KEY}
+      - GRAO_DBX_SECRET=${GRAO_DBX_SECRET}
+      - GRAO_DBX_TOKEN=${GRAO_DBX_TOKEN}
+      - GRAO_DBX_ROOT=${GRAO_DBX_ROOT}
+      - GRAO_DBX_CURSOR=${GRAO_DBX_CURSOR}
+      - GRAO_ALGOLIA_ID=${GRAO_ALGOLIA_ID}
+      - GRAO_ALGOLIA_KEY=${GRAO_ALGOLIA_KEY}
+      - GRAO_LOG_FILE=${GRAO_LOG_FILE}
+      - GRAO_LOG_LEVEL=${GRAO_LOG_LEVEL}
+      - GRAO_POLL_EVERY=${GRAO_POLL_EVERY}
+      - RAO_POLL_FROM=${RAO_POLL_FROM}
+      - BDC_POLL_FROM=${BDC_POLL_FROM}
+      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - AUTH0_JWKS_URI=${AUTH0_JWKS_URI}
+      - AUTH0_ISSUER=${AUTH0_ISSUER}
+      - DOCD_PORT=${DOCD_PORT}
+      - DOCD_HOST=${DOCD_HOST}
+    networks:
+      - intra
+  build:
+    build: .
+    volumes:
+      - .:/go/src/github.com/Zenika/rao/rao-back
+      - ./_dist:/_dist
+    environment:
+      - EXECUTION_PROFILE=BUILD
+      - GRAO_APP_PORT=${GRAO_APP_PORT}
+      - GRAO_DBX_KEY=${GRAO_DBX_KEY}
+      - GRAO_DBX_SECRET=${GRAO_DBX_SECRET}
+      - GRAO_DBX_TOKEN=${GRAO_DBX_TOKEN}
+      - GRAO_DBX_ROOT=${GRAO_DBX_ROOT}
+      - GRAO_DBX_CURSOR=${GRAO_DBX_CURSOR}
+      - GRAO_ALGOLIA_ID=${GRAO_ALGOLIA_ID}
+      - GRAO_ALGOLIA_KEY=${GRAO_ALGOLIA_KEY}
+      - GRAO_LOG_FILE=${GRAO_LOG_FILE}
+      - GRAO_LOG_LEVEL=${GRAO_LOG_LEVEL}
+      - GRAO_POLL_EVERY=${GRAO_POLL_EVERY}
+      - RAO_POLL_FROM=${RAO_POLL_FROM}
+      - BDC_POLL_FROM=${BDC_POLL_FROM}
+      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - AUTH0_JWKS_URI=${AUTH0_JWKS_URI}
+      - AUTH0_ISSUER=${AUTH0_ISSUER}
+      - DOCD_PORT=${DOCD_PORT}
+      - DOCD_HOST=${DOCD_HOST}
+  prod:
+    build: .
+    volumes:
+      - .:/go/src/github.com/Zenika/rao/rao-back
+      - ./_dist:/_dist
+    environment:
+      - EXECUTION_PROFILE=BUILD
+      - GRAO_APP_PORT=${GRAO_APP_PORT}
+      - GRAO_DBX_KEY=${GRAO_DBX_KEY}
+      - GRAO_DBX_SECRET=${GRAO_DBX_SECRET}
+      - GRAO_DBX_TOKEN=${GRAO_DBX_TOKEN}
+      - GRAO_DBX_ROOT=${GRAO_DBX_ROOT}
+      - GRAO_DBX_CURSOR=${GRAO_DBX_CURSOR}
+      - GRAO_ALGOLIA_ID=${GRAO_ALGOLIA_ID}
+      - GRAO_ALGOLIA_KEY=${GRAO_ALGOLIA_KEY}
+      - GRAO_LOG_FILE=${GRAO_LOG_FILE}
+      - GRAO_LOG_LEVEL=${GRAO_LOG_LEVEL}
+      - GRAO_POLL_EVERY=${GRAO_POLL_EVERY}
+      - RAO_POLL_FROM=${RAO_POLL_FROM}
+      - BDC_POLL_FROM=${BDC_POLL_FROM}
+      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - AUTH0_JWKS_URI=${AUTH0_JWKS_URI}
+      - AUTH0_ISSUER=${AUTH0_ISSUER}
+      - DOCD_PORT=${DOCD_PORT}
+      - DOCD_HOST=${DOCD_HOST}
+    networks:
+      - intra
+networks:
+  intra:
