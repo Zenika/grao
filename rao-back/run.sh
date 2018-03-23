@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
-echo "Running with execution profile $EXECUTION_PROFILE"
+echo "Running $(echo ${MODE} | tr 'A-Z' 'a-z') mode"
 
-if [ "$EXECUTION_PROFILE" = "DEV" ]
+if [ "$MODE" = "DEV" ]
 then
     dep ensure
     fresh main.go
-elif [ "$EXECUTION_PROFILE" = "BUILD" ]
+elif [ "$MODE" = "BUILD" ]
 then
+    dep ensure
     go build -o /_dist/rao
+elif [ "$MODE" = "TEST" ]
+then
+    dep ensure
+    go test ./...
 fi

@@ -1,82 +1,75 @@
 # GRAO
 
-## Set up
+## PREREQUISITES
 
-Install [go](https://golang.org/cmd/go/)<br>
-Set up  [GOPATH](https://golang.org/doc/code.html#GOPATH) environment variable
+Install [docker](https://docs.docker.com/install/)<br>
+Install [docker-compose](https://docs.docker.com/compose/install/)<br>
 
-```shell
-ln -s $PWD $GOPATH/src/github.com/Zenika/RAO
-```
-## Deps
+Additionally you may want to use [make](https://www.gnu.org/software/make/)
 
-```shell
-apt-get install tidy
-apt-get install wv
-apt-get install poppler-utils
-apt-get install unrtf
-go get golang.org/x/oauth2
-go get github.com/stacktic/dropbox
-go get -u github.com/sajari/docconv
-go get github.com/JalfResi/justext
-go get github.com/algolia/algoliasearch-client-go/algoliasearch
-go get github.com/robfig/cron
-go get gopkg.in/square/go-jose.v2
-go get github.com/auth0-community/go-auth0
-go get github.com/rs/cors
-go get -u github.com/gorilla/mux
-```
+## DEVELOPMENT
 
-## Build
+> Application relies on a couple of environment variables.
+They define external services dependencies (Auth0, dropbox, algolia) and configuration parameters.
+This configuration can be set in a `.env` file used by docker-compose
 
 ```shell
-go build -o bin/rao
+# Application server port
+GRAO_APP_PORT=8090
+# Credentials used to access the dropbox account
+GRAO_DBX_KEY=dropbox_key
+GRAO_DBX_SECRET=dropbox_secret
+GRAO_DBX_TOKEN=secret_token
+# Recursive polling of dropbox tree starts here
+GRAO_DBX_ROOT=/
+# Cursor file is used to maintain state between polls and permit diff 
+GRAO_DBX_CURSOR=/cursor
+# Credentials used to access algolia
+GRAO_ALGOLIA_ID=algolia_api_client_id
+GRAO_ALGOLIA_KEY=algolia_api_key
+# This where log ends
+GRAO_LOG_FILE=rao.log
+# This could be (DEBUG|INFOR|WARN|ERROR)
+GRAO_LOG_LEVEL=DEBUG
+# We don't poll continuously at the moment (we could) 
+GRAO_POLL_EVERY=@daily
+# Unfortunatly we need regular expressions to tell the application where documents are stored according to their types
+RAO_POLL_FROM=/ # Calls for Bids / Appels d'offre
+BDC_POLL_FROM=/ # Purchase Orders / Bons de commande
+# This configuration is needed to use AUTH0 as an authentication proxy
+AUTH0_AUDIENCE=https://grao.zenika.com/api/v1
+AUTH0_DOMAIN=zenika.eu.auth0.com
+AUTH0_JWKS_URI=https://zenika.eu.auth0.com/.well-known/jwks.json
+AUTH0_ISSUER=https://zenika.eu.auth0.com/
+# Application relies on docd for document to text conversions
+DOCD_PORT=8888
+DOCD_HOST=docd
+
 ```
+### using docker-compose
 
-## Env
+  - build
+    - MODE=BUILD docker-compose up dev
+  - start (dev mode)
+    - MODE=DEV docker-compose up
+  - test
+    - MODE=test docker-compose up dev
+     
+### using make
 
-```shell
-export GRAO_APP_PORT="8090"
-export GRAO_DBX_KEY="dropbox_key"
-export GRAO_DBX_SECRET="dropbox_secret"
-export GRAO_DBX_TOKEN="dropbox_token"
-export GRAO_DBX_ROOT="dropbox_root_path"
-export GRAO_DBX_CURSOR="cursor_file"
-export GRAO_ALGOLIA_ID="algolia_api_client_id"
-export GRAO_ALGOLIA_KEY="algolia_api_key"
-export GRAO_LOG_FILE="/tmp/rao.log"
-export GRAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
-export GRAO_POLL_EVERY="@daily"
-export RAO_POLL_FROM="rao_filter_regexp_string"
-export BDC_POLL_FROM="bdc_filter_regexp_string"
-export AUTH0_AUDIENCE="https://grao.zenika.com/api/v1"
-export AUTH0_DOMAIN="zenika.eu.auth0.com"
-export AUTH0_JWKS_URI="https://zenika.eu.auth0.com/.well-known/jwks.json"
-export AUTH0_ISSUER="https://zenika.eu.auth0.com/"
+  - build
+    - make build
+  - start (dev mode)
+    - make start
+  - test
+    - make test
 
-```
+## Deployment
 
-## Indexes
-
-Configuration of indexes can be performed by posting on the following endpoint
-
-```
-http://{host}/api/v1/{index_name}/settings
-```
-
-Payloads are available [in this repository](config)
-
-## Run
-
-```shell
-## install docd server
-pushd $GOPATH/src/github.com/sajari/docconv/docd && go install && popd
-## launch docd server
-nohup $GOPATH/bin/docd &
-## run app
-$GOPATH/src/github.com/Zenika/RAO/bin/rao
-```
-
+  - Application build ends up in the _dist folder
+  - You will need to set up application environment according to production use
+  - Make sure docd is running for document to text conversions
+  
 ## Source Code Documentation
 
 Source code doc is available [in this repository](_documentation)
