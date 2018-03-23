@@ -24,10 +24,10 @@ func (auth Auth0) UserAuthenticatedMiddleware(next http.Handler) http.Handler {
 		if "OPTIONS" == r.Method {
 			next.ServeHTTP(w, r)
 		}
-		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: auth.jwksUri})
+		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: auth.jwksUri}, nil)
 		audience := []string{auth.apiAudience}
 		configuration := auth0.NewConfiguration(client, audience, auth.apiIssuer, jose.RS256)
-		validator := auth0.NewValidator(configuration)
+		validator := auth0.NewValidator(configuration, nil)
 		_, err := validator.ValidateRequest(r)
 		if err != nil {
 			log.Error(err, log.ERROR)
