@@ -20,7 +20,6 @@ const (
 )
 
 var level string = os.Getenv("GRAO_LOG_LEVEL")
-var file os.File
 
 func _level() int {
 	switch level {
@@ -37,19 +36,11 @@ func _level() int {
 }
 
 func Init() {
-	dest := os.Getenv("GRAO_LOG_FILE")
-	if "" == dest {
-		dest = "rao.log"
-	}
-	file, err := os.OpenFile(dest, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.SetOutput(file)
+
 }
 
 func Close() {
-	file.Close()
+
 }
 
 func Error(err error, level ErrorLevel) {
