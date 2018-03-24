@@ -27,27 +27,6 @@ var treeService = tree.New(dropbox.New())
 var convService = conv.New(docd.New())
 var searchService = search.New(algolia.New())
 
-/*
-GRAO_APP_PORT=8090
-GRAO_DBX_KEY=dropbox_key
-GRAO_DBX_SECRET=dropbox_secret
-GRAO_DBX_TOKEN=secret_token
-GRAO_DBX_ROOT=/
-GRAO_DBX_CURSOR=/cursor
-GRAO_ALGOLIA_ID=algolia_api_client_id
-GRAO_ALGOLIA_KEY=algolia_api_key
-GRAO_LOG_FILE=rao.log
-GRAO_LOG_LEVEL=DEBUG
-GRAO_POLL_EVERY=@daily
-RAO_POLL_FROM=/
-BDC_POLL_FROM=/
-AUTH0_AUDIENCE=https://grao.zenika.com/api/v1
-AUTH0_DOMAIN=zenika.eu.auth0.com
-AUTH0_JWKS_URI=https://zenika.eu.auth0.com/.well-known/jwks.json
-AUTH0_ISSUER=https://zenika.eu.auth0.com/
-DOCD_PORT=8888
-DOCD_HOST=docd
- */
 func show_env() {
 	log.Info("APP_PORT=" + os.Getenv("GRAO_APP_PORT"))
 	log.Info("DOCD_PORT=" + os.Getenv("DOCD_PORT"))
