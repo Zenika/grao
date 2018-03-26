@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  docd:
+    build: ./_docd
+    networks:
+      - intra
+  dev:
+    build: .
+    volumes:
+      - ${PWD}:/go/src/github.com/Zenika/rao/rao-back
+      - ${PWD}/_dist:/_dist
+    env_file:
+      - .env
+    environment:
+      - MODE=${MODE}
+      - GRAO_APP_PORT=8090
+    ports:
+      - 8080:8090
+networks:
+  intra:

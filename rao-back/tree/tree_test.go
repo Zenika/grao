@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Zenika/RAO/document"
+	"github.com/Zenika/rao/rao-back/document"
 )
 
 type Mock struct {
@@ -21,7 +21,7 @@ func (mock Mock) LongPoll(root string, pairs [][]interface{}) {
 
 }
 
-var treeEngine = &mock{
+var treeEngine = &Mock{
 	docs: []document.IDocument{
 		createDoc("Zenika Clients/_clients_lille/lex luthor/krypto project/REPONSE ENVOYEE/response.pdf"),
 		createDoc("Zenika Clients/_clients_lille/Kahuna Burger/bruger online/REPONSE ENVOYEE/response.pdf"),

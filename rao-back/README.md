@@ -1,82 +1,115 @@
 # GRAO
 
-## Set up
+## DESCRIPTION
 
-Install [go](https://golang.org/cmd/go/)<br>
-Set up  [GOPATH](https://golang.org/doc/code.html#GOPATH) environment variable
 
-```shell
-ln -s $PWD $GOPATH/src/github.com/Zenika/RAO
-```
-## Deps
+>Grao is an application that allows indexing documents stored in dropbox. 
+It provides a search engine user interface for various types of documents.
 
-```shell
-apt-get install tidy
-apt-get install wv
-apt-get install popplerutils
-apt-get install unrtf
-go get golang.org/x/oauth2
-go get github.com/stacktic/dropbox
-go get -u github.com/sajari/docconv
-go get github.com/JalfResi/justext
-go get github.com/algolia/algoliasearch-client-go/algoliasearch
-go get github.com/robfig/cron
-go get gopkg.in/square/go-jose.v2
-go get github.com/auth0-community/go-auth0
-go get github.com/rs/cors
-go get -u github.com/gorilla/mux
-```
+Basically the idea is to:
+  - Extract contents of documents from dropbbox every 24 hours
+  - Convert contents of those documents to full text chunks
+  - Send it to the algolia platform for indexation
+  - Provide search endpoints authenticated with OAuth/Auth0 for searching
+  
+## PREREQUISITES
 
-## Build
+Install [docker](https://docs.docker.com/install/)<br>
+Install [docker-compose](https://docs.docker.com/compose/install/)<br>
+
+Additionally you may want to use [make](https://www.gnu.org/software/make/)
+
+## DEVELOPMENT
+
+> Application relies on a couple of environment variables.
+They define external services dependencies (Auth0, dropbox, algolia) and configuration parameters.
+This configuration can be set in a `.env` file used by docker-compose
 
 ```shell
-go build -o bin/rao
+# Application server port
+GRAO_APP_PORT=8090
+# Credentials used to access the dropbox account
+GRAO_DBX_KEY=dropbox_key
+GRAO_DBX_SECRET=dropbox_secret
+GRAO_DBX_TOKEN=secret_token
+# Recursive polling of dropbox tree starts here
+GRAO_DBX_ROOT=/zenika # that's an example and should be updated
+# Cursor file is used to maintain state between polls and permit diff 
+GRAO_DBX_CURSOR=/cursor
+# Credentials used to access algolia
+GRAO_ALGOLIA_ID=algolia_api_client_id
+GRAO_ALGOLIA_KEY=algolia_api_key
+# This where log ends
+GRAO_LOG_FILE=rao.log
+# This could be (DEBUG|INFOR|WARN|ERROR)
+GRAO_LOG_LEVEL=DEBUG
+# We don't poll continuously at the moment (we could) 
+GRAO_POLL_EVERY=@daily
+# Unfortunatly we need regular expressions to tell the application where documents are stored according to their types
+## En gros dans chaque agence les commerciaux sont sensés ranger leurs document de tel ou tel type au même endroit,
+## donc à partir de l'arborescence dropbox d'un commercial donné on peut déduire les expressions à définir ci après
+RAO_POLL_FROM=BDC_FILTER_PATTERN =`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/BON DE COMMANDE/(?P<Consultant>[^/]+)` # Calls for Bids / Appels d'offre
+BDC_POLL_FROM=/ # Purchase Orders / Bons de commande
+# This configuration is needed to use AUTH0 as an authentication proxy
+AUTH0_AUDIENCE=https://grao.zenika.com/api/v1
+AUTH0_DOMAIN=zenika.eu.auth0.com
+AUTH0_JWKS_URI=https://zenika.eu.auth0.com/.well-known/jwks.json
+AUTH0_ISSUER=https://zenika.eu.auth0.com/
+# Application relies on docd for document to text conversions
+DOCD_PORT=8888
+DOCD_HOST=docd ## docd is provided as a docker image described in the project
+
 ```
 
-## Env
+### The docd container
 
-```shell
-export GRAO_APP_PORT="8090"
-export GRAO_DBX_KEY="dropbox_key"
-export GRAO_DBX_SECRET="dropbox_secret"
-export GRAO_DBX_TOKEN="dropbox_token"
-export GRAO_DBX_ROOT="dropbox_root_path"
-export GRAO_DBX_CURSOR="cursor_file"
-export GRAO_ALGOLIA_ID="algolia_api_client_id"
-export GRAO_ALGOLIA_KEY="algolia_api_key"
-export GRAO_LOG_FILE="/tmp/rao.log"
-export GRAO_LOG_LEVEL="(DEBUG|WARNING|ERROR|FATAL)"
-export GRAO_POLL_EVERY="@daily"
-export RAO_POLL_FROM="rao_filter_regexp_string"
-export BDC_POLL_FROM="bdc_filter_regexp_string"
-export AUTH0_AUDIENCE="https://grao.zenika.com/api/v1"
-export AUTH0_DOMAIN="zenika.eu.auth0.com"
-export AUTH0_JWKS_URI="https://zenika.eu.auth0.com/.well-known/jwks.json"
-export AUTH0_ISSUER="https://zenika.eu.auth0.com/"
+Converting documents to fulltext is delegated to an external service called docd.
+This service must be up and running in development as well and is provided as a docker container in the current repo.
 
-```
+### Go Tools
 
-## Indexes
+ - Development image uses [fresh](https://github.com/pilu/fresh) for hot build/reload of the application on file edition
+ - Dependencies are managed with [dep](https://golang.github.io/dep/)
+ 
+> The tools are provided by the docker image used for development.
+Assuming that docker and docker-compose are installed there is no need to install fresh or dep.
 
-Configuration of indexes can be performed by posting on the following endpoint
+### Managing project steps using docker-compose
 
-```
-http://{host}/api/v1/{index_name}/settings
-```
+  - build
+    
+    `MODE=BUILD docker-compose up dev`
+    
+  - start (dev mode)
+  
+    `MODE=DEV docker-compose up`
+    
+  - test
+  
+    `MODE=test docker-compose up dev`
+    
+     
+### Managing project steps using make
 
-Payloads are available [in this repository](config)
+  - build
+    
+    `make build`
+    
+  - start (dev mode)
+    
+    `make start`
+    
+  - test
+    
+    `make test`
+    
 
-## Run
+## Deployment
 
-```shell
-## install docd server
-pushd $GOPATH/src/github.com/sajari/docconv/docd && go install && popd
-## launch docd server
-nohup $GOPATH/bin/docd &
-## run app
-$GOPATH/src/github.com/Zenika/RAO/bin/rao
-```
-
+  - Application build ends up in the _dist folder
+  - You will need to set up application environment according to production use
+  - Make sure docd is running for document to text conversions
+  
 ## Source Code Documentation
 
 Source code doc is available [in this repository](_documentation)

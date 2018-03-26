@@ -4,14 +4,14 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/Zenika/RAO/conv"
-	"github.com/Zenika/RAO/document"
-	"github.com/Zenika/RAO/document/rao"
-	"github.com/Zenika/RAO/log"
-	"github.com/Zenika/RAO/search"
-	"github.com/Zenika/RAO/tree"
-	"github.com/Zenika/RAO/tree/dropbox"
-	"github.com/Zenika/RAO/utils"
+	"github.com/Zenika/rao/rao-back/conv"
+	"github.com/Zenika/rao/rao-back/document"
+	"github.com/Zenika/rao/rao-back/document/rao"
+	"github.com/Zenika/rao/rao-back/log"
+	"github.com/Zenika/rao/rao-back/search"
+	"github.com/Zenika/rao/rao-back/tree"
+	"github.com/Zenika/rao/rao-back/tree/dropbox"
+	"github.com/Zenika/rao/rao-back/utils"
 )
 
 var RAO_FILTER_PATTERN string = os.Getenv("RAO_POLL_FROM")

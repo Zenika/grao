@@ -10,11 +10,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
 
-	"github.com/Zenika/RAO/log"
+	"github.com/Zenika/rao/rao-back/log"
 )
 
 type ConversionResponse struct {
@@ -26,7 +27,7 @@ type ConversionResponse struct {
 type Docd struct{}
 
 func (docd Docd) Convert(input []byte, mimeType string) ([]byte, error) {
-	convertUrl := fmt.Sprintf("http://localhost:%v/convert", "8888")
+	convertUrl := fmt.Sprintf("http://%s:%v/convert", os.Getenv("DOCD_HOST"), os.Getenv("DOCD_PORT"))
 	convertParam := "input"
 
 	body := &bytes.Buffer{}

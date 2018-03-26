@@ -5,7 +5,7 @@
 // provided as an argument to the factory call
 package search
 
-import "github.com/Zenika/RAO/document"
+import "github.com/Zenika/rao/rao-back/document"
 
 // SearchEngine implementation own the responsability of
 // implementing search service core methods
