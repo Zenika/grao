@@ -1,6 +1,6 @@
 # GRAO
 
-## DESCRIOTION
+## DESCRIPTION
 
 
 >Grao is an application that allows indexing documents stored in dropbox. 
@@ -47,7 +47,7 @@ GRAO_LOG_LEVEL=DEBUG
 GRAO_POLL_EVERY=@daily
 # Unfortunatly we need regular expressions to tell the application where documents are stored according to their types
 ## En gros dans chaque agence les commerciaux sont sensés ranger leurs document de tel ou tel type au même endroit,
-## don à partir de l'arborescence dropbox d'un commercial donné on peut déduire les expressions à définir ci après
+## donc à partir de l'arborescence dropbox d'un commercial donné on peut déduire les expressions à définir ci après
 RAO_POLL_FROM=BDC_FILTER_PATTERN =`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/BON DE COMMANDE/(?P<Consultant>[^/]+)` # Calls for Bids / Appels d'offre
 BDC_POLL_FROM=/ # Purchase Orders / Bons de commande
 # This configuration is needed to use AUTH0 as an authentication proxy
