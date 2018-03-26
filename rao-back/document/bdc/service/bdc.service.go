@@ -15,7 +15,7 @@ import (
 //var BDC_FILTER_PATTERN = `(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/BON DE COMMANDE/(?P<Consultant>[^/]+)`
 var BDC_FILTER_PATTERN = os.Getenv("BDC_POLL_FROM")
 var BDC_PATTERN_FILTER = regexp.MustCompile(BDC_FILTER_PATTERN)
-var MIMES = []string{"application/pdf"} // "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+var MIMES = []string{"application/pdf"}
 var INDEX_ID = "bdc"
 
 type BdcService struct {

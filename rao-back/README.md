@@ -1,5 +1,17 @@
 # GRAO
 
+## DESCRIOTION
+
+
+>Grao is an application that allows indexing documents stored in dropbox. 
+It provides a search engine user interface for various types of documents.
+
+Basically the idea is to:
+  - Extract contents of documents from dropbbox every 24 hours
+  - Convert contents of those documents to full text chunks
+  - Send it to the algolia platform for indexation
+  - Provide search endpoints authenticated with OAuth/Auth0 for searching
+  
 ## PREREQUISITES
 
 Install [docker](https://docs.docker.com/install/)<br>
@@ -21,7 +33,7 @@ GRAO_DBX_KEY=dropbox_key
 GRAO_DBX_SECRET=dropbox_secret
 GRAO_DBX_TOKEN=secret_token
 # Recursive polling of dropbox tree starts here
-GRAO_DBX_ROOT=/
+GRAO_DBX_ROOT=/zenika # that's an example and should be updated
 # Cursor file is used to maintain state between polls and permit diff 
 GRAO_DBX_CURSOR=/cursor
 # Credentials used to access algolia
@@ -34,7 +46,9 @@ GRAO_LOG_LEVEL=DEBUG
 # We don't poll continuously at the moment (we could) 
 GRAO_POLL_EVERY=@daily
 # Unfortunatly we need regular expressions to tell the application where documents are stored according to their types
-RAO_POLL_FROM=/ # Calls for Bids / Appels d'offre
+## En gros dans chaque agence les commerciaux sont sensés ranger leurs document de tel ou tel type au même endroit,
+## don à partir de l'arborescence dropbox d'un commercial donné on peut déduire les expressions à définir ci après
+RAO_POLL_FROM=BDC_FILTER_PATTERN =`(?i)^.+/_{1,2}clients(_|\s){1}(?P<Agence>[\w&\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/BON DE COMMANDE/(?P<Consultant>[^/]+)` # Calls for Bids / Appels d'offre
 BDC_POLL_FROM=/ # Purchase Orders / Bons de commande
 # This configuration is needed to use AUTH0 as an authentication proxy
 AUTH0_AUDIENCE=https://grao.zenika.com/api/v1
@@ -43,26 +57,52 @@ AUTH0_JWKS_URI=https://zenika.eu.auth0.com/.well-known/jwks.json
 AUTH0_ISSUER=https://zenika.eu.auth0.com/
 # Application relies on docd for document to text conversions
 DOCD_PORT=8888
-DOCD_HOST=docd
+DOCD_HOST=docd ## docd is provided as a docker image described in the project
 
 ```
-### using docker-compose
+
+### The docd container
+
+Converting documents to fulltext is delegated to an external service called docd.
+This service must be up and running in development as well and is provided as a docker container in the current repo.
+
+### Go Tools
+
+ - Development image uses [fresh](https://github.com/pilu/fresh) for hot build/reload of the application on file edition
+ - Dependencies are managed with [dep](https://golang.github.io/dep/)
+ 
+> The tools are provided by the docker image used for development.
+Assuming that docker and docker-compose are installed there is no need to install fresh or dep.
+
+### Managing project steps using docker-compose
 
   - build
-    - MODE=BUILD docker-compose up dev
+    
+    `MODE=BUILD docker-compose up dev`
+    
   - start (dev mode)
-    - MODE=DEV docker-compose up
+  
+    `MODE=DEV docker-compose up`
+    
   - test
-    - MODE=test docker-compose up dev
+  
+    `MODE=test docker-compose up dev`
+    
      
-### using make
+### Managing project steps using make
 
   - build
-    - make build
+    
+    `make build`
+    
   - start (dev mode)
-    - make start
+    
+    `make start`
+    
   - test
-    - make test
+    
+    `make test`
+    
 
 ## Deployment
 
