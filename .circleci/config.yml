@@ -1,0 +1,21 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: google/cloud-sdk:latest
+    steps:
+      - setup_remote_docker:
+          reusable: true
+          version: 17.07.0-ce
+      - checkout
+      - run: ./deploy-appengine/deploy.sh
+
+workflows:
+  version: 2
+  common:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - appengine-deploy
