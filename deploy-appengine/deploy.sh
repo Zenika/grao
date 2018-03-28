@@ -26,7 +26,7 @@ function buildImage() {
 
 buildImage "grao-front" rao-front
 buildImage "grao-back" rao-back
-buildImage "docd" nginx
+buildImage "docd" docd
 
 # Push Docker images to gcr.io
 function pushImage() {
