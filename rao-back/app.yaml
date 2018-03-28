@@ -16,7 +16,7 @@ env_variables:
   GRAO_ALGOLIA_KEY: "${GRAO_ALGOLIA_KEY}"
   GRAO_LOG_FILE: "/var/log/app_engine/app.log"
   GRAO_LOG_LEVEL: "DEBUG"
-  GRAO_POLL_EVERY: "0 41 17 * * *"
+  GRAO_POLL_EVERY: "0 00 16 * * *"
   RAO_POLL_FROM: "(?i)^.+/_{1,2}clients(_|\\s){1}(?P<Agence>[\\w&\\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/REPONSE ENVOYEE"
   BDC_POLL_FROM: "(?i)^.+/_{1,2}clients(_|\\s){1}(?P<Agence>[\\w&\\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/BON DE COMMANDE/(?P<Consultant>[^/]+)"
   AUTH0_AUDIENCE: "https://grao.zenika.com/api/v1"

@@ -41,7 +41,7 @@ pushImage "docd"
 # Deploy images
 function deployImage() {
   perl -pe 's/\$(\{)?([a-zA-Z_]\w*)(?(1)\})/$ENV{$2}/g' "${1}/app.yaml" > "${1}/app.deploy.yaml"
-  gcloud app deploy "${1}/app.deploy.yaml" --image-url="gcr.io/${GCLOUD_PROJECT}/${2}" --project="${GCLOUD_PROJECT}"
+  gcloud app deploy "${1}/app.deploy.yaml" --image-url="gcr.io/${GCLOUD_PROJECT}/${2}" --project="${GCLOUD_PROJECT}" --promote --stop-previous-version
   rm "${1}/app.deploy.yaml"
 }
 
