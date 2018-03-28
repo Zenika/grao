@@ -1,17 +1,20 @@
 #!/bin/bash
+# This script build the three docker containers and deploy them on App Engine flexible.
 
-# Get project root directory
+# Get project root directory.
 PROJECT_ROOT=$(cd $(dirname "$0")/../ && pwd)
 echo "${PROJECT_ROOT}"
 
+# Define google cloud project code.
 GCLOUD_PROJECT=grao-199314
 echo "GCLOUD_PROJECT=${GCLOUD_PROJECT}"
 
 # Go to root folder
 cd "${PROJECT_ROOT}"
 
+# If on CircleCI authenticate to Google Cloud
 if [ "${CI}" = true ] ; then
-  echo "Authenticate to google cloud"
+  echo "authenticate to google cloud"
   # write authentication token to file
   echo ${GCLOUD_SERVICE_KEY} | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
   # authenticate to gcloud
@@ -38,14 +41,17 @@ pushImage "grao-front"
 pushImage "grao-back"
 pushImage "docd"
 
-# Deploy images
+# Deploy Docker images to App Engine
 function deployImage() {
+  # Update app.yaml file to replace templated environment variables.
   perl -pe 's/\$(\{)?([a-zA-Z_]\w*)(?(1)\})/$ENV{$2}/g' "${1}/app.yaml" > "${1}/app.deploy.yaml"
-  gcloud app deploy "${1}/app.deploy.yaml" --image-url="gcr.io/${GCLOUD_PROJECT}/${2}" --project="${GCLOUD_PROJECT}" --promote --stop-previous-version
+  # Do App Engine deploy
+  # The deploy might take more than 5 minutes (https://groups.google.com/forum/#!topic/google-appengine/hZMEkmmObDU)
+  yes | gcloud app deploy "${1}/app.deploy.yaml" --image-url="gcr.io/${GCLOUD_PROJECT}/${2}" --project="${GCLOUD_PROJECT}" --promote --stop-previous-version
   rm "${1}/app.deploy.yaml"
 }
 
-yes | deployImage rao-front grao-front
-yes | deployImage rao-back grao-back
-yes | deployImage docd docd
+deployImage rao-front grao-front
+deployImage rao-back grao-back
+deployImage docd docd
 

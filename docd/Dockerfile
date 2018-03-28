@@ -9,4 +9,4 @@ RUN apt-get update && \
 RUN go get github.com/JalfResi/justext
 RUN go get code.sajari.com/docconv/...
 
-CMD "/go/bin/docd"
+CMD "/go/bin/docd -addr :8080"
