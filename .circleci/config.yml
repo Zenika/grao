@@ -18,4 +18,4 @@ workflows:
           filters:
             branches:
               only:
-                - appengine-deploy
+                - master
