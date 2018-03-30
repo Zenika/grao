@@ -23,13 +23,18 @@ if [ "${CI}" = true ] ; then
 fi
 
 # Build Docker images
+# first argument is image name
+# all remaining arguments are passed to docker command
 function buildImage() {
-  docker build -t "gcr.io/${GCLOUD_PROJECT}/${1}" ${2}/
+  IMAGE=${1}
+  shift # shift arguments so we can pass all remaining arguments to docker command.
+  echo "build image ${IMAGE}"
+  docker build -t "gcr.io/${GCLOUD_PROJECT}/${IMAGE}" ${@}
 }
 
-buildImage "grao-front" rao-front
-buildImage "grao-back" rao-back
-buildImage "docd" docd
+buildImage "grao-front" rao-front/
+buildImage "grao-back" -f rao-back/Dockerfile.prod rao-back/
+buildImage "docd" docd/
 
 # Push Docker images to gcr.io
 function pushImage() {

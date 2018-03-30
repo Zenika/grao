@@ -1,15 +1,9 @@
-FROM golang:1.8 as builder
+FROM golang:1.8
 
 ADD . /go/src/github.com/Zenika/rao/rao-back
 WORKDIR /go/src/github.com/Zenika/rao/rao-back
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./rao
 
-FROM alpine:latest
-RUN apk --no-cache add ca-certificates
-WORKDIR /go/src/github.com/Zenika/rao/rao-back
-COPY --from=builder /go/src/github.com/Zenika/rao/rao-back/rao .
+RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+RUN go get github.com/pilu/fresh
 
-ENV GRAO_APP_PORT=8080
-
-EXPOSE 8080
-CMD ["/go/src/github.com/Zenika/rao/rao-back/rao"]
+CMD ["/bin/bash", "run.sh"]
