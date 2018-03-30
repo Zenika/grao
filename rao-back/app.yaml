@@ -31,8 +31,8 @@ handlers:
   script: this field is required, but ignored
 
 resources:
-  cpu: 2
-  memory_gb: 4
+  cpu: .5
+  memory_gb: 1
   disk_size_gb: 10
 
 manual_scaling:
