@@ -50,11 +50,13 @@ jobs:
           path: ~/project
       - attach_workspace:
           at: ~/project
-      - run: mv dist www
+      - run: mkdir ~/deploy-rao-front
+      - run: cp app.yaml ~/deploy-rao-front/app.yaml
+      - run: cp -R dist ~/deploy-rao-front/www
       - run: echo ${GCLOUD_SERVICE_KEY} | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
       - run: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
       - run: gcloud config set project ${GCLOUD_PROJECT}
-      - run: gcloud app deploy --promote --stop-previous-version
+      - run: gcloud app deploy ~/deploy-rao-front/app.yaml --promote --stop-previous-version
 
   build:
     docker:
