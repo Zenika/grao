@@ -30,7 +30,7 @@ jobs:
       - checkout:
           path: ~/project
       - attach_workspace:
-          at: ./
+          at: ~/project
       - run: npm run lint
       - run: npm rebuild node-sass
       - run: npm run build
@@ -47,7 +47,7 @@ jobs:
       - checkout:
           path: ~/project
       - attach_workspace:
-          at: ./
+          at: ~/project
       - run: mv dist www
       - run: gcloud app deploy --promote --stop-previous-version
 
