@@ -4,7 +4,7 @@ jobs:
   install-front-end-dependencies:
     working_directory: ~/project/rao-front
     docker:
-      - image: circleci/node:6
+      - image: circleci/node:8
     steps:
       - checkout:
           path: ~/project
@@ -24,7 +24,7 @@ jobs:
   build-front:
     working_directory: ~/project/rao-front
     docker:
-      - image: circleci/node:6
+      - image: circleci/node:8
     steps:
       - checkout:
           path: ~/project
