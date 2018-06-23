@@ -52,7 +52,7 @@ jobs:
   deploy-front-end:
     working_directory: ~/project/rao-front
     docker:
-      - image: google/cloud-sdk:latest
+      - image: google/cloud-sdk:203.0.0
     environment:
       GCLOUD_PROJECT: grao-199314
     steps:
