@@ -1,12 +1,35 @@
 version: 2
 jobs:
+
+  install-front-end-dependencies:
+    working_directory: ~/project/rao-front
+    docker:
+      - image: circleci/node:6
+    steps:
+      - checkout:
+          path: ~/project
+      - restore_cache:
+          keys:
+            - v1-npm-dependencies-{{ checksum "package.json" }}
+            - v1-npm-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-npm-dependencies-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: .
+          paths: node_modules
+
   build-front:
     working_directory: ~/project/rao-front
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:6
     steps:
-      - checkout
-      - run: npm install
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ./
       - run: npm run lint
       - run: npm rebuild node-sass
       - run: npm run build
@@ -20,7 +43,8 @@ jobs:
     docker:
       - image: google/cloud-sdk:latest
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - attach_workspace:
           at: ./
       - run: mv dist www
@@ -40,7 +64,10 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build-front
+      - install-front-end-dependencies
+      - build-front:
+          requires:
+            - install-front-end-dependencies
       - deploy-front:
           requires:
             - build-front
