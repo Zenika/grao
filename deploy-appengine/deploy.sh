@@ -32,7 +32,6 @@ function buildImage() {
   docker build -t "gcr.io/${GCLOUD_PROJECT}/${IMAGE}" ${@}
 }
 
-buildImage "grao-front" rao-front/
 buildImage "grao-back" -f rao-back/Dockerfile.prod rao-back/
 buildImage "docd" docd/
 
@@ -42,7 +41,6 @@ function pushImage() {
   gcloud docker -- push "gcr.io/${GCLOUD_PROJECT}/${1}:latest" > /dev/null
 }
 
-pushImage "grao-front"
 pushImage "grao-back"
 pushImage "docd"
 
@@ -56,7 +54,6 @@ function deployImage() {
   rm "${1}/app.deploy.yaml"
 }
 
-deployImage rao-front grao-front
 deployImage rao-back grao-back
 deployImage docd docd
 
