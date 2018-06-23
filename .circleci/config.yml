@@ -18,8 +18,9 @@ jobs:
             - node_modules
           key: v1-npm-dependencies-{{ checksum "package.json" }}
       - persist_to_workspace:
-          root: .
-          paths: node_modules
+          root: ~/project
+          paths:
+            - rao-front/node_modules
 
   build-front:
     working_directory: ~/project/rao-front
@@ -34,7 +35,7 @@ jobs:
       - run: npm rebuild node-sass
       - run: npm run build
       - persist_to_workspace:
-          root: ./
+          root: ~/project
           paths:
             - rao-front/dist
   
