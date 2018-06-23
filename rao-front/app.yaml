@@ -1,18 +1,15 @@
-runtime: custom
-env: flex
 service: default
-
-vm_health_check:
-  enable_health_check: False
+runtime: python27
+api_version: 1
+threadsafe: true
 
 handlers:
-- url: /.*
-  script: this field is required, but ignored
+- url: /
+  static_files: www/index.html
+  upload: www/index.html
+  secure: always
 
-resources:
-  cpu: .5
-  memory_gb: 1
-  disk_size_gb: 10
-
-manual_scaling:
-  instances: 1
+- url: /(.*)
+  static_files: www/\1
+  upload: www/(.*)
+  secure: always
