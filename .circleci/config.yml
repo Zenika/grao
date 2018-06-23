@@ -22,7 +22,7 @@ jobs:
           paths:
             - rao-front/node_modules
 
-  build-front:
+  lint-front-end:
     working_directory: ~/project/rao-front
     docker:
       - image: circleci/node:8
@@ -32,6 +32,16 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run: npm run lint
+
+  build-front-end:
+    working_directory: ~/project/rao-front
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project
       - run: npm rebuild node-sass
       - run: npm run build
       - persist_to_workspace:
@@ -39,7 +49,7 @@ jobs:
           paths:
             - rao-front/dist
   
-  deploy-front:
+  deploy-front-end:
     working_directory: ~/project/rao-front
     docker:
       - image: google/cloud-sdk:latest
@@ -73,12 +83,16 @@ workflows:
   build-and-deploy:
     jobs:
       - install-front-end-dependencies
-      - build-front:
+      - lint-front-end:
           requires:
             - install-front-end-dependencies
-      - deploy-front:
+      - build-front-end:
           requires:
-            - build-front
+            - install-front-end-dependencies
+      - deploy-front-end:
+          requires:
+            - lint-front-end
+            - build-front-end
           filters:
             branches:
               only:
