@@ -43,12 +43,17 @@ jobs:
     working_directory: ~/project/rao-front
     docker:
       - image: google/cloud-sdk:latest
+    environment:
+      GCLOUD_PROJECT: grao-199314
     steps:
       - checkout:
           path: ~/project
       - attach_workspace:
           at: ~/project
       - run: mv dist www
+      - run: echo ${GCLOUD_SERVICE_KEY} | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
+      - run: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+      - run: gcloud config set project ${GCLOUD_PROJECT}
       - run: gcloud app deploy --promote --stop-previous-version
 
   build:
