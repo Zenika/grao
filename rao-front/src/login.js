@@ -1,6 +1,4 @@
 import auth0 from 'auth0-js'
-import Vue from 'vue'
-import axios from 'axios'
 
 const clientID = 'BalIDVTaK374gSwltgrsIQFWakihPSI9'
 const domain = 'zenika.eu.auth0.com'
@@ -18,10 +16,10 @@ export const webAuth = new auth0.WebAuth({
 export const bootstrapAuth0 = () => {
   webAuth.parseHash((err, authResult) => {
     if (authResult && authResult.accessToken && authResult.idToken) {
-      window.location.hash = '';
-      setSession(authResult);
+      window.location.hash = ''
+      setSession(authResult)
     } else if (err) {
-      console.log(err);
+      console.log(err)
     }
   })
 }
@@ -29,15 +27,15 @@ export const bootstrapAuth0 = () => {
 export const setSession = (authResult) => {
   var expiresAt = JSON.stringify(
     authResult.expiresIn * 1000 + new Date().getTime()
-  );
-  localStorage.setItem('access_token', authResult.accessToken);
-  localStorage.setItem('id_token', authResult.idToken);
-  localStorage.setItem('expires_at', expiresAt);
+  )
+  localStorage.setItem('access_token', authResult.accessToken)
+  localStorage.setItem('id_token', authResult.idToken)
+  localStorage.setItem('expires_at', expiresAt)
 }
 
 export const isConnected = () => {
-  const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-  return new Date().getTime() < expiresAt;
+  const expiresAt = JSON.parse(localStorage.getItem('expires_at'))
+  return new Date().getTime() < expiresAt
 }
 
 export const getAuthHeader = () => {
@@ -47,7 +45,7 @@ export const getAuthHeader = () => {
 }
 
 export const login = () => {
-  webAuth.authorize();
+  webAuth.authorize()
 }
 
 export const logout = () => {
