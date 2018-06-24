@@ -1,9 +1,13 @@
-runtime: custom
-env: flex
 service: back
+runtime: go
+api_version: go1
 
-vm_health_check:
-  enable_health_check: False
+handlers:
+  - url: /api/v1/poll
+    script: _go_app
+    login: admin
+  - url: /.*
+    script: _go_app
  
 env_variables:
   GRAO_APP_PORT: "8080"
@@ -16,7 +20,6 @@ env_variables:
   GRAO_ALGOLIA_KEY: "${GRAO_ALGOLIA_KEY}"
   GRAO_LOG_FILE: "/var/log/app_engine/app.log"
   GRAO_LOG_LEVEL: "DEBUG"
-  GRAO_POLL_EVERY: "0 00 16 * * *"
   RAO_POLL_FROM: "(?i)^.+/_{1,2}clients(_|\\s){1}(?P<Agence>[\\w&\\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/REPONSE ENVOYEE"
   BDC_POLL_FROM: "(?i)^.+/_{1,2}clients(_|\\s){1}(?P<Agence>[\\w&\\s]+)/(?P<Client>[^/]+)/(?P<Projet>[^/]+)/BON DE COMMANDE/(?P<Consultant>[^/]+)"
   AUTH0_AUDIENCE: "https://grao.zenika.com/api/v1"
@@ -25,15 +28,3 @@ env_variables:
   AUTH0_ISSUER: "https://zenika.eu.auth0.com/"
   DOCD_PORT: "80"
   DOCD_HOST: "docd.grao-199314.appspot.com"
-
-handlers:
-- url: /.*
-  script: this field is required, but ignored
-
-resources:
-  cpu: .5
-  memory_gb: 1
-  disk_size_gb: 10
-
-manual_scaling:
-  instances: 1

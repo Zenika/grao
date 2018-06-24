@@ -1,0 +1,5 @@
+cron:
+  - description: "poll"
+    url: /api/v1/poll
+    target: back
+    schedule: every 24 hours
