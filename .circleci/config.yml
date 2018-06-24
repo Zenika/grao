@@ -68,6 +68,18 @@ jobs:
       - run: gcloud config set project ${GCLOUD_PROJECT}
       - run: gcloud app deploy ~/deploy-rao-front/app.yaml --promote --stop-previous-version
 
+  deploy-dispatch:
+    docker:
+      - image: google/cloud-sdk:203.0.0
+    environment:
+      GCLOUD_PROJECT: grao-199314
+    steps:
+      - checkout
+      - run: echo ${GCLOUD_SERVICE_KEY} | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
+      - run: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+      - run: gcloud config set project ${GCLOUD_PROJECT}
+      - run: gcloud app deploy dispatch.yaml
+
   build:
     docker:
       - image: google/cloud-sdk:latest
@@ -97,6 +109,10 @@ workflows:
             branches:
               only:
                 - less-expensive
+      - deploy-dispatch:
+          requires:
+            - deploy-front-end
+
   common:
     jobs:
       - build:
