@@ -96,7 +96,7 @@ workflows:
           filters:
             branches:
               only:
-                - less-expensive
+                - master
 
   common:
     jobs:
