@@ -97,9 +97,6 @@ workflows:
             branches:
               only:
                 - less-expensive
-      - deploy-dispatch:
-          requires:
-            - deploy-front-end
 
   common:
     jobs:
