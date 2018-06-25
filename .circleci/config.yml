@@ -51,17 +51,24 @@ jobs:
   
   build-back-end:
     working_directory: /go/src/github.com/Zenika/rao/rao-back
+    environment:
+      GOROOT: /go
     docker:
       - image: circleci/golang:1.8
     steps:
       - checkout:
           path: /go/src/github.com/Zenika/rao
       - run: CGO_ENABLED=0 GOOS=linux go build -o ./rao
+      - persist_to_workspace:
+          root: /
+          paths:
+            - go
   
   deploy:
     docker:
       - image: google/cloud-sdk:203.0.0
     environment:
+      GOROOT: ~/project/go
       GCLOUD_PROJECT: grao-199314
     steps:
       - checkout
