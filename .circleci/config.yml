@@ -51,8 +51,6 @@ jobs:
   
   build-back-end:
     working_directory: /go/src/github.com/Zenika/rao/rao-back
-    environment:
-      GOROOT: /go
     docker:
       - image: circleci/golang:1.8
     steps:
