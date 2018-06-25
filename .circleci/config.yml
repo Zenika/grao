@@ -66,6 +66,7 @@ jobs:
     docker:
       - image: google/cloud-sdk:203.0.0
     environment:
+      GOPATH: /root/project/go,/root/vendor-rao-back/src
       GCLOUD_PROJECT: grao-199314
     steps:
       - checkout
@@ -82,7 +83,7 @@ jobs:
       - run: echo ${GCLOUD_SERVICE_KEY} | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
       - run: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
       - run: gcloud config set project ${GCLOUD_PROJECT}
-      - run: GOPATH=~/vendor-rao-back gcloud app deploy dispatch.yaml rao-back/app.deploy.yaml ~/deploy-rao-front/app.yaml --promote --stop-previous-version
+      - run: gcloud app deploy dispatch.yaml rao-back/app.deploy.yaml ~/deploy-rao-front/app.yaml --promote --stop-previous-version
 
   build:
     docker:
