@@ -70,7 +70,7 @@ jobs:
       - run: mkdir ~/deploy-rao-front
       - run: cp rao-front/app.yaml ~/deploy-rao-front/app.yaml
       - run: cp -R rao-front/dist ~/deploy-rao-front/www
-      - run: perl -pe 's/\$(\{)?([a-zA-Z_]\w*)(?(1)\})/$ENV{$2}/g' "${1}/app.yaml" > "${1}/app.deploy.yaml"
+      - run: perl -pe 's/\$(\{)?([a-zA-Z_]\w*)(?(1)\})/$ENV{$2}/g' rao-back/app.yaml > rao-back/app.deploy.yaml
       - run: echo ${GCLOUD_SERVICE_KEY} | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
       - run: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
       - run: gcloud config set project ${GCLOUD_PROJECT}
