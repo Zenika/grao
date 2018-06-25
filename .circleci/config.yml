@@ -57,11 +57,6 @@ jobs:
       - checkout:
           path: /go/src/github.com/Zenika/rao
       - run: CGO_ENABLED=0 GOOS=linux go build -o ./rao
-      - run: cp -R ./rao ~/project/rao-back/dist
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - rao-back/dist
   
   deploy:
     docker:
