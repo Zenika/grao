@@ -17,9 +17,9 @@ bootstrapAuth0()
 
 axios.interceptors.request.use((config) => {
   Object.assign(config.headers, getAuthHeader())
-  return config;
+  return config
 }, (error) => {
-  return Promise.reject(error);
+  return Promise.reject(error)
 })
 
 axios.interceptors.response.use((response) => response,

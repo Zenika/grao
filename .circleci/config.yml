@@ -1,5 +1,72 @@
 version: 2
 jobs:
+
+  install-front-end-dependencies:
+    working_directory: ~/project/rao-front
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout:
+          path: ~/project
+      - restore_cache:
+          keys:
+            - v1-npm-dependencies-{{ checksum "package.json" }}
+            - v1-npm-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-npm-dependencies-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - rao-front/node_modules
+
+  lint-front-end:
+    working_directory: ~/project/rao-front
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project
+      - run: npm run lint
+
+  build-front-end:
+    working_directory: ~/project/rao-front
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project
+      - run: npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - rao-front/dist
+  
+  deploy-front-end:
+    working_directory: ~/project/rao-front
+    docker:
+      - image: google/cloud-sdk:203.0.0
+    environment:
+      GCLOUD_PROJECT: grao-199314
+    steps:
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project
+      - run: mkdir ~/deploy-rao-front
+      - run: cp app.yaml ~/deploy-rao-front/app.yaml
+      - run: cp -R dist ~/deploy-rao-front/www
+      - run: echo ${GCLOUD_SERVICE_KEY} | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
+      - run: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+      - run: gcloud config set project ${GCLOUD_PROJECT}
+      - run: gcloud app deploy ~/project/dispatch.yaml ~/deploy-rao-front/app.yaml --promote --stop-previous-version
+
   build:
     docker:
       - image: google/cloud-sdk:latest
@@ -12,6 +79,24 @@ jobs:
 
 workflows:
   version: 2
+  build-and-deploy:
+    jobs:
+      - install-front-end-dependencies
+      - lint-front-end:
+          requires:
+            - install-front-end-dependencies
+      - build-front-end:
+          requires:
+            - install-front-end-dependencies
+      - deploy-front-end:
+          requires:
+            - lint-front-end
+            - build-front-end
+          filters:
+            branches:
+              only:
+                - master
+
   common:
     jobs:
       - build:

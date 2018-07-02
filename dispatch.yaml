@@ -1,0 +1,3 @@
+dispatch:
+  - url: "*/api/v1/*"
+    service: back
