@@ -17,7 +17,6 @@ import (
 	"github.com/Zenika/rao/rao-back/tree"
 	"github.com/Zenika/rao/rao-back/tree/dropbox"
 	"github.com/gorilla/mux"
-	"github.com/robfig/cron"
 	"github.com/rs/cors"
 )
 
@@ -45,20 +44,6 @@ func main() {
 	defer log.Close()
 	log.Info("Application started")
 	show_env()
-	/* INIT SCHEDULLER */
-	cronExp := os.Getenv("GRAO_POLL_EVERY")
-	if len(cronExp) == 0 {
-		cronExp = "@daily" // equivalent to 0 0 0 * * *
-	}
-	cron := cron.New()
-	cron.AddFunc(cronExp, func() {
-		root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
-		bdcService := bdcService.New(*searchService, *treeService)
-		raoService := raoService.New(*searchService, *convService, *treeService)
-		pairs := [][]interface{}{{bdcService.DocFilter, bdcService.DocHandler}, {raoService.DocFilter, raoService.DocHandler}}
-		treeService.Poll(root, pairs)
-	})
-	cron.Start()
 	/* INIT HTTP CONTROLLER */
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
@@ -67,6 +52,13 @@ func main() {
 		AllowCredentials: true,
 	})
 	r := mux.NewRouter()
+	r.HandleFunc("/api/v1/poll", func(w http.ResponseWriter, r *http.Request) {
+		root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
+		bdcService := bdcService.New(*searchService, *treeService)
+		raoService := raoService.New(*searchService, *convService, *treeService)
+		pairs := [][]interface{}{{bdcService.DocFilter, bdcService.DocHandler}, {raoService.DocFilter, raoService.DocHandler}}
+		treeService.Poll(root, pairs)
+	})
 	r.HandleFunc("/api/v1/{index}/search", searchController.SearchHandler(searchService)).
 		Methods("POST")
 	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).
