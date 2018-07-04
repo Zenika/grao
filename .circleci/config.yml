@@ -42,7 +42,6 @@ jobs:
           path: ~/project
       - attach_workspace:
           at: ~/project
-      - run: npm rebuild node-sass
       - run: npm run build
       - persist_to_workspace:
           root: ~/project
