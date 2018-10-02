@@ -39,7 +39,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+  margin: 0 20px 20px;
 
   h3{
     font-size: 16px;
