@@ -2,7 +2,7 @@ version: "3"
 
 services:
   docd:
-    build: ./_docd
+    image: docd:latest
     networks:
       - intra
   dev:
@@ -16,6 +16,6 @@ services:
       - MODE=${MODE}
       - GRAO_APP_PORT=8090
     ports:
-      - 8080:8090
+      - 8090:8090
 networks:
   intra:

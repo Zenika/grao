@@ -8,5 +8,6 @@ RUN apt-get update && \
 
 RUN go get github.com/JalfResi/justext
 RUN go get code.sajari.com/docconv/...
+RUN chmod 775 /go/bin/docd
 
-CMD "/go/bin/docd -addr :8080"
+CMD ["/go/bin/docd"]
