@@ -17,8 +17,8 @@ import (
 	"github.com/Zenika/rao/rao-back/tree"
 	"github.com/Zenika/rao/rao-back/tree/dropbox"
 	"github.com/gorilla/mux"
-	"github.com/robfig/cron"
 	"github.com/rs/cors"
+	"github.com/robfig/cron"
 )
 
 
@@ -50,20 +50,15 @@ func main() {
 	if len(cronExp) == 0 {
 		cronExp = "@daily" // equivalent to 0 0 0 * * *
 	}
+	/* Starting CRON to grab and convert documpents on Dropbox */
 	cron := cron.New()
-	cron.AddFunc(cronExp, func() {
-		root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
-		bdcService := bdcService.New(*searchService, *treeService)
-		raoService := raoService.New(*searchService, *convService, *treeService)
-		pairs := [][]interface{}{{bdcService.DocFilter, bdcService.DocHandler}, {raoService.DocFilter, raoService.DocHandler}}
-		treeService.Poll(root, pairs)
-	})
+	cron.AddFunc(cronExp, grabAndConvertDocuments())
 	cron.Start()
 	/* INIT HTTP CONTROLLER */
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
-		AllowedHeaders: []string{"authorization", "content-type"},
+		AllowedHeaders:   []string{"authorization", "content-type"},
 		AllowCredentials: true,
 	})
 	r := mux.NewRouter()
@@ -78,5 +73,16 @@ func main() {
 	)
 	auth0Middleware := auth.UserAuthenticatedMiddleware
 	handler := auth0Middleware(c.Handler(r))
-	http.ListenAndServe(":" + os.Getenv("GRAO_APP_PORT"), handler)
+	http.ListenAndServe(":"+os.Getenv("GRAO_APP_PORT"), handler)
+}
+
+func grabAndConvertDocuments() func() {
+	return func() {
+		root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
+		bdcService := bdcService.New(*searchService, *treeService)
+		raoService := raoService.New(*searchService, *convService, *treeService)
+		pairs := [][]interface{}{{bdcService.DocFilter, bdcService.DocHandler}, {raoService.DocFilter, raoService.DocHandler}}
+		treeService.Poll(root, pairs)
+		log.Debug("Plop")
+	}
 }
