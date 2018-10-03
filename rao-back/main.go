@@ -66,6 +66,7 @@ func main() {
 		Methods("POST")
 	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).
 		Methods("POST")
+	r.HandleFunc("/api/v1/grab", searchController.GrabHandler()).Methods("GET")
 	auth := auth0.New(
 		os.Getenv("AUTH0_JWKS_URI"),
 		os.Getenv("AUTH0_ISSUER"),
