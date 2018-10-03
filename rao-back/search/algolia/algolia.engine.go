@@ -56,7 +56,10 @@ func (alg Algolia) Store(index string, doc document.IDocument, docMapper documen
 }
 
 func (alg Algolia) Search(index string, query search.Query) (*search.Response, error) {
+	fmt.Println("A index :", index)
+	fmt.Println("A query :", query)
 	i := alg.getIndex(index)
+	fmt.Println("A i :", i)
 	if 0 == query.HitsPerPage {
 		query.HitsPerPage = 20
 	}
@@ -69,15 +72,18 @@ func (alg Algolia) Search(index string, query search.Query) (*search.Response, e
 		"restrictSearchableAttributes": query.Restriction,
 	}
 	response, err := i.Search(query.Query, settings)
+	fmt.Printf("response %+v:\n", response)
 	if err == nil {
 		return &(search.Response{Data: response}), err
 	} else {
+		fmt.Println("Y A UNE ERREUR !!!")
 		log.Error(err, log.ERROR)
 		return nil, err
 	}
 }
 
 func (alg Algolia) getIndex(id string) algoliasearch.Index {
+	fmt.Println("A getIndex index : ", id)
 	if nil == alg.index[id] {
 		alg.index[id] = alg.client.InitIndex(id)
 	}

@@ -37,6 +37,7 @@ func handleConfig(w http.ResponseWriter, r *http.Request, searchService *search.
 func handleSearch(w http.ResponseWriter, r *http.Request, searchService *search.SearchService) {
 	vars := mux.Vars(r)
 	index := vars["index"]
+	fmt.Println("index", index)
 	var query search.Query
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&query)
@@ -47,7 +48,17 @@ func handleSearch(w http.ResponseWriter, r *http.Request, searchService *search.
 		return
 	}
 	queryRes, err := searchService.Search(index, query)
+	if err != nil {
+		fmt.Println("ON PASSE LA ET C'EST FINI")
+		log.Error(err, log.ERROR)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(fmt.Sprintf("There was an error: %v", err)))
+		return
+	}
+	fmt.Println("queryRes :", queryRes)
 	response, err := json.Marshal(queryRes.Data)
+	fmt.Printf("resp %+v :", response)
+	fmt.Printf("err %+v :", err)
 	if err == nil {
 		w.Write([]byte(response))
 	} else {
