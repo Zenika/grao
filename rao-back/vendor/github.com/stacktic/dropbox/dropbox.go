@@ -39,8 +39,11 @@ import (
 	"strings"
 	"time"
 
+
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
+	"github.com/Zenika/rao/rao-back/log"
+
 )
 
 // ErrNotAuth is the error returned when the OAuth token is not provided
@@ -228,6 +231,7 @@ type Dropbox struct {
 
 // NewDropbox returns a new Dropbox configured.
 func NewDropbox() *Dropbox {
+	log.Debug("test")
 	db := &Dropbox{
 		RootDirectory: "auto", // auto (recommended), dropbox or sandbox.
 		Locale:        "en",
