@@ -24,17 +24,6 @@ func SettingsHandler(searchService *search.SearchService) func(w http.ResponseWr
 	}
 }
 
-func GrabHandler() func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		handleGrab(w, r)
-	}
-}
-
-func handleGrab(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusInternalServerError)
-	w.Write([]byte(fmt.Sprintf("This is a test")))
-}
-
 func handleConfig(w http.ResponseWriter, r *http.Request, searchService *search.SearchService) {
 	vars := mux.Vars(r)
 	index := vars["index"]

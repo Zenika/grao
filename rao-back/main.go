@@ -14,6 +14,7 @@ import (
 	"github.com/Zenika/rao/rao-back/search"
 	"github.com/Zenika/rao/rao-back/search/algolia"
 	searchController "github.com/Zenika/rao/rao-back/search/controller"
+	indexingController "github.com/Zenika/rao/rao-back/tree/controller"
 	"github.com/Zenika/rao/rao-back/tree"
 	"github.com/Zenika/rao/rao-back/tree/dropbox"
 	"github.com/gorilla/mux"
@@ -66,7 +67,7 @@ func main() {
 		Methods("POST")
 	r.HandleFunc("/api/v1/{index}/settings", searchController.SettingsHandler(searchService)).
 		Methods("POST")
-	r.HandleFunc("/api/v1/grab", searchController.GrabHandler()).Methods("GET")
+	r.HandleFunc("/api/v1/grab", indexingController.GrabHandler(searchService, convService, treeService)).Methods("GET")
 	auth := auth0.New(
 		os.Getenv("AUTH0_JWKS_URI"),
 		os.Getenv("AUTH0_ISSUER"),
