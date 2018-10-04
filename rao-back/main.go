@@ -2,28 +2,28 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 
-	"github.com/Zenika/rao/rao-back/conv"
-	"github.com/Zenika/rao/rao-back/conv/docd"
 	bdcService "github.com/Zenika/rao/rao-back/document/bdc/service"
 	raoService "github.com/Zenika/rao/rao-back/document/rao/service"
-	"github.com/Zenika/rao/rao-back/log"
-	"github.com/Zenika/rao/rao-back/auth/auth0"
-	"github.com/Zenika/rao/rao-back/search"
-	"github.com/Zenika/rao/rao-back/search/algolia"
 	searchController "github.com/Zenika/rao/rao-back/search/controller"
 	indexingController "github.com/Zenika/rao/rao-back/tree/controller"
+	"github.com/Zenika/rao/rao-back/log"
 	"github.com/Zenika/rao/rao-back/tree"
 	"github.com/Zenika/rao/rao-back/tree/dropbox"
-	"github.com/gorilla/mux"
-	"github.com/rs/cors"
+	"github.com/Zenika/rao/rao-back/conv"
+	"github.com/Zenika/rao/rao-back/conv/docd"
+	"github.com/Zenika/rao/rao-back/search"
+	"github.com/Zenika/rao/rao-back/search/algolia"
 	"github.com/robfig/cron"
+	"github.com/rs/cors"
+	"github.com/gorilla/mux"
+	"github.com/Zenika/rao/rao-back/auth/auth0"
+	"net/http"
 )
 
 
-/* INIT SERVICES IMPLEMENTATIONS */
+// INIT SERVICES IMPLEMENTATIONS
 var treeService = tree.New(dropbox.New())
 var convService = conv.New(docd.New())
 var searchService = search.New(algolia.New())
@@ -41,7 +41,7 @@ func show_env() {
 }
 
 func main() {
-	/* INIT LOGGING */
+	// INIT LOGGING
 	log.Init()
 	defer log.Close()
 	log.Info("Application started")
@@ -51,11 +51,11 @@ func main() {
 	if len(cronExp) == 0 {
 		cronExp = "@daily" // equivalent to 0 0 0 * * *
 	}
-	/* Starting CRON to grab and convert documpents on Dropbox */
+	// Starting CRON to grab and convert documents on Dropbox
 	cron := cron.New()
 	cron.AddFunc(cronExp, grabAndConvertDocuments())
 	cron.Start()
-	/* INIT HTTP CONTROLLER */
+	// INIT HTTP CONTROLLER
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTION", "PUT"},
@@ -80,11 +80,11 @@ func main() {
 
 func grabAndConvertDocuments() func() {
 	return func() {
+		log.Debug("grabAndConvertDocuments called from main.go")
 		root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
 		bdcService := bdcService.New(*searchService, *treeService)
 		raoService := raoService.New(*searchService, *convService, *treeService)
 		pairs := [][]interface{}{{bdcService.DocFilter, bdcService.DocHandler}, {raoService.DocFilter, raoService.DocHandler}}
 		treeService.Poll(root, pairs)
-		log.Debug("Plop")
 	}
 }
