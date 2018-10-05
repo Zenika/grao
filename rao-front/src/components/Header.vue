@@ -70,10 +70,16 @@
     text-align: left;
     border-radius: 0 !important;
     background-color: $red_znk;
+    padding: 0;
     .navbar-brand {
       padding: 10px;
       display: flex;
       align-items: center;
+      float: left;
+      height: 50px;
+      padding: 5px;
+      font-size: 20px;
+      line-height: 20px;
       img {
         max-height: 100%;
         display: inline;

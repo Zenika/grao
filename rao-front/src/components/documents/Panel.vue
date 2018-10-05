@@ -1,11 +1,11 @@
 <template>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{title}}</h3>
+  <div class="card card-default">
+    <div class="card-header">
+      <h3 class="card-title">{{title}}</h3>
     </div>
-    <div class="panel-body">
-      <v-item v-for="item in documents" :item="item"></v-item>
+    <div class="card-body">
+      <v-item v-for="(item, index) in documents" :key="`document-${index}`" :item="item"></v-item>
       <p v-if="!documents.length" class="nodoc">No Document...</p>
     </div>
   </div>
@@ -35,13 +35,21 @@
 
   @import "../../variables";
 
-  .panel-default{
+  .card-default{
     border-radius: 0px;
+    width: 100%;
+    margin-bottom: 20px;
   }
 
-  .panel-body{
+  .card-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .card-body{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-flow: row wrap;
 
     .nodoc{
