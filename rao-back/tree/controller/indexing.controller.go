@@ -1,3 +1,7 @@
+/*
+The controller subpackage exposes endpoint handlers used to
+call indexing and converting documents
+ */
 package controller
 
 import (

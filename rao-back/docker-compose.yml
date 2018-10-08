@@ -2,7 +2,8 @@ version: "3"
 
 services:
   docd:
-    image: docd:latest
+#    image: docd:latest
+    build: ../docd
     networks:
       - intra
   dev:
