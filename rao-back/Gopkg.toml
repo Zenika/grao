@@ -45,9 +45,9 @@
   name = "github.com/rs/cors"
   version = "1.3.0"
 
-[[constraint]]
-  branch = "master"
-  name = "github.com/stacktic/dropbox"
+#[[constraint]]
+#  branch = "master"
+#  name = "github.com/stacktic/dropbox"
 
 [[constraint]]
   name = "gopkg.in/square/go-jose.v2"

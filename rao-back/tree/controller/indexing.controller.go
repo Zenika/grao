@@ -19,14 +19,14 @@ import (
 
 func GrabHandler(searchService *search.SearchService, convService *conv.ConvService, treeService *tree.TreeService) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Debug("GrabHandler method called")
+		log.Debug("indexing.controller.go - GrabHandler method called")
 		grabAndConvertDocuments(searchService, convService, treeService)
 		handleGrab(w, r)
 	}
 }
 
 func grabAndConvertDocuments(searchService *search.SearchService, convService *conv.ConvService, treeService *tree.TreeService) {
-	log.Debug("grabAndConvertDocuments method called")
+	log.Debug("indexing.controller.go - grabAndConvertDocuments method called")
 	root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
 	bdcService := bdcService.New(*searchService, *treeService)
 	raoService := raoService.New(*searchService, *convService, *treeService)
@@ -35,7 +35,7 @@ func grabAndConvertDocuments(searchService *search.SearchService, convService *c
 }
 
 func handleGrab(w http.ResponseWriter, r *http.Request) {
-	log.Debug("handleGrab method called")
+	log.Debug("indexing.controller.go - handleGrab method called")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(fmt.Sprintf("Retrieving and converting documents from Dropbox")))
 }

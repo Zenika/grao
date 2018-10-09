@@ -10,8 +10,8 @@ import (
 	"github.com/Zenika/rao/rao-back/log"
 	"github.com/Zenika/rao/rao-back/search"
 	"github.com/Zenika/rao/rao-back/tree"
-	"github.com/Zenika/rao/rao-back/tree/dropbox"
 	"github.com/Zenika/rao/rao-back/utils"
+	"github.com/Zenika/rao/rao-back/tree/dropbox2"
 )
 
 var RAO_FILTER_PATTERN string = os.Getenv("RAO_POLL_FROM")
@@ -61,7 +61,7 @@ func (service RaoService) docMapper(doc document.IDocument) map[string]interface
 }
 
 func (service RaoService) DocHandler(doc document.IDocument) {
-	bytes, size := service.treeService.GetEngine().(*dropbox.Dropbox).DownloadFile(doc)
+	bytes, size := service.treeService.GetEngine().(*dropbox2.Dropbox2).DownloadFile(doc)
 	b, err := service.convService.Convert(bytes, doc.GetMime())
 	log.Error(err, log.ERROR)
 	content := string(b[:])

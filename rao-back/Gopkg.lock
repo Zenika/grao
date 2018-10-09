@@ -2,87 +2,117 @@
 
 
 [[projects]]
+  digest = "1:4747a959c924564c97f2c63bdd97594b52e3fc30760a563dbbc2f3862899d024"
   name = "github.com/algolia/algoliasearch-client-go"
   packages = ["algoliasearch"]
+  pruneopts = "UT"
   revision = "d861d05bc355caa2733913e3948a7b87e60a9ee9"
   version = "2.21.3"
 
 [[projects]]
   branch = "master"
+  digest = "1:b6e41aa70e64dbca458b13c04271cf21e46be26d62349efd59e3de58d027ef47"
   name = "github.com/auth0-community/go-auth0"
   packages = ["."]
+  pruneopts = "UT"
   revision = "3af3068a500bf038ca7ebde923ffbe813da61cfd"
 
 [[projects]]
+  digest = "1:6a16a71a3278c8ddc86848a6a24eb21f5bc692fb6c78c3b2bb42b4ad3d05f2ec"
+  name = "github.com/dropbox/dropbox-sdk-go-unofficial"
+  packages = [
+    "dropbox",
+    "dropbox/async",
+    "dropbox/file_properties",
+    "dropbox/files",
+  ]
+  pruneopts = "UT"
+  revision = "7afa861bfde5a348d765522b303b6fbd9d250155"
+  version = "v4.1.0"
+
+[[projects]]
+  digest = "1:d673f2fdcd54db695a2e562d82ebd6d361926cd5624ce28a7d7c4fdb202803cb"
   name = "github.com/go-errors/errors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "3afebba5a48dbc89b574d890b6b34d9ee10b4785"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:ffc060c551980d37ee9e428ef528ee2813137249ccebb0bfc412ef83071cac91"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
+  pruneopts = "UT"
   revision = "925541529c1fa6821df4e44ce2723319eb2be768"
   version = "v1.0.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:c79fb010be38a59d657c48c6ba1d003a8aa651fa56b579d959d74573b7dff8e1"
   name = "github.com/gorilla/context"
   packages = ["."]
+  pruneopts = "UT"
   revision = "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
 
 [[projects]]
+  digest = "1:88aa9e326e2bd6045a46e00a922954b3e1a9ac5787109f49ac85366df370e1e5"
   name = "github.com/gorilla/mux"
   packages = ["."]
+  pruneopts = "UT"
   revision = "53c1911da2b537f792e7cafcb446b05ffe33b996"
   version = "v1.6.1"
 
 [[projects]]
+  digest = "1:3f68283c56d93b885f33c679708079e834815138649e9f59ffbc572c2993e0f8"
   name = "github.com/robfig/cron"
   packages = ["."]
+  pruneopts = "UT"
   revision = "b024fc5ea0e34bc3f83d9941c8d60b0622bfaca4"
   version = "v1"
 
 [[projects]]
+  digest = "1:d2f8ec47e1957eaf4d4ea9ddfcb9b4c33771229104669e697ee07c9a9d54918e"
   name = "github.com/rs/cors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "feef513b9575b32f84bafa580aad89b011259019"
   version = "v1.3.0"
 
 [[projects]]
   branch = "master"
-  name = "github.com/stacktic/dropbox"
-  packages = ["."]
-  revision = "58f839b21094d5e0af7caf613599830589233d20"
-
-[[projects]]
-  branch = "master"
+  digest = "1:6d3fd61842d17fc8731b167771cfb564d06cb71c75fcb7efbe9b368a6081c1f3"
   name = "golang.org/x/crypto"
   packages = [
     "ed25519",
-    "ed25519/internal/edwards25519"
+    "ed25519/internal/edwards25519",
   ]
+  pruneopts = "UT"
   revision = "80db560fac1fb3e6ac81dbc7f8ae4c061f5257bd"
 
 [[projects]]
   branch = "master"
+  digest = "1:d6b719875cf8091fbab38527d81d34e71f4521b9ee9ccfbd4a32cff2ac5af96e"
   name = "golang.org/x/net"
   packages = [
     "context",
-    "context/ctxhttp"
+    "context/ctxhttp",
   ]
+  pruneopts = "UT"
   revision = "6078986fec03a1dcc236c34816c71b0e05018fda"
 
 [[projects]]
   branch = "master"
+  digest = "1:7cb06c9a523660f3c50c6f63f2e2c90052c359b046d2ef1152f2182169dbb720"
   name = "golang.org/x/oauth2"
   packages = [
     ".",
-    "internal"
+    "internal",
   ]
+  pruneopts = "UT"
   revision = "fdc9e635145ae97e6c2cb777c48305600cf515cb"
 
 [[projects]]
+  digest = "1:9cf45e754ab2dff5f53a553e6948b994ff738e4d1092ca608dcada945d8be0ef"
   name = "google.golang.org/appengine"
   packages = [
     "internal",
@@ -91,25 +121,37 @@
     "internal/log",
     "internal/remote_api",
     "internal/urlfetch",
-    "urlfetch"
+    "urlfetch",
   ]
+  pruneopts = "UT"
   revision = "150dc57a1b433e64154302bdc40b6bb8aefa313a"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:f41f4cf94a26ea920b617ff1d6b7fc4caeb421810783f2074d85d1891d9749ee"
   name = "gopkg.in/square/go-jose.v2"
   packages = [
     ".",
     "cipher",
     "json",
-    "jwt"
+    "jwt",
   ]
+  pruneopts = "UT"
   revision = "6ee92191fea850cdcab9a18867abf5f521cdbadb"
   version = "v2.1.4"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4258f890f719368454c002607782fb1a28e597063a3f8a93a1d30885523d9f3d"
+  input-imports = [
+    "github.com/algolia/algoliasearch-client-go/algoliasearch",
+    "github.com/auth0-community/go-auth0",
+    "github.com/dropbox/dropbox-sdk-go-unofficial/dropbox",
+    "github.com/dropbox/dropbox-sdk-go-unofficial/dropbox/files",
+    "github.com/gorilla/mux",
+    "github.com/robfig/cron",
+    "github.com/rs/cors",
+    "gopkg.in/square/go-jose.v2",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

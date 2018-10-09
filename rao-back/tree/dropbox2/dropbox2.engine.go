@@ -34,7 +34,7 @@ func (db Dropbox2) Poll(root string, pairs [][]interface{}) {
 	db.writeCursor(db.delta(cursor, root, pairs), cursorFileName)
 }
 
-func (db Dropbox2) DownLoadFile(doc document.IDocument) ([]byte, int64) {
+func (db Dropbox2) DownloadFile(doc document.IDocument) ([]byte, int64) {
 	fullPath := fmt.Sprintf("%s/%s", doc.GetPath(), doc.GetTitle())
 	downloadArg := files.NewDownloadArg(fullPath)
 	metadata, resp, err := db.client.Download(downloadArg)
