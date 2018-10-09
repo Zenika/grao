@@ -10,7 +10,6 @@ import (
 	indexingController "github.com/Zenika/rao/rao-back/tree/controller"
 	"github.com/Zenika/rao/rao-back/log"
 	"github.com/Zenika/rao/rao-back/tree"
-	"github.com/Zenika/rao/rao-back/tree/dropbox"
 	"github.com/Zenika/rao/rao-back/conv"
 	"github.com/Zenika/rao/rao-back/conv/docd"
 	"github.com/Zenika/rao/rao-back/search"
@@ -20,11 +19,12 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/Zenika/rao/rao-back/auth/auth0"
 	"net/http"
+	"github.com/Zenika/rao/rao-back/tree/dropbox2"
 )
 
 
 // INIT SERVICES IMPLEMENTATIONS
-var treeService = tree.New(dropbox.New())
+var treeService = tree.New(dropbox2.New())
 var convService = conv.New(docd.New())
 var searchService = search.New(algolia.New())
 
