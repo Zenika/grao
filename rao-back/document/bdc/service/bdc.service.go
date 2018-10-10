@@ -32,16 +32,16 @@ func New(searchService search.SearchService, treeService tree.TreeService) *BdcS
 
 func (service BdcService) DocFilter(doc document.IDocument) bool {
 	if !utils.ArrayContainsString(MIMES, doc.GetMime()) {
-		log.Debug("bad mime " + doc.GetMime())
+		log.Debug("bdc.service - bad mime " + doc.GetMime())
 		return false
 	}
 	matches := BDC_PATTERN_FILTER.FindStringSubmatch(doc.GetPath())
 	if nil == matches {
-		log.Debug("regexp filter: " + BDC_FILTER_PATTERN)
-		log.Debug("no match " + doc.GetPath())
+		log.Debug("bdc.service - regexp filter: " + BDC_PATTERN_FILTER.String())
+		log.Debug("bdc.service - no match " + doc.GetTitle())
 		return false
 	}
-	log.Debug("doc complies with filter assertion, processing: " + doc.GetPath())
+	log.Debug("bdc.service - doc complies with filter assertion, processing: " + doc.GetPath())
 	return true
 }
 

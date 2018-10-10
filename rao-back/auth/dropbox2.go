@@ -3,6 +3,7 @@ package auth
 import (
 	"github.com/dropbox/dropbox-sdk-go-unofficial/dropbox"
 	"github.com/dropbox/dropbox-sdk-go-unofficial/dropbox/files"
+	"os"
 )
 
 var dbx files.Client = nil
@@ -19,7 +20,7 @@ func RequireDropbox2Client() files.Client{
 	//db.SetAccessToken(token)
 	//return db
 	config := dropbox.Config{
-		Token:    "ikMJtKWrSEAAAAAAAAAAEyWpCLY0CuRoFl7EVCx6EMDQS66tgOzC9ooFGKkIRS_k",
+		Token:    os.Getenv("GRAO_DBX_TOKEN"),
 		LogLevel: dropbox.LogInfo, // if needed, set the desired logging level. Default is off
 	}
 	dbx := files.New(config)
