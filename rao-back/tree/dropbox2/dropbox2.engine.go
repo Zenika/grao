@@ -14,6 +14,8 @@ import (
 	"fmt"
 )
 
+var REFERER = log.GetReferer()
+
 type Dropbox2 struct {
 	client files.Client
 }
@@ -39,11 +41,11 @@ func (db Dropbox2) DownloadFile(doc document.IDocument) ([]byte, int64) {
 	downloadArg := files.NewDownloadArg(fullPath)
 	metadata, resp, err := db.client.Download(downloadArg)
 	if err != nil {
-		log.Error(err, log.ERROR) // TODO: implement clearer errors
+		log.Error(err, log.ERROR, REFERER) // TODO: implement clearer errors
 	}
 	bytes, err := ioutil.ReadAll(resp)
 	if err != nil {
-		log.Error(err, log.ERROR)
+		log.Error(err, log.ERROR, REFERER)
 	}
 	size := int64(metadata.Size)
 	return bytes, size
@@ -54,9 +56,9 @@ func (db Dropbox2) delta(cursor string, root string, pairs [][]interface{}) stri
 	arg.Recursive = true
 	// Getting the list of Entries
 	listFolderResult, err := db.client.ListFolder(&arg)
-	log.Error(err, log.ERROR)
+	log.Error(err, log.ERROR, REFERER)
 	cursor = listFolderResult.Cursor
-	log.Debug("Polling : " + root)
+	log.Debug("Polling : " + root, REFERER)
 	// Iterating over Entries and casting types to access the data and map objects
 	for _, entry := range listFolderResult.Entries {
 		for _, p := range pairs {
@@ -77,11 +79,11 @@ func (db Dropbox2) handleDeltaEntry(metadata files.IsMetadata, filter func(docum
 	case *files.FileMetadata:
 		// Handles case of file, cast type and create doc
 		fileEntry, _ := metadata.(*files.FileMetadata)
-		log.Debug("Document found :" + fileEntry.PathLower)
+		log.Debug("Document found :" + fileEntry.PathLower, REFERER)
 		doc := db.createDocument(*fileEntry)
 		// Pass document to the handler function for indexing
 		if filter(doc) {
-			log.Debug("Handling " + doc.GetPath())
+			log.Debug("Handling " + doc.GetPath(), REFERER)
 			handler(doc)
 		}
 	//case *files.FolderMetadata:
@@ -90,7 +92,7 @@ func (db Dropbox2) handleDeltaEntry(metadata files.IsMetadata, filter func(docum
 	//	log.Debug("Folder found : " + folderEntry.PathLower)
 	//	return
 	default:
-		log.Debug("None found")
+		log.Debug("None found", REFERER)
 		return
 	}
 
@@ -120,7 +122,7 @@ func (db Dropbox2) lastCursor(filename string) string {
 
 func (db Dropbox2) writeCursor(cursor string, filename string) {
 	err := ioutil.WriteFile(filename, []byte(cursor), 0644)
-	log.Error(err, log.FATAL)
+	log.Error(err, log.FATAL, REFERER)
 }
 
 func (db Dropbox2) cursorFileName() string {

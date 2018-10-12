@@ -28,6 +28,8 @@ var treeService = tree.New(dropbox2.New())
 var convService = conv.New(docd.New())
 var searchService = search.New(algolia.New())
 
+var REFERER  = log.GetReferer()
+
 func show_env() {
 	log.Info("APP_PORT=" + os.Getenv("GRAO_APP_PORT"))
 	log.Info("DOCD_PORT=" + os.Getenv("DOCD_PORT"))
@@ -80,7 +82,7 @@ func main() {
 
 func grabAndConvertDocuments() func() {
 	return func() {
-		log.Debug("grabAndConvertDocuments called from main.go")
+		log.Debug("grabAndConvertDocuments called from main.go", REFERER)
 		root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
 		bdcService := bdcService.New(*searchService, *treeService)
 		raoService := raoService.New(*searchService, *convService, *treeService)

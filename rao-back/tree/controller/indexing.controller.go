@@ -16,17 +16,18 @@ import (
 	"github.com/Zenika/rao/rao-back/search"
 	"github.com/Zenika/rao/rao-back/tree"
 )
+var REFERER = log.GetReferer()
 
 func GrabHandler(searchService *search.SearchService, convService *conv.ConvService, treeService *tree.TreeService) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Debug("indexing.controller.go - GrabHandler method called")
+		log.Debug("GrabHandler method called", REFERER)
 		grabAndConvertDocuments(searchService, convService, treeService)
 		handleGrab(w, r)
 	}
 }
 
 func grabAndConvertDocuments(searchService *search.SearchService, convService *conv.ConvService, treeService *tree.TreeService) {
-	log.Debug("indexing.controller.go - grabAndConvertDocuments method called")
+	log.Debug("grabAndConvertDocuments method called", REFERER)
 	root := fmt.Sprintf("/%v", os.Getenv("GRAO_DBX_ROOT"))
 	bdcService := bdcService.New(*searchService, *treeService)
 	raoService := raoService.New(*searchService, *convService, *treeService)
@@ -35,7 +36,7 @@ func grabAndConvertDocuments(searchService *search.SearchService, convService *c
 }
 
 func handleGrab(w http.ResponseWriter, r *http.Request) {
-	log.Debug("indexing.controller.go - handleGrab method called")
+	log.Debug("handleGrab method called", REFERER)
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(fmt.Sprintf("Retrieving and converting documents from Dropbox")))
 }

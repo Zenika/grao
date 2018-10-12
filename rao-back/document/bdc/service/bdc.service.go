@@ -17,6 +17,7 @@ var BDC_FILTER_PATTERN = os.Getenv("BDC_POLL_FROM")
 var BDC_PATTERN_FILTER = regexp.MustCompile(BDC_FILTER_PATTERN)
 var MIMES = []string{"application/pdf"}
 var INDEX_ID = "bdc"
+var REFERER  = log.GetReferer()
 
 type BdcService struct {
 	searchService search.SearchService
@@ -32,16 +33,16 @@ func New(searchService search.SearchService, treeService tree.TreeService) *BdcS
 
 func (service BdcService) DocFilter(doc document.IDocument) bool {
 	if !utils.ArrayContainsString(MIMES, doc.GetMime()) {
-		log.Debug("bdc.service - bad mime " + doc.GetMime())
+		log.Debug("bad mime " + doc.GetMime(), REFERER)
 		return false
 	}
 	matches := BDC_PATTERN_FILTER.FindStringSubmatch(doc.GetPath())
 	if nil == matches {
-		log.Debug("bdc.service - regexp filter: " + BDC_PATTERN_FILTER.String())
-		log.Debug("bdc.service - no match " + doc.GetTitle())
+		log.Debug("regexp filter: " + BDC_PATTERN_FILTER.String(), REFERER)
+		log.Debug("no match " + doc.GetTitle(), REFERER)
 		return false
 	}
-	log.Debug("bdc.service - doc complies with filter assertion, processing: " + doc.GetPath())
+	log.Debug("doc complies with filter assertion, processing: " + doc.GetPath(), REFERER)
 	return true
 }
 

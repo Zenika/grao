@@ -7,6 +7,7 @@ package tree
 
 import "github.com/Zenika/rao/rao-back/log"
 
+var REFERER = log.GetReferer()
 // TreeEngine implementation own the responsability of
 // implementing tree service core methods
 //
@@ -34,7 +35,7 @@ func New(eng TreeEngine) *TreeService {
 }
 
 func (tree TreeService) Poll(root string, pairs [][]interface{}) {
-	log.Debug("tree.service - root :" +root)
+	log.Debug("root :" +root, REFERER)
 	tree.engine.Poll(root, pairs)
 }
 

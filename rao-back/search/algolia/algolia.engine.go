@@ -15,6 +15,8 @@ import (
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 )
 
+var REFERER = log.GetReferer()
+
 type Algolia struct {
 	client algoliasearch.Client
 	index  map[string]algoliasearch.Index
@@ -53,7 +55,7 @@ func (alg Algolia) Store(index string, doc document.IDocument, docMapper documen
 	i := alg.getIndex(index)
 	alg.dedupe(i, doc)
 	_, err := i.AddObject(docMapper(doc))
-	log.Error(err, log.ERROR)
+	log.Error(err, log.ERROR, REFERER)
 }
 
 func (alg Algolia) Search(index string, query search.Query) (*search.Response, error) {
@@ -61,7 +63,7 @@ func (alg Algolia) Search(index string, query search.Query) (*search.Response, e
 	if 0 == query.HitsPerPage {
 		query.HitsPerPage = 20
 	}
-	log.Debug("[algolia.engine] - query : " + query.Restriction)
+	log.Debug("query : " + query.Restriction, REFERER)
 	settings := algoliasearch.Map{
 		"facets":                       query.Facets,
 		"facetFilters":                 query.FacetFilters,
@@ -71,16 +73,18 @@ func (alg Algolia) Search(index string, query search.Query) (*search.Response, e
 		"restrictSearchableAttributes": query.Restriction,
 	}
 	response, err := i.Search(query.Query, settings)
+	if err != nil {
+		log.Error(err, log.ERROR, REFERER)
+	}
+	//fmt.Printf("response : %+v\n", response)
+	log.Debug("response : %+v", response.Message, REFERER)
 
-	fmt.Printf("response : %+v\n", response)
-
-	fmt.Printf("err : %+v\n", err)
+	//fmt.Printf("err : %+v\n", err)
 
 	if err == nil {
 		return &(search.Response{Data: response}), err
 	} else {
-		fmt.Println("Y A UNE ERREUR !!!")
-		log.Error(err, log.ERROR)
+		log.Error(err, log.ERROR, REFERER)
 		return nil, err
 	}
 }

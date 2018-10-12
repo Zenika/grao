@@ -8,6 +8,8 @@ import (
 	"gopkg.in/square/go-jose.v2"
 )
 
+var REFERER  = log.GetReferer()
+
 type Response struct {
 	Message string `json:"message"`
 }
@@ -29,8 +31,8 @@ func (auth Auth0) UserAuthenticatedMiddleware(next http.Handler) http.Handler {
 		validator := auth0.NewValidator(configuration, nil)
 		_, err := validator.ValidateRequest(r)
 		if err != nil {
-			log.Error(err, log.ERROR)
-			log.Debug(r.Method + ": Token is not valid or missing token")
+			log.Error(err, log.ERROR, REFERER)
+			log.Debug(r.Method + ": Token is not valid or missing token", REFERER)
 			response := Response{
 				Message: "Missing or invalid token.",
 			}
