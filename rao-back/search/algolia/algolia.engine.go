@@ -41,8 +41,10 @@ func (alg Algolia) Configure(index string, settings search.Settings) error {
 		"highlightPostTag":      settings.HighlightPostTag,
 	})
 	if nil != err {
+		log.Debug("Y a une erreur la !")
 		log.Error(err, log.ERROR)
 	}
+	log.Debug("On passe la !")
 	return err
 
 }
@@ -52,17 +54,14 @@ func (alg Algolia) Store(index string, doc document.IDocument, docMapper documen
 	alg.dedupe(i, doc)
 	_, err := i.AddObject(docMapper(doc))
 	log.Error(err, log.ERROR)
-	log.Debug("document stored to algolia index: " + index + ", doc: " + doc.GetPath())
 }
 
 func (alg Algolia) Search(index string, query search.Query) (*search.Response, error) {
-	fmt.Println("A index :", index)
-	fmt.Println("A query :", query)
 	i := alg.getIndex(index)
-	fmt.Println("A i :", i)
 	if 0 == query.HitsPerPage {
 		query.HitsPerPage = 20
 	}
+	log.Debug("[algolia.engine] - query : " + query.Restriction)
 	settings := algoliasearch.Map{
 		"facets":                       query.Facets,
 		"facetFilters":                 query.FacetFilters,
@@ -72,7 +71,11 @@ func (alg Algolia) Search(index string, query search.Query) (*search.Response, e
 		"restrictSearchableAttributes": query.Restriction,
 	}
 	response, err := i.Search(query.Query, settings)
-	fmt.Printf("response %+v:\n", response)
+
+	fmt.Printf("response : %+v\n", response)
+
+	fmt.Printf("err : %+v\n", err)
+
 	if err == nil {
 		return &(search.Response{Data: response}), err
 	} else {
@@ -83,7 +86,6 @@ func (alg Algolia) Search(index string, query search.Query) (*search.Response, e
 }
 
 func (alg Algolia) getIndex(id string) algoliasearch.Index {
-	fmt.Println("A getIndex index : ", id)
 	if nil == alg.index[id] {
 		alg.index[id] = alg.client.InitIndex(id)
 	}

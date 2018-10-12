@@ -5,11 +5,7 @@
 // provided as an argument to the factory call
 package search
 
-import (
-	"fmt"
-
-	"github.com/Zenika/rao/rao-back/document"
-)
+import "github.com/Zenika/rao/rao-back/document"
 
 // SearchEngine implementation own the responsability of
 // implementing search service core methods
@@ -68,8 +64,6 @@ func (search SearchService) Store(index string, doc document.IDocument, docMappe
 }
 
 func (search SearchService) Search(index string, query Query) (*Response, error) {
-	fmt.Println("index :", index)
-	fmt.Println("query :", query)
 	return search.engine.Search(index, query)
 }
 

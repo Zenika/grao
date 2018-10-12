@@ -139,7 +139,7 @@
           'facets': '*',
           'page': page,
           'hitsPerPage': hitsPerPage,
-          'restriction': 'Content'
+          'restriction': ''
           // 'filters': '(Region:Lille OR Region:Lyon)'
         }
 

@@ -10,8 +10,8 @@ import (
 	"github.com/Zenika/rao/rao-back/log"
 	"github.com/Zenika/rao/rao-back/search"
 	"github.com/Zenika/rao/rao-back/tree"
-	"github.com/Zenika/rao/rao-back/utils"
 	"github.com/Zenika/rao/rao-back/tree/dropbox2"
+	"github.com/Zenika/rao/rao-back/utils"
 )
 
 var RAO_FILTER_PATTERN string = os.Getenv("RAO_POLL_FROM")
@@ -65,6 +65,7 @@ func (service RaoService) DocHandler(doc document.IDocument) {
 	b, err := service.convService.Convert(bytes, doc.GetMime())
 	log.Error(err, log.ERROR)
 	content := string(b[:])
+	log.Debug("[rao.service] - content : " + content)
 	if "" == content {
 		return // Shall we index the document if we could not extract its content ?
 	}
