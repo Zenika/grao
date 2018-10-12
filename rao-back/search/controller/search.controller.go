@@ -11,6 +11,7 @@ import (
 	"github.com/Zenika/rao/rao-back/search"
 	"github.com/gorilla/mux"
 )
+const logPrefix string = "[search.controller] -"
 
 func SearchHandler(searchService *search.SearchService) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -43,15 +44,14 @@ func handleSearch(w http.ResponseWriter, r *http.Request, searchService *search.
 	if nil != err {
 		log.Error(err, log.ERROR)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(fmt.Sprintf("There was an error: %v", err)))
+		w.Write([]byte(fmt.Sprintf("%v There was an error: %v",logPrefix, err)))
 		return
 	}
 	queryRes, err := searchService.Search(index, query)
 	if err != nil {
-		fmt.Println("ON PASSE LA ET C'EST FINI")
 		log.Error(err, log.ERROR)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(fmt.Sprintf("There was an error: %v", err)))
+		w.Write([]byte(fmt.Sprintf("%v There was an error: %v",logPrefix, err)))
 		return
 	}
 	response, err := json.Marshal(queryRes.Data)
@@ -60,6 +60,6 @@ func handleSearch(w http.ResponseWriter, r *http.Request, searchService *search.
 	} else {
 		log.Error(err, log.ERROR)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(fmt.Sprintf("There was an error: %v", err)))
+		w.Write([]byte(fmt.Sprintf("%v There was an error: %v",logPrefix, err)))
 	}
 }

@@ -84,11 +84,11 @@ func (db Dropbox2) handleDeltaEntry(metadata files.IsMetadata, filter func(docum
 			log.Debug("Handling " + doc.GetPath())
 			handler(doc)
 		}
-	case *files.FolderMetadata:
-		// Handles case of folder, maybe useless... apart for log
-		folderEntry, _ := metadata.(*files.FolderMetadata)
-		log.Debug("Folder found : " + folderEntry.PathLower)
-		return
+	//case *files.FolderMetadata:
+	//	// Handles case of folder, maybe useless... apart for log
+	//	folderEntry, _ := metadata.(*files.FolderMetadata)
+	//	log.Debug("Folder found : " + folderEntry.PathLower)
+	//	return
 	default:
 		log.Debug("None found")
 		return
@@ -99,10 +99,10 @@ func (db Dropbox2) handleDeltaEntry(metadata files.IsMetadata, filter func(docum
 // Handle the mapping of Filemetadata to Document
 func (db Dropbox2) createDocument(entry files.FileMetadata) document.IDocument {
 	modified := entry.ServerModified
-	extension := strings.TrimPrefix(filepath.Ext(entry.PathLower), ".")
+	extension := strings.TrimPrefix(filepath.Ext(entry.PathDisplay), ".")
 	doc := &document.Document{
-		Title:     filepath.Base(entry.PathLower),
-		Path:      filepath.Dir(entry.PathLower),
+		Title:     filepath.Base(entry.PathDisplay),
+		Path:      filepath.Dir(entry.PathDisplay),
 		Extension: extension,
 		Mtime:     modified,
 		Mime:      "application/pdf", // TODO : implements other MimeTypes

@@ -19,6 +19,7 @@ var RAO_PATTERN_FILTER = regexp.MustCompile(RAO_FILTER_PATTERN)
 var MIMES = []string{"application/pdf"}
 var INDEX_ID = "rao"
 
+
 type RaoService struct {
 	searchService search.SearchService
 	convService   conv.ConvService
@@ -37,11 +38,13 @@ func (service RaoService) DocFilter(doc document.IDocument) bool {
 	if !utils.ArrayContainsString(MIMES, doc.GetMime()) {
 		return false
 	}
+	log.Debug("Document path : " + doc.GetPath())
+	log.Debug("Document title: " + doc.GetTitle())
 	matches := RAO_PATTERN_FILTER.FindStringSubmatch(doc.GetPath())
 	if nil == matches {
 		return false
 	}
-	log.Debug("doc complies with filter assertion, processing: " + doc.GetPath())
+	log.Debug("doc complies with filter assertion, processing: " + doc.GetPath() + doc.GetTitle())
 	return true
 }
 
