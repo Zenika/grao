@@ -18,6 +18,8 @@ import (
 	"github.com/Zenika/rao/rao-back/log"
 )
 
+var REFERER = log.GetReferer()
+
 type ConversionResponse struct {
 	Body  string            `json:"body"`
 	Meta  map[string]string `json:"meta"`
@@ -27,6 +29,7 @@ type ConversionResponse struct {
 type Docd struct{}
 
 func (docd Docd) Convert(input []byte, mimeType string) ([]byte, error) {
+	log.Debug("Converting", REFERER)
 	convertUrl := fmt.Sprintf("http://%s:%v/convert", os.Getenv("DOCD_HOST"), os.Getenv("DOCD_PORT"))
 	convertParam := "input"
 

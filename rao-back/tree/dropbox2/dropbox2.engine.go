@@ -66,7 +66,8 @@ func (db Dropbox2) delta(cursor string, root string, pairs [][]interface{}) stri
 		}
 		// Calls again if more results to handle
 		if listFolderResult.HasMore {
-			cursor = db.delta(cursor, root, pairs)
+			log.Debug("HasMore", REFERER)
+			//cursor = db.delta(cursor, root, pairs)
 		}
 	}
 	return cursor
